@@ -7,8 +7,6 @@ import {
 } from "react-icons/fa";
 import {
   MdBookOnline,
-  MdNotificationsActive,
-  MdSettings,
 } from "react-icons/md";
 
 export default function Sidebar() {

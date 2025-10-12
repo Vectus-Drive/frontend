@@ -15,6 +15,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import CarManagement from "./pages/admin/CarManagement";
 import UserManagement from "./pages/admin/UserManagement";
 import BookingManagement from "./pages/admin/BookingManagement";
+import CarContent from "./components/CarContent";
 
 function App() {
   
@@ -26,6 +27,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="about" element={<About />} />
           <Route path="car" element={<CarList />} />
+          <Route path = "car-content" element = {<CarContent />}/>
         </Route>
 
         {/* Admin Dashboard Routes */}

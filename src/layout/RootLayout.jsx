@@ -1,7 +1,5 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import CarList from "../pages/CarList";
-import CarContent from "../components/CarContent";
 import { Outlet } from "react-router-dom";
 
 function RootLayout() {
