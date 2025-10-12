@@ -2,8 +2,8 @@ import { useState } from "react";
 import { MdDeleteForever } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 
-import CarModel from "../../components/admin/CarModel";
-import DeleteMode from "../../components/admin/DeleteMode";
+import CarManageForm from "../../components/admin/CarManageForm";
+import CarDeleteModal from "../../components/admin/CarDeleteModal";
 
 import car1 from "../../assets/car_1.jpeg";
 
@@ -116,14 +116,14 @@ function CarManagement() {
       </div>
 
       {showCarForm && (
-        <CarModel
+        <CarManageForm
           car={editCar}
           onClose={() => setShowCarForm(false)}
         />
       )}
 
       {showDeleteModal && (
-        <DeleteMode
+        <CarDeleteModal
           car={carToDelete}
           onCancel={() => setShowDeleteModal(false)}
           onConfirm={() => {

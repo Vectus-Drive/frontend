@@ -1,4 +1,4 @@
-const StatCardCar = ({ title, count, icon, color }) => (
+const StatOverviewCard = ({ title, count, icon, color }) => (
   <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-100 flex items-center justify-between">
     <div>
       <p className="text-sm text-gray-500">{title}</p>
@@ -8,4 +8,4 @@ const StatCardCar = ({ title, count, icon, color }) => (
   </div>
 );
 
-export default StatCardCar;
+export default StatOverviewCard;

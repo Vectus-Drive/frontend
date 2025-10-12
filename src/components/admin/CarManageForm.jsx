@@ -1,4 +1,4 @@
-function CarModel({ car, onClose }) {
+function CarManageForm({ car, onClose }) {
   const isEdit = !!car;
 
   return (
@@ -114,4 +114,4 @@ function CarModel({ car, onClose }) {
   );
 }
 
-export default CarModel;
+export default CarManageForm;

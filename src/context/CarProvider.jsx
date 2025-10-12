@@ -13,6 +13,7 @@ export default function CarProvider({ children }) {
       seats: 4,
       fuel: "Petrol",
       transmission: "Automatic",
+      doors : 2,
       description:
         "A reliable and fuel-efficient sedan, perfect for city driving and long trips.",
       features: ["Air Conditioning", "Bluetooth", "Backup Camera"],
@@ -28,11 +29,12 @@ export default function CarProvider({ children }) {
       seats: 7,
       fuel: "Diesel",
       transmission: "Manual",
+      doors : 2,
       description:
         "A spacious SUV with advanced safety features, ideal for family outings and off-road adventures.",
       features: ["4WD", "Heated Seats", "Keyless Entry"],
       price_per_day: 80,
-      availability_status: "rented",
+      availability_status: "Available",
     },
   ]);
 

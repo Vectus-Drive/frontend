@@ -1,6 +1,6 @@
 import { FaCar, FaClipboardList, FaClock, FaCheckCircle } from "react-icons/fa";
-import StatCard from "../../components/admin/StatCard";
-import StatCardCar from "../../components/admin/StatCardCar";
+import CarStatsCard from "../../components/admin/CarStatsCard";
+import StatOverviewCard from "../../components/admin/StatOverviewCard";
 import HireVsCancel from "../../components/admin/HireVsCancel";
 import LiveCarStatus from "../../components/admin/LiveCarStatus";
 
@@ -44,32 +44,32 @@ function AdminDashboard() {
 
       <div className="flex space-x-6 overflow-y-auto hide-scrollbar">
         <div className="w-72 space-y-6">
-          <StatCard title="Total Revenue" value={9450} change="+3.8%" comparedValue={8920} />
-          <StatCard title="Total Expenses" value={5620} change="-1.2%" comparedValue={5690} />
+          <CarStatsCard title="Total Revenue" value={9450} change="+3.8%" comparedValue={8920} />
+          <CarStatsCard title="Total Expenses" value={5620} change="-1.2%" comparedValue={5690} />
           <HireVsCancel />
         </div>
 
         <div className="flex-1 space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <StatCardCar
+            <StatOverviewCard
               title="Total Cars"
               count={42}
               icon={<FaCar className="text-white text-2xl" />}
               color="bg-blue-500"
             />
-            <StatCardCar
+            <StatOverviewCard
               title="Total Bookings"
               count={118}
               icon={<FaClipboardList className="text-white text-2xl" />}
               color="bg-orange-500"
             />
-            <StatCardCar
+            <StatOverviewCard
               title="Pending Bookings"
               count={16}
               icon={<FaClock className="text-white text-2xl" />}
               color="bg-yellow-500"
             />
-            <StatCardCar
+            <StatOverviewCard
               title="Completed Trips"
               count={94}
               icon={<FaCheckCircle className="text-white text-2xl" />}

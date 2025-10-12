@@ -1,4 +1,7 @@
+import { Link } from "react-router-dom";
+
 export default function CarCard({
+  id,
   name,
   image,
   availability_status,
@@ -36,6 +39,7 @@ export default function CarCard({
         <div className="p-5 text-center">
           <h2 className="text-white text-xl font-semibold mb-2">{name}</h2>
           <p className="text-gray-300 text-sm mb-4">{description}</p>
+          <Link to ={`/car-details/${id}`}>
           <button
             className={`font-semibold px-5 py-2 rounded-lg transition-colors ${
               isAvailable
@@ -46,6 +50,7 @@ export default function CarCard({
           >
             Rent Now
           </button>
+          </Link>
         </div>
       </div>
     </div>

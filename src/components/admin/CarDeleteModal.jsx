@@ -1,4 +1,4 @@
-function DeleteMode({ car, onCancel, onConfirm }) {
+function CarDeleteModal({ car, onCancel, onConfirm }) {
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-black/40 z-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-96 text-center">
@@ -26,4 +26,4 @@ function DeleteMode({ car, onCancel, onConfirm }) {
   );
 }
 
-export default DeleteMode;
+export default CarDeleteModal;
