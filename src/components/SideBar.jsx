@@ -5,6 +5,9 @@ import {
   FaCarSide,
   FaSignOutAlt,
 } from "react-icons/fa";
+import { MdOutlineReviews } from "react-icons/md";
+import { GrTransaction } from "react-icons/gr";
+
 import {
   MdBookOnline,
 } from "react-icons/md";
@@ -14,7 +17,9 @@ export default function Sidebar() {
     { label: "Dashboard", icon: <FaHome />, path: "/admin" },
     { label: "Bookings", icon: <MdBookOnline />, path: "admin/bookings" },
     { label: "Car Management", icon: <FaCarSide />, path: "admin/cars" },
-    { label: "User Management", icon: <FaUsers />, path: "admin/users" }
+    { label: "User Management", icon: <FaUsers />, path: "admin/users" },
+    { label: "Transaction", icon: <GrTransaction />, path: "admin/transaction" },
+    { label: "Review Management", icon: <MdOutlineReviews />, path: "admin/review" }
   ];
 
   return (

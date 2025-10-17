@@ -16,6 +16,8 @@ import CarManagement from "./pages/admin/CarManagement";
 import UserManagement from "./pages/admin/UserManagement";
 import BookingManagement from "./pages/admin/BookingManagement";
 import CarDetails from "./pages/CarDetails";
+import TransactionManagement from "./pages/admin/TransactionManagement";
+import ReviewManagement from "./pages/admin/ReviewManagement";
 
 function App() {
   
@@ -38,6 +40,8 @@ function App() {
           <Route path="admin/cars" element={<CarManagement />} />
           <Route path="admin/users" element={<UserManagement />} />
           <Route path="admin/bookings" element={<BookingManagement />} />
+          <Route path="admin/transaction" element={<TransactionManagement />} />
+          <Route path="admin/review" element={<ReviewManagement />} />
         </Route>
       </>
     )
