@@ -7,8 +7,8 @@ export default function CarProvider({ children }) {
     {
       id: 1,
       no : "add3455",
-      name: "Toyota",
-      type: "Sedan",
+      name: "Toyota", //make
+      type: "Sedan", //model //generate report
       image: "car1.jpg",
       seats: 4,
       fuel: "Petrol",
@@ -19,6 +19,8 @@ export default function CarProvider({ children }) {
       features: ["Air Conditioning", "Bluetooth", "Backup Camera"],
       price_per_day: 50,
       availability_status: "Available",
+      //condition
+      //services(last with date)
     },
     {
       id: 2,
