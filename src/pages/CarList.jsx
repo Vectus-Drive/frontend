@@ -8,7 +8,7 @@ function CarList() {
 
   return (
     <div className="text-white md:px-25 py-16">
-      <div className="text-center md:text-left mb-10">
+      <div className="text-center md:text-left mb-10 items-center justify-center flex flex-col">
         <h1 className="text-4xl md:text-4xl font-extrabold text-white">
           Browse <span className="text-orange-500">Cars</span>
         </h1>

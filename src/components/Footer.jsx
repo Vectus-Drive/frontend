@@ -11,6 +11,7 @@ export default function Footer() {
     { name: "Home", path: "/" },
     { name: "Car List", path: "/car" },
     { name: "About", path: "/about" },
+    { name: "Contact Us", path: "/contact-us" },
   ];
 
   const community = [

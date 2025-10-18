@@ -20,6 +20,7 @@ import TransactionManagement from "./pages/admin/TransactionManagement";
 import ReviewManagement from "./pages/admin/ReviewManagement";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
+import ContactUs from "./pages/ContactUs";
 
 function App() {
   
@@ -36,6 +37,7 @@ function App() {
           </Route>
           <Route path="login" element = {< Login/>}/>
           <Route path="register" element = {< SignUp/>}/>
+          <Route path="contact-us" element = {< ContactUs/>}/>
         </Route>
 
         {/* Admin Dashboard Routes */}
