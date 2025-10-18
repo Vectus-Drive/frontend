@@ -18,6 +18,8 @@ import BookingManagement from "./pages/admin/BookingManagement";
 import CarDetails from "./pages/CarDetails";
 import TransactionManagement from "./pages/admin/TransactionManagement";
 import ReviewManagement from "./pages/admin/ReviewManagement";
+import Login from "./components/Login";
+import SignUp from "./components/SignUp";
 
 function App() {
   
@@ -32,6 +34,8 @@ function App() {
           <Route path = "car-details" element = {< CarDetails/>}>
             <Route path = ":id" element = {< CarDetails/>} />
           </Route>
+          <Route path="login" element = {< Login/>}/>
+          <Route path="register" element = {< SignUp/>}/>
         </Route>
 
         {/* Admin Dashboard Routes */}
