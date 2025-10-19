@@ -8,7 +8,7 @@ export default function CarProvider({ children }) {
       id: 1,
       no : "add3455",
       name: "Toyota", //make
-      type: "Sedan", //model //generate report
+      type: "Sedan", //model 
       image: "car1.jpg",
       seats: 4,
       fuel: "Petrol",

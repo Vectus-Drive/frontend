@@ -21,6 +21,7 @@ import ReviewManagement from "./pages/admin/ReviewManagement";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import ContactUs from "./pages/ContactUs";
+import UserProfile from "./pages/UserProfile";
 
 function App() {
   
@@ -38,6 +39,7 @@ function App() {
           <Route path="login" element = {< Login/>}/>
           <Route path="register" element = {< SignUp/>}/>
           <Route path="contact-us" element = {< ContactUs/>}/>
+          <Route path="user" element = {< UserProfile/>}/>
         </Route>
 
         {/* Admin Dashboard Routes */}
