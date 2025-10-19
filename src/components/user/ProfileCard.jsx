@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 function ProfileCard({ onChangePassword }) {
-  const [previewImage, setPreviewImage] = useState("user.jpg");
+  const [previewImage, setPreviewImage] = useState("./car.jpg");
   const [isEditing, setIsEditing] = useState(false);
   const [userData, setUserData] = useState({
     name: "Dilusha Madushan",

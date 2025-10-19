@@ -2,20 +2,20 @@ import { useContext } from "react";
 import CarCard from "../components/CarCard";
 import { LuFilter } from "react-icons/lu";
 import { CarContext } from "../context/CarProvider";
+import BannerHeader from "../components/BannerHeader";
 
 function CarList() {
   const { cars } = useContext(CarContext);
 
   return (
-    <div className="text-white md:px-25 py-16">
-      <div className="text-center md:text-left mb-10 items-center justify-center flex flex-col">
-        <h1 className="text-4xl md:text-4xl font-extrabold text-white">
-          Browse <span className="text-orange-500">Cars</span>
-        </h1>
-        <p className="text-gray-400 mt-3 text-lg">
-          Choose from our wide selection of premium vehicles
-        </p>
-      </div>
+    <div className="text-white px-6 md:px-20 py-10 space-y-20">
+      <BannerHeader
+        bgImg="./car.jpg"
+        t1="Browse"
+        t2="Car"
+        des="Discover your ideal ride from our wide range of vehicles — reliable, stylish, and ready for every journey."
+        page="CAR"
+      />
 
       <div className="bg-[#1e293b] p-6 rounded-2xl shadow-lg border border-gray-700 mb-12">
         <h2 className="flex items-center gap-2 text-xl font-bold mb-6">

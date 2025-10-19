@@ -1,12 +1,10 @@
-import React from 'react'
-
+import Feature from "../components/hero/Feature"
 
 function Home() {
   return (
     <div>
-      hhh
+      <Feature />
     </div>
-
   )
 }
 

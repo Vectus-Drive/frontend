@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   FaCar,
   FaKey,
@@ -7,8 +6,10 @@ import {
   FaThumbsUp,
   FaClock,
 } from "react-icons/fa";
+
 import FeedBackForm from "../components/about/FeedBackForm";
 import MemberCard from "../components/about/MemberCard";
+import BannerHeader from "../components/BannerHeader";
 
 function About() {
   const teamMembers = [
@@ -57,17 +58,14 @@ function About() {
     },
   ];
   return (
-    <div className="text-white px-6 md:px-20 py-16 space-y-20">
-      <div className="text-center max-w-4xl mx-auto space-y-4">
-        <h1 className="text-4xl md:text-5xl font-extrabold text-white">
-          About <span className="text-orange-500">Our Company</span>
-        </h1>
-        <p className="text-gray-400 text-lg">
-          We provide reliable, affordable, and comfortable car rental solutions
-          for all your travel needs. Our mission is to deliver seamless
-          experiences with modern vehicles, flexible plans, and 24/7 support.
-        </p>
-      </div>
+    <div className="text-white px-6 md:px-20 py-10 space-y-20">
+      <BannerHeader
+        bgImg="./car1.jpg"
+        t1="About"
+        t2="Our Company"
+        des="We provide reliable, affordable, and comfortable car rental solutions for all your travel needs. Our mission is to deliver seamless experiences with modern vehicles, flexible plans, and 24/7 support."
+        page="ABOUT US"
+      />
 
       <div>
         <h2 className="text-3xl font-semibold text-center mb-8 text-orange-400">
