@@ -4,3 +4,193 @@
        font-family: 'Poppins', sans-serif;
 }
 
+.hero-container {
+  background: linear-gradient(to bottom right, #162033, #0f172a, #1e293b);
+}
+
+.hero-circle {
+  position: absolute;
+  width: 18rem;
+  height: 18rem;
+  border-radius: 9999px;
+  mix-blend-mode: screen;
+  filter: blur(40px);
+  animation: pulse-slow 3s ease-in-out infinite;
+}
+
+.hero-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  filter: blur(60px);
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.3), rgba(99, 102, 241, 0.3));
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.hero-outline {
+  position: absolute;
+  inset: -1rem;
+  border-radius: 1.5rem;
+  opacity: 0.2;
+  filter: blur(20px);
+  background: linear-gradient(to right, #3b82f6, #6366f1);
+  animation: pulse-slow 3s ease-in-out infinite;
+}
+
+.btn-primary {
+  position: relative;
+  padding: 1rem 2rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 1.125rem;
+  color: white;
+  background: linear-gradient(to right, #3b82f6, #6366f1);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 40px rgba(59, 130, 246, 0.6);
+}
+
+.btn-outline {
+  padding: 1rem 2rem;
+  border: 2px solid rgba(71, 85, 105, 0.5);
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 1.125rem;
+  background-color: rgba(30, 41, 59, 0.5);
+  transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+  transform: scale(1.05);
+  border-color: rgba(59, 130, 246, 0.6);
+}
+
+.badge {
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  background-color: rgba(59, 130, 246, 0.15);
+  color: #93c5fd;
+}
+
+.floating-card {
+  position: absolute;
+  padding: 1rem;
+  border: 1px solid rgba(71, 85, 105, 0.4);
+  border-radius: 1rem;
+  background-color: rgba(22, 32, 51, 0.8);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+
+.icon-circle {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: white;
+}
+
+.hero-gradient {
+  background: linear-gradient(to right, #fb923c, #818cf8, #fb923c);
+  background-size: 200% 200%;
+  -webkit-background-clip: text; 
+  -webkit-text-fill-color: transparent; 
+  background-clip: text; 
+  animation: gradient 3s ease infinite;
+}
+
+.wave-svg path {
+  fill: #0f172a;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-in {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes car-entrance {
+  from { opacity: 0; transform: translateX(100px) scale(0.8); }
+  to { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.4; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(20px) scale(0.8); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes check {
+  0% { transform: scale(0) rotate(-180deg); }
+  50% { transform: scale(1.2) rotate(0deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+@keyframes bolt {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2) rotate(10deg); }
+}
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes pulse-button {
+  0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(59, 130, 246, 0.6); }
+}
+
+.animate-fade-in { animation: fade-in 1s ease-out; }
+.animate-fade-in-delayed { animation: fade-in 1s ease-out 0.3s backwards; }
+.animate-slide-in { animation: slide-in 0.8s ease-out; }
+.animate-slide-up { animation: slide-up 1s ease-out 0.2s backwards; }
+.animate-car-entrance { animation: car-entrance 1.2s ease-out 0.5s backwards; }
+.animate-float { animation: float 3s ease-in-out infinite; }
+.animate-pulse-slow { animation: pulse-slow 3s ease-in-out infinite; }
+.animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+.animate-count-up { animation: count-up 0.8s ease-out 0.5s backwards; }
+.animate-check { animation: check 0.8s ease-out 1.5s backwards; }
+.animate-bolt { animation: bolt 2s ease-in-out infinite; }
+.animate-gradient { animation: gradient 3s ease infinite; }
+.animate-pulse-button { animation: pulse-button 2s ease-in-out infinite; }
+
+.delay-200 { animation-delay: 0.7s; }
+.delay-400 { animation-delay: 0.9s; }
+.delay-500 { animation-delay: 0.5s; }
+.delay-700 { animation-delay: 0.7s; }
+.delay-1000 { animation-delay: 1s; }
