@@ -62,7 +62,7 @@ function About() {
       <BannerHeader
         bgImg="./car1.jpg"
         t1="About"
-        t2="Our Company"
+        t2="Us"
         des="We provide reliable, affordable, and comfortable car rental solutions for all your travel needs. Our mission is to deliver seamless experiences with modern vehicles, flexible plans, and 24/7 support."
         page="ABOUT US"
       />
