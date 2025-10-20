@@ -3,7 +3,8 @@ import { FaGasPump, FaCogs, FaDoorOpen, FaUsers } from "react-icons/fa";
 
 export default function CarCard({
   id,
-  name,
+  make,
+  model,
   image,
   availability_status,
   price_per_day,
@@ -20,7 +21,7 @@ export default function CarCard({
         <div className="relative">
           <img
             src={image}
-            alt={name}
+            alt={make}
             className="w-full h-56 object-cover hover:scale-105 transition-transform duration-300"
           />
 
@@ -34,7 +35,7 @@ export default function CarCard({
         </div>
 
         <div className="p-5 text-center">
-          <h2 className="text-white text-xl font-bold mb-4">{name}</h2>
+          <h2 className="text-white text-xl font-bold mb-4">{make} <span className="text-sm text-gray-300">- {model}</span></h2>
 
           <div className="flex justify-around items-center text-gray-300 mb-5 flex-wrap gap-2">
             <div className="flex flex-col items-center text-sm p-2 rounded-lg shadow-sm">

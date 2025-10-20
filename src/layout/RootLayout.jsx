@@ -6,7 +6,7 @@ function RootLayout() {
   return (
     <div className=" text-white min-h-screen flex flex-col">
       <Header />
-      <main className="flex-grow mt-20 bg-[#0f172a]">
+      <main className="flex-grow  bg-[#0f172a]">
         <Outlet />
       </main>
       <Footer />

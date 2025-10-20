@@ -13,8 +13,8 @@ function UserProfile() {
     {
       car_id: 1,
       license_no: "ADD3455",
-      name: "Toyota",
-      type: "Sedan",
+      make: "Toyota",
+      model: "Sedan",
       image: "car1.jpg",
       seats: 4,
       fuel: "Petrol",

@@ -17,14 +17,14 @@ function BookingDetailsModal({ car, booking, user, onClose }) {
         <div className="flex gap-6 mb-8">
           <img
             src={car.image}
-            alt={car.name}
+            alt={car.make}
             className="w-48 h-36 object-cover rounded-xl shadow-lg border border-gray-700"
           />
           <div className="flex flex-col justify-between">
             <div>
-              <h3 className="text-xl font-semibold">{car.name}</h3>
+              <h3 className="text-xl font-semibold">{car.make}</h3>
               <p className="text-sm text-gray-400">
-                {car.type} • {car.transmission} • {car.seats} Seats
+                {car.model} • {car.transmission} • {car.seats} Seats
               </p>
               <p className="text-sm text-gray-400 mt-1">
                 Fuel Type: <span className="text-orange-400">{car.fuel}</span>

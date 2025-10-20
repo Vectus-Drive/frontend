@@ -18,6 +18,12 @@ function CarFeatures({car}) {
           ))}
         </div>
       )}
+       <p className=" text-green-400 text-sm px-3 py-1 rounded-full hover:bg-green-500/30 transition">
+              {car.condition}
+          </p>
+            <p className="text-green-400 text-sm px-3 py-1 rounded-full hover:bg-green-500/30 transition">
+              {car.services}
+        </p>
     </>
   );
 }

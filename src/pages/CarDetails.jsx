@@ -29,14 +29,14 @@ function CarDetails() {
             <div className="rounded-2xl overflow-hidden shadow-lg border border-gray-700 bg-gray-800">
               <img
                 src={`/${car.image}`}
-                alt={car.name}
+                alt={car.make}
                 className="w-full h-96 object-cover hover:scale-105 transition-transform duration-300"
               />
             </div>
 
             <div>
-              <h2 className="text-4xl font-bold text-white mt-2">{car.name}</h2>
-              <p className="text-gray-400 text-sm mt-1">{car.type}</p>
+              <h2 className="text-4xl font-bold text-white mt-2">{car.make}</h2>
+              <p className="text-gray-400 text-sm mt-1">{car.model}</p>
               <p className="text-green-500 text-2xl font-semibold mt-2">
                 ${car.price_per_day} / day
               </p>
