@@ -23,22 +23,22 @@ function Feature() {
         <p className="text-[#4CAF50] text-sm font-bold uppercase mb-1">Why Choose Us</p>
         <h2 className="text-4xl font-extrabold mb-3">Our Features</h2>
         <p className="text-gray-300 text-base max-w-xl mx-auto leading-relaxed">
-          Discover a world of convenience, safety, and customization, paving the way for unforgettable adventures and seamless mobility solutions.
+          Experience reliable daily car rentals with flexible options, affordable prices, and trusted service designed for your comfort and convenience.
         </p>
       </div>
 
       <div className="flex flex-col lg:flex-row justify-center items-center lg:items-stretch gap-10 lg:gap-16 max-w-7xl mx-auto">
         <div className="flex flex-col gap-15 lg:w-72 mx-auto lg:mx-0">
           <FeatureItem
-            icon="🏆"
-            title="First class services"
-            description="Where luxury meets exceptional care, creating unforgettable moments and exceeding your every expectation."
+            icon="🚗"
+            title="Daily Car Rentals"
+            description="Choose from a range of vehicles for your daily travel needs — easy booking, quick pickup, and smooth rides every day."
             alignment="left"
           />
           <FeatureItem
-            icon="A"
-            title="24/7 road assistance"
-            description="Reliable support when you need it most, keeping you on the move with confidence and peace of mind."
+            icon="🕒"
+            title="Quick & Easy Process"
+            description="Book your car in just a few minutes with simple steps — no hidden fees or long procedures."
             alignment="left"
           />
         </div>
@@ -49,15 +49,15 @@ function Feature() {
 
         <div className="flex flex-col gap-8 lg:w-72 mx-auto lg:mx-0">
           <FeatureItem
-            icon="💵"
-            title="Quality at Minimum Expense"
-            description="Unlocking affordable brilliance with elevating quality while minimizing costs for maximum value."
+            icon="💰"
+            title="Affordable Daily Rates"
+            description="Enjoy competitive prices for daily rentals, giving you the best value without compromising quality."
             alignment="right"
           />
           <FeatureItem
-            icon="🔑"
+            icon="📍"
             title="Free Pick-Up & Drop-Off"
-            description="Enjoy free pickup and drop-off services, adding an extra layer of ease to your car rental experience."
+            description="Get your rental car delivered and collected at your convenience — no extra charge within city limits."
             alignment="right"
           />
         </div>

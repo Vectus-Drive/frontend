@@ -36,7 +36,7 @@ export default function CarProvider({ children }) {
         "A spacious SUV with advanced safety features, ideal for family outings and off-road adventures.",
       features: ["4WD", "Heated Seats", "Keyless Entry"],
       price_per_day: 80,
-      availability_status: "Available",
+      availability_status: "Not Available",
     },
   ]);
 
