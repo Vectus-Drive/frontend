@@ -1,5 +1,4 @@
 import React from 'react';
-import { FaArrowRight } from 'react-icons/fa';
 
 const tabContent = {
     LUXURY: {
@@ -19,19 +18,18 @@ const QualityShowcase = () => {
     const currentContent = tabContent[activeTag];
 
     return (
-        <section className="bg-dark-secondary text-gray-50 max-w-7xl mx-auto rounded-lg shadow-2xl overflow-hidden my-12">
+        <section className="bg-dark-secondary text-gray-50 max-w-7xl mx-auto rounded-lg overflow-hidden my-12">
             <div className="flex flex-col md:flex-row items-stretch">
                 
-                <div className="md:w-1/2 min-h-[300px] md:min-h-[500px] bg-cover bg-center transition-all duration-500"
+                <div className="md:w-1/2 min-h-[2900px] md:min-h-[400px] bg-cover bg-center transition-all duration-500"
                      style={{ 
-                        backgroundImage: `url('./car.jpg')`,
-                        backgroundColor: '#333' 
+                        backgroundImage: `url('./pngwing.com (5).png')`, 
                      }}>
                 </div>
 
                 <div className="md:w-1/2 p-8 lg:p-12 flex flex-col justify-center">
                     
-                    <h2 className="text-3xl lg:text-4xl font-extrabold text-blue-300 mb-6">
+                    <h2 className="text-3xl lg:text-4xl font-extrabold text-orange-300 mb-6">
                         Only Quality For Clients
                     </h2>
 

@@ -2,10 +2,9 @@ import featureImg from "../../assets/pngwing.png";
 
 const FeatureItem = ({ icon, title, description, alignment }) => {
   const isRight = alignment === 'right';
-
   return (
     <div className={`flex items-start gap-4 ${isRight ? 'flex-row-reverse text-right' : 'flex-row text-left'}`}>
-      <div className="bg-[#4CAF50] text-white p-2.5 rounded-lg flex-shrink-0 w-10 h-10 flex items-center justify-center text-xl font-bold">
+      <div className="bg-orange-400 text-white p-2.5 rounded-lg flex-shrink-0 w-10 h-10 flex items-center justify-center text-xl font-bold">
         {icon}
       </div>
       <div>
@@ -20,7 +19,7 @@ function Feature() {
   return (
     <div className="text-white py-16 px-4 font-sans">
       <div className="text-center mb-10">
-        <p className="text-[#4CAF50] text-sm font-bold uppercase mb-1">Why Choose Us</p>
+        <p className="text-orange-400 text-sm font-bold uppercase mb-1">Why Choose Us</p>
         <h2 className="text-4xl font-extrabold mb-3">Our Features</h2>
         <p className="text-gray-300 text-base max-w-xl mx-auto leading-relaxed">
           Experience reliable daily car rentals with flexible options, affordable prices, and trusted service designed for your comfort and convenience.

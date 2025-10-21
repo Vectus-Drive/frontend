@@ -6,7 +6,6 @@ function ContactUs() {
   return (
     <div className="text-white px-6 md:px-20 py-10 space-y-20">
       <BannerHeader
-        bgImg="./car.jpg"
         t1="Contact"
         t2="Us"
         des="Have questions about our premium fleet? Our team is ready to assist

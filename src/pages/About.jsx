@@ -60,7 +60,6 @@ function About() {
   return (
     <div className="text-white px-6 md:px-20 py-10 space-y-20">
       <BannerHeader
-        bgImg="./car1.jpg"
         t1="About"
         t2="Us"
         des="We provide reliable, affordable, and comfortable car rental solutions for all your travel needs. Our mission is to deliver seamless experiences with modern vehicles, flexible plans, and 24/7 support."

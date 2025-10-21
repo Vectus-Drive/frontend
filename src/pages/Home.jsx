@@ -9,11 +9,13 @@ function Home() {
   return (
     <div>
       <Hero />
-      <Feature />
-      <NewCar />
-      <FeedbackList />
       <QualityShowcase />
+      <NewCar />
+      
+      
+      <Feature />
       <CarRentStatus />
+      <FeedbackList />
       
     </div>
   )

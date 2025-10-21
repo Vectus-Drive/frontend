@@ -1,4 +1,4 @@
-function BookingDetailsModal({ car, booking, user, onClose }) {
+function BookingDetailsModal({ car, booking, onClose }) {
 
   return (
     <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4 overflow-y-auto">
@@ -68,26 +68,6 @@ function BookingDetailsModal({ car, booking, user, onClose }) {
               <p>
                 Duration:{" "}
                 <span className="text-orange-400">{booking.time_period}</span>
-              </p>
-            </div>
-          </div>
-
-          <div className="bg-gray-800 p-4 rounded-xl border border-gray-700">
-            <h4 className="text-lg font-semibold mb-3 flex items-center gap-2">
-              👤 User Information
-            </h4>
-            <div className="text-sm text-gray-300 space-y-1">
-              <p>
-                Name: <span className="text-orange-400">{user.name}</span>
-              </p>
-              <p>
-                Email: <span className="text-orange-400">{user.email}</span>
-              </p>
-              <p>
-                Phone: <span className="text-orange-400">{user.phone}</span>
-              </p>
-              <p>
-                Address: <span className="text-orange-400">{user.address}</span>
               </p>
             </div>
           </div>

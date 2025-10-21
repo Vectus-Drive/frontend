@@ -6,11 +6,13 @@ function ProfileCard({ onChangePassword }) {
   const [userData, setUserData] = useState({
     name: "Dilusha Madushan",
     nic: "200132456V",
-    customer_id: "C001", 
+    customer_id: "C001",
     email: "dilusha@example.com",
     address: "Galle, Sri Lanka",
     telephone_no: "0771234567",
   });
+
+  const [tempData, setTempData] = useState(userData); 
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -19,6 +21,20 @@ function ProfileCard({ onChangePassword }) {
       reader.onloadend = () => setPreviewImage(reader.result);
       reader.readAsDataURL(file);
     }
+  };
+
+  const handleEdit = () => {
+    setTempData(userData); 
+    setIsEditing(true);
+  };
+
+  const handleSave = () => {
+    setIsEditing(false);
+  };
+
+  const handleCancel = () => {
+    setUserData(tempData); 
+    setIsEditing(false);
   };
 
   return (
@@ -44,10 +60,14 @@ function ProfileCard({ onChangePassword }) {
             <input
               type="text"
               value={userData[key]}
-              disabled={!isEditing || key === "customer_id"} 
-              onChange={(e) => setUserData({ ...userData, [key]: e.target.value })}
+              disabled={!isEditing || key === "customer_id"}
+              onChange={(e) =>
+                setUserData({ ...userData, [key]: e.target.value })
+              }
               className={`w-full p-2 rounded-md bg-gray-700 border border-gray-600 text-white ${
-                isEditing && key !== "customer_id" ? "focus:ring-2 focus:ring-orange-500" : ""
+                isEditing && key !== "customer_id"
+                  ? "focus:ring-2 focus:ring-orange-500"
+                  : ""
               }`}
             />
           </div>
@@ -55,18 +75,29 @@ function ProfileCard({ onChangePassword }) {
       </form>
 
       <div className="flex gap-3 mt-6">
-        <button
-          onClick={() => setIsEditing(!isEditing)}
-          className="flex-1 bg-orange-600 hover:bg-orange-700 py-2 rounded-lg"
-        >
-          {isEditing ? "Save" : "Edit Profile"}
-        </button>
-        <button
-          onClick={onChangePassword}
-          className="flex-1 bg-gray-700 hover:bg-gray-600 py-2 rounded-lg"
-        >
-          Change Password
-        </button>
+        {isEditing ? (
+          <>
+            <button
+              onClick={handleSave}
+              className="flex-1 bg-green-600 hover:bg-green-700 py-2 rounded-lg"
+            >
+              Save
+            </button>
+            <button
+              onClick={handleCancel}
+              className="flex-1 bg-gray-600 hover:bg-gray-700 py-2 rounded-lg"
+            >
+              Cancel
+            </button>
+          </>
+        ) : (
+          <button
+            onClick={handleEdit}
+            className="flex-1 bg-orange-600 hover:bg-orange-700 py-2 rounded-lg"
+          >
+            Edit Profile
+          </button>
+        )}
       </div>
     </div>
   );

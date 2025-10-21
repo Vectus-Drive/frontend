@@ -82,18 +82,18 @@ function FeedbackList() {
       style={{ backgroundColor: "#0f1a2b" }}
     >
       <div className="container mx-auto px-6 text-center">
-        <p className="text-orange-500 uppercase tracking-widest mb-2">
+        <p className="text-orange-400 uppercase tracking-widest mb-2">
           Testimonials
         </p>
         <h2 className="text-4xl font-bold mb-12">
           What People Say About{" "}
-          <span className="text-orange-500">Vectus Drive</span>
+          <span className="text-orange-400">Vectus Drive</span>
         </h2>
 
         <div className="relative flex items-center">
           <button
             onClick={prevSlide}
-            className="absolute left-0 z-10 bg-orange-500 hover:bg-orange-600 text-white p-3 rounded-full shadow-lg transition duration-300"
+            className="absolute left-0 z-10 bg-orange-400 hover:bg-orange-600 text-white p-3 rounded-full shadow-lg transition duration-300"
           >
             <FaArrowLeft />
           </button>
@@ -108,16 +108,16 @@ function FeedbackList() {
                   <img
                     src={f.image}
                     alt={f.name}
-                    className="w-20 h-20 rounded-full border-4 border-orange-500 mx-auto -mt-12"
+                    className="w-20 h-20 rounded-full border-4 border-orange-400 mx-auto -mt-12"
                   />
                 </div>
-                <FaQuoteLeft className="text-orange-500 text-3xl mb-4 mx-auto" />
+                <FaQuoteLeft className="text-orange-400 text-3xl mb-4 mx-auto" />
                 <p className="text-gray-300 mb-6">{f.feedback}</p>
                 <h4 className="font-semibold text-lg">{f.name}</h4>
                 <p className="text-gray-400 mb-2">{f.role}</p>
                 <div className="flex justify-center">
                   {[...Array(f.rating)].map((_, i) => (
-                    <FaStar key={i} className="text-orange-500" />
+                    <FaStar key={i} className="text-orange-400" />
                   ))}
                 </div>
               </div>
@@ -126,7 +126,7 @@ function FeedbackList() {
 
           <button
             onClick={nextSlide}
-            className="absolute right-0 z-10 bg-orange-500 hover:bg-orange-600 text-white p-3 rounded-full shadow-lg transition duration-300"
+            className="absolute right-0 z-10 bg-orange-400 hover:bg-orange-600 text-white p-3 rounded-full shadow-lg transition duration-300"
           >
             <FaArrowRight />
           </button>
