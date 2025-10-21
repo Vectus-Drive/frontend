@@ -25,7 +25,7 @@ export default function CarProvider({ children }) {
     id: 2,
     no: "CAD2189",
     make: "Honda",
-    model: "Civic",
+    model: "Corolla",
     image: "Honda - Civic.jpg",
     seats: 4,
     fuel: "Petrol",
