@@ -21,6 +21,7 @@ import UserManagement from "./pages/admin/UserManagement";
 import BookingManagement from "./pages/admin/BookingManagement";
 import TransactionManagement from "./pages/admin/TransactionManagement";
 import ReviewManagement from "./pages/admin/ReviewManagement";
+import Transaction from "./components/Transaction";
 
 function App() {
   const router = createBrowserRouter(
@@ -34,6 +35,7 @@ function App() {
 
         <Route path="login" element={<Login />} />
         <Route path="register" element={<SignUp />} />
+        <Route path="transaction" element={<Transaction />} />
         
         <Route path="user" element={<UserProfile />} />
 
