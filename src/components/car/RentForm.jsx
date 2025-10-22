@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 function RentForm({ car }) {
   const [pickupDate, setPickupDate] = useState("");
@@ -13,6 +14,7 @@ function RentForm({ car }) {
           (new Date(returnDate) - new Date(pickupDate)) / (1000 * 60 * 60 * 24)
         )
       : 0;
+
   const totalPrice = totalDays * (car.price_per_day || 0);
 
   return (
@@ -30,7 +32,9 @@ function RentForm({ car }) {
         {car.availability_status}
       </p>
 
-      <label className="text-gray-300 text-sm font-semibold">Pickup Date</label>
+      <label className="text-gray-300 text-sm font-semibold mt-2">
+        Pickup Date
+      </label>
       <input
         type="date"
         value={pickupDate}
@@ -38,7 +42,9 @@ function RentForm({ car }) {
         className="w-full bg-gray-700 text-white p-2 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none"
       />
 
-      <label className="text-gray-300 text-sm font-semibold">Return Date</label>
+      <label className="text-gray-300 text-sm font-semibold mt-2">
+        Return Date
+      </label>
       <input
         type="date"
         value={returnDate}
@@ -62,7 +68,9 @@ function RentForm({ car }) {
         className="w-full bg-gray-700 text-white p-2 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none"
       />
 
-      <label className="text-gray-300 text-sm font-semibold">Email</label>
+      <label className="text-gray-300 text-sm font-semibold mt-2">
+        Email
+      </label>
       <input
         type="email"
         placeholder="Your Email"
@@ -71,7 +79,9 @@ function RentForm({ car }) {
         className="w-full bg-gray-700 text-white p-2 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none"
       />
 
-      <label className="text-gray-300 text-sm font-semibold">Phone</label>
+      <label className="text-gray-300 text-sm font-semibold mt-2">
+        Phone
+      </label>
       <input
         type="text"
         placeholder="Your Phone"
@@ -89,9 +99,11 @@ function RentForm({ car }) {
         <p>${totalPrice}</p>
       </div>
 
-      <button className="mt-4 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-lg transition-all">
-        Confirm Booking
-      </button>
+      <Link to="/transaction">
+        <button className="w-full mt-4 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-lg transition-all shadow-md">
+          Confirm Booking
+        </button>
+      </Link>
     </>
   );
 }

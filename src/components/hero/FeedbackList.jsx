@@ -79,7 +79,6 @@ function FeedbackList() {
   return (
     <section
       className="relative py-16 text-white overflow-hidden"
-      style={{ backgroundColor: "#0f1a2b" }}
     >
       <div className="container mx-auto px-6 text-center">
         <p className="text-orange-400 uppercase tracking-widest mb-2">
