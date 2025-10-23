@@ -22,6 +22,8 @@ import BookingManagement from "./pages/admin/BookingManagement";
 import TransactionManagement from "./pages/admin/TransactionManagement";
 import ReviewManagement from "./pages/admin/ReviewManagement";
 import Transaction from "./components/Transaction";
+import NotFoundPage from "./pages/NotFoundPage ";
+import EmployeeProfile from "./pages/EmployeeProfile";
 
 function App() {
   const router = createBrowserRouter(
@@ -32,12 +34,14 @@ function App() {
         <Route path="car" element={<CarList />} />
         <Route path="car-details/:id" element={<CarDetails />} />
         <Route path="contact-us" element={<ContactUs />} />
-
+        
         <Route path="login" element={<Login />} />
         <Route path="register" element={<SignUp />} />
         <Route path="transaction" element={<Transaction />} />
+        <Route path="NotFoundPage" element={<NotFoundPage />} />
         
         <Route path="user" element={<UserProfile />} />
+        <Route path="employee-profile" element={<EmployeeProfile />} />
 
         <Route path="admin" element={<AdminDashboard />} />
         <Route path="admin/cars" element={<CarManagement />} />
