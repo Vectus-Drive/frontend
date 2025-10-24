@@ -2,9 +2,8 @@ import React from 'react';
 
 const VehicleShowcaseSection = () => {
   return (
-    <section className="relative bg-[#0f1729] py-20">
+    <section className="relative bg-[#0f1729] py-20 section-animation">
       <div className="container mx-auto px-4">
-        {/* Section Header */}
         <div className="text-center mb-12">
           <span className="text-orange-500 font-semibold text-sm uppercase tracking-wider">
             OUR FLEET
@@ -17,9 +16,7 @@ const VehicleShowcaseSection = () => {
           </p>
         </div>
 
-        {/* Flex Layout: Features Left, Image Right */}
         <div className="flex flex-col lg:flex-row items-center gap-16 max-w-7xl mx-auto">
-          {/* Feature Text - Left Side */}
           <div className="flex-1 space-y-10 lg:pr-8">
             <div className="flex items-start gap-4">
               <div className="flex-shrink-0 w-14 h-14 bg-orange-500/10 rounded-lg flex items-center justify-center">
@@ -58,7 +55,6 @@ const VehicleShowcaseSection = () => {
             </div>
           </div>
 
-          {/* Vehicle Image - Right Side */}
           <div className="flex-1 lg:flex-[1.3]">
             <div className="relative">
               <img

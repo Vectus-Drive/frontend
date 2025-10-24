@@ -18,7 +18,7 @@ const QualityShowcase = () => {
     const currentContent = tabContent[activeTag];
 
     return (
-        <section className="bg-dark-secondary text-gray-50 max-w-7xl mx-auto rounded-lg overflow-hidden my-12">
+        <section className="bg-dark-secondary text-gray-50 max-w-7xl mx-auto rounded-lg overflow-hidden my-12 section-animation">
             <div className="flex flex-col md:flex-row items-stretch">
                 
                 <div className="md:w-1/2 min-h-[2900px] md:min-h-[400px] bg-cover bg-center transition-all duration-500"

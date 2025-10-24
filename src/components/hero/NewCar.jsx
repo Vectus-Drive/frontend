@@ -8,7 +8,7 @@ function NewCar() {
   const topCars = cars.slice(0, 3);
 
   return (
-    <section className="py-8 px-6 md:px-20 text-white text-center">
+    <section className="py-8 px-6 md:px-20 text-white text-center section-animation">
       <div className="mb-10">
         <h2 className="text-4xl font-bold mb-3">Top New Arrivals</h2>
         <p className="text-gray-400 max-w-2xl mx-auto">

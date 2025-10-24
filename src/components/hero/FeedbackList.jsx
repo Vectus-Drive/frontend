@@ -78,7 +78,7 @@ function FeedbackList() {
 
   return (
     <section
-      className="relative py-16 text-white overflow-hidden"
+      className="relative py-16 text-white overflow-hidden section-animation"
     >
       <div className="container mx-auto px-6 text-center">
         <p className="text-orange-400 uppercase tracking-widest mb-2">

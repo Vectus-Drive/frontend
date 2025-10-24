@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function RentForm({ car }) {
   const [pickupDate, setPickupDate] = useState("");
@@ -7,6 +7,9 @@ function RentForm({ car }) {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+
+  const navigate = useNavigate();
 
   const totalDays =
     pickupDate && returnDate
@@ -16,6 +19,19 @@ function RentForm({ car }) {
       : 0;
 
   const totalPrice = totalDays * (car.price_per_day || 0);
+
+  const handleConfirmClick = () => {
+    setShowPaymentModal(true);
+  };
+
+  const handlePaymentChoice = (method) => {
+    setShowPaymentModal(false);
+    if (method === "card") {
+      navigate("/transaction");
+    } else {
+      console.log("Booked by Cash");
+    }
+  };
 
   return (
     <>
@@ -99,11 +115,42 @@ function RentForm({ car }) {
         <p>${totalPrice}</p>
       </div>
 
-      <Link to="/transaction">
-        <button className="w-full mt-4 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-lg transition-all shadow-md">
-          Confirm Booking
-        </button>
-      </Link>
+      <button
+        onClick={handleConfirmClick}
+        className="w-full mt-4 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-lg transition-all shadow-md"
+      >
+        Confirm Booking
+      </button>
+
+      {showPaymentModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/70 bg-opacity-50">
+          <div className="bg-gray-800 p-6 rounded-2xl text-center shadow-xl w-80">
+            <h2 className="text-white text-lg font-bold mb-4">
+              Choose Payment Method
+            </h2>
+            <div className="flex flex-col gap-3">
+              <button
+                onClick={() => handlePaymentChoice("card")}
+                className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 rounded-lg transition"
+              >
+                Pay by Card
+              </button>
+              <button
+                onClick={() => handlePaymentChoice("cash")}
+                className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 rounded-lg transition"
+              >
+                Pay by Cash
+              </button>
+              <button
+                onClick={() => setShowPaymentModal(false)}
+                className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 rounded-lg transition"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

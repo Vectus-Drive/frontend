@@ -17,7 +17,7 @@ const FeatureItem = ({ icon, title, description, alignment }) => {
 
 function Feature() {
   return (
-    <div className="text-white py-16 px-4 font-sans">
+    <div className="text-white py-16 px-4 font-sans section-animation">
       <div className="text-center mb-10">
         <p className="text-orange-400 text-sm font-bold uppercase mb-1">Why Choose Us</p>
         <h2 className="text-4xl font-extrabold mb-3">Our Features</h2>

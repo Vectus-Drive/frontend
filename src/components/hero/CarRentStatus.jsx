@@ -35,7 +35,7 @@ const CarRentStatus = () => {
   }, []);
 
   return (
-    <div className="relative overflow-hidden bg-gray-900 text-white py-16 px-4 md:px-16 lg:px-32">
+    <div className="relative overflow-hidden bg-gray-900 text-white py-16 px-4 md:px-16 lg:px-32 section-animation">
       {/* Background */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-10"

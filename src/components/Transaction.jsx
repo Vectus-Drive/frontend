@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Transaction() {
+  const navigate = useNavigate();
   const [cardType, setCardType] = useState("credit");
   const [formData, setFormData] = useState({
     cardNumber: "",
@@ -57,16 +58,15 @@ function Transaction() {
   return (
     <div
       className="relative min-h-screen py-12 px-4 sm:px-6 lg:px-8"
-      style={{ background: "linear-gradient(to bottom right, #162033, #0f172a)" }}
     >
-      <div className="absolute top-4 left-4">
-        <Link
-          to="/car"
-          className="bg-gray-700 hover:bg-gray-600 text-white px-3 py-1.5 rounded-full text-sm transition-all"
-        >
-          ← Back to Car
-        </Link>
-      </div>
+       <div className="absolute top-4 left-4">
+      <button
+        onClick={() => navigate(-1)}
+        className="bg-gray-700 hover:bg-gray-600 text-white px-3 py-1.5 rounded-full text-sm transition-all"
+      >
+        ← Back to Rent Form
+      </button>
+    </div>
 
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-10">
