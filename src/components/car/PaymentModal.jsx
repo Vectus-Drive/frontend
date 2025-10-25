@@ -1,4 +1,3 @@
-// src/components/car/PaymentModal.jsx
 function PaymentModal({ onClose, onSelectMethod }) {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/70 bg-opacity-50 z-50">

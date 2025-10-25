@@ -20,7 +20,6 @@ function RentForm({ car, onOpenPayment }) {
   const totalPrice = totalDays * (car.price_per_day || 0);
 
   const handleConfirmClick = () => {
-    // Open modal from parent
     onOpenPayment();
   };
 

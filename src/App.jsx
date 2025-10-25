@@ -21,7 +21,7 @@ import UserManagement from "./pages/admin/UserManagement";
 import BookingManagement from "./pages/admin/BookingManagement";
 import TransactionManagement from "./pages/admin/TransactionManagement";
 import ReviewManagement from "./pages/admin/ReviewManagement";
-import Transaction from "./components/Transaction";
+import Transaction from "./pages/Transaction";
 import NotFoundPage from "./pages/NotFoundPage ";
 import EmployeeProfile from "./pages/EmployeeProfile";
 
