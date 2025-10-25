@@ -5,8 +5,6 @@ import { FaEdit } from "react-icons/fa";
 import CarManageForm from "../../components/admin/CarManageForm";
 import CarDeleteModal from "../../components/admin/CarDeleteModal";
 
-import car1 from "../../assets/car_1.jpeg";
-
 import { CarContext } from "../../context/CarProvider";
 
 function CarManagement() {
@@ -99,7 +97,7 @@ function CarManagement() {
                 <td className="px-4 py-3">{car.no}</td>
                 <td className="px-4 py-3">
                   <img
-                    src={car.image}
+                    src={`../${car.image}`}
                     alt={car.name}
                     className="w-20 h-12 object-cover rounded"
                   />

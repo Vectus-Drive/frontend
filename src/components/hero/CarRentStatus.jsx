@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { FaCar, FaUserFriends, FaRegThumbsUp, FaTruck } from "react-icons/fa";
 
 const CarRentStatus = () => {
@@ -10,8 +10,27 @@ const CarRentStatus = () => {
   ];
 
   const [counts, setCounts] = useState(stats.map(() => 0));
+  const [startCount, setStartCount] = useState(false);
+  const sectionRef = useRef(null);
 
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setStartCount(true);
+          observer.disconnect(); 
+        }
+      },
+      { threshold: 0.3 } 
+    );
+
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!startCount) return;
+
     const duration = 2000;
     const interval = 30;
     const steps = duration / interval;
@@ -32,11 +51,13 @@ const CarRentStatus = () => {
     });
 
     return () => counters.forEach(clearInterval);
-  }, []);
+  }, [startCount]);
 
   return (
-    <div className="relative overflow-hidden bg-gray-900 text-white py-16 px-4 md:px-16 lg:px-32 section-animation">
-      {/* Background */}
+    <div
+      ref={sectionRef}
+      className="relative overflow-hidden bg-gray-900 text-white py-16 px-4 md:px-16 lg:px-32 section-animation"
+    >
       <div
         className="absolute inset-0 bg-cover bg-center opacity-10"
         style={{ backgroundImage: 'url("./car.jpg")' }}

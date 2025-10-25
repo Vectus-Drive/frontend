@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function RentForm({ car }) {
+function RentForm({ car, onOpenPayment }) {
   const [pickupDate, setPickupDate] = useState("");
   const [returnDate, setReturnDate] = useState("");
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   const navigate = useNavigate();
 
@@ -21,16 +20,8 @@ function RentForm({ car }) {
   const totalPrice = totalDays * (car.price_per_day || 0);
 
   const handleConfirmClick = () => {
-    setShowPaymentModal(true);
-  };
-
-  const handlePaymentChoice = (method) => {
-    setShowPaymentModal(false);
-    if (method === "card") {
-      navigate("/transaction");
-    } else {
-      console.log("Booked by Cash");
-    }
+    // Open modal from parent
+    onOpenPayment();
   };
 
   return (
@@ -84,9 +75,7 @@ function RentForm({ car }) {
         className="w-full bg-gray-700 text-white p-2 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none"
       />
 
-      <label className="text-gray-300 text-sm font-semibold mt-2">
-        Email
-      </label>
+      <label className="text-gray-300 text-sm font-semibold mt-2">Email</label>
       <input
         type="email"
         placeholder="Your Email"
@@ -95,9 +84,7 @@ function RentForm({ car }) {
         className="w-full bg-gray-700 text-white p-2 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none"
       />
 
-      <label className="text-gray-300 text-sm font-semibold mt-2">
-        Phone
-      </label>
+      <label className="text-gray-300 text-sm font-semibold mt-2">Phone</label>
       <input
         type="text"
         placeholder="Your Phone"
@@ -121,36 +108,6 @@ function RentForm({ car }) {
       >
         Confirm Booking
       </button>
-
-      {showPaymentModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/70 bg-opacity-50">
-          <div className="bg-gray-800 p-6 rounded-2xl text-center shadow-xl w-80">
-            <h2 className="text-white text-lg font-bold mb-4">
-              Choose Payment Method
-            </h2>
-            <div className="flex flex-col gap-3">
-              <button
-                onClick={() => handlePaymentChoice("card")}
-                className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 rounded-lg transition"
-              >
-                Pay by Card
-              </button>
-              <button
-                onClick={() => handlePaymentChoice("cash")}
-                className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 rounded-lg transition"
-              >
-                Pay by Cash
-              </button>
-              <button
-                onClick={() => setShowPaymentModal(false)}
-                className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 rounded-lg transition"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 }

@@ -16,7 +16,6 @@ function Home() {
       <CarRentStatus />
       <VehicleShowcaseSection />
       <FeedbackList />
-      
     </div>
   )
 }
