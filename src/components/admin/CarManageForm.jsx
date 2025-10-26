@@ -2,8 +2,10 @@ import { useState } from "react";
 import { FaCloudUploadAlt, FaTimes } from "react-icons/fa"; 
 
 function CarManageForm({ car, onClose }) {
+  console.log(car);
+  
   const isEdit = !!car;
-  const [previewImage, setPreviewImage] = useState(car?.image || ""); 
+  const [previewImage, setPreviewImage] = useState(`../${car?.image}` || ""); 
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -20,7 +22,7 @@ function CarManageForm({ car, onClose }) {
   }
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center bg-black/50 z-50 p-4"> {/* Added p-4 for mobile safety */}
+    <div className="fixed inset-0 flex justify-center items-center bg-black/50 z-50 p-4"> 
       <div className="bg-white w-full max-w-[900px] rounded-2xl shadow-2xl overflow-y-auto max-h-[95vh] p-6 relative animate-fadeIn">
 
         <div className="flex justify-between items-center mb-6 border-b pb-4">
@@ -88,7 +90,7 @@ function CarManageForm({ car, onClose }) {
                 </label>
                 <input
                   type="text"
-                  defaultValue={isEdit ? car.name : ""}
+                  defaultValue={isEdit ? car.make : ""}
                   placeholder="e.g. Toyota"
                   className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 outline-none"
                   name="brand"
@@ -101,7 +103,7 @@ function CarManageForm({ car, onClose }) {
                 </label>
                 <input
                   type="text"
-                  defaultValue={isEdit ? car.type : ""}
+                  defaultValue={isEdit ? car.model : ""}
                   placeholder="e.g. Corolla"
                   className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 outline-none"
                   name="model"
@@ -197,6 +199,20 @@ function CarManageForm({ car, onClose }) {
                 name="features"
               />
             </div>
+
+            <div>
+              <label className="text-sm font-medium text-gray-700">
+               Services
+              </label>
+              <input
+                type="text"
+                defaultValue={isEdit ? car.services : ""}
+                placeholder="e.g. Air Conditioning, GPS, Bluetooth"
+                className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 outline-none"
+                name="services"
+              />
+            </div>
+
           </div>
           
         </form>

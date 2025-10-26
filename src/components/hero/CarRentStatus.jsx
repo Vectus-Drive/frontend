@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { FaCar, FaUserFriends, FaRegThumbsUp, FaTruck } from "react-icons/fa";
+import carImg from "../../assets/Image/car.jpg";
 
 const CarRentStatus = () => {
   const stats = [
@@ -60,7 +61,7 @@ const CarRentStatus = () => {
     >
       <div
         className="absolute inset-0 bg-cover bg-center opacity-10"
-        style={{ backgroundImage: 'url("./car.jpg")' }}
+        style={{ backgroundImage: `url(${carImg})` }}
       ></div>
 
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-4 gap-6">

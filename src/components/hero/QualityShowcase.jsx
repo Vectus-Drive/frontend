@@ -1,3 +1,5 @@
+import qaImage from "../../assets/Image/pngwing.png"
+
 import React from 'react';
 
 const tabContent = {
@@ -23,7 +25,7 @@ const QualityShowcase = () => {
                 
                 <div className="md:w-1/2 min-h-[2900px] md:min-h-[400px] bg-cover bg-center transition-all duration-500"
                      style={{ 
-                        backgroundImage: `url('./pngwing.com (5).png')`, 
+                        backgroundImage: `url(${qaImage})`, 
                      }}>
                 </div>
 

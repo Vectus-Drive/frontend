@@ -1,3 +1,5 @@
+import heroImg from "../../assets/Image/hero.png";
+
 function Hero() {
   return (
     <div className="hero-container relative min-h-screen overflow-hidden">
@@ -54,7 +56,7 @@ function Hero() {
             <div className="relative transform hover:scale-105 transition-transform duration-500 animate-car-entrance">
               <div className="hero-outline"></div>
               <img
-                src="./hero.png"
+                src= {heroImg}
                 alt="Hero Car"
                 className="relative w-full h-auto drop-shadow-2xl"
               />

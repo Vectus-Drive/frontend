@@ -14,7 +14,6 @@ function UserManagement() {
       address: '123 Main St, Anytown',
       telephone_no: '0711234567',
       username: 'alice_s',
-      role: 'customer',
     },
   ]);
 
@@ -61,7 +60,7 @@ function UserManagement() {
         <div>
           <h1 className="text-2xl font-bold text-gray-800">User Management</h1>
           <p className="text-gray-600">
-            Track all customers, manage their details, and assign roles.
+            Track all customers and manage their details.
           </p>
         </div>
         <button
@@ -86,7 +85,6 @@ function UserManagement() {
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Address</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Telephone No.</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Username</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Role</th>
                 <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Actions</th>
               </tr>
             </thead>
@@ -107,16 +105,6 @@ function UserManagement() {
                   <td className="px-6 py-4 text-sm text-gray-500 truncate max-w-xs">{user.address}</td>
                   <td className="px-6 py-4 text-sm text-gray-500">{user.telephone_no}</td>
                   <td className="px-6 py-4 text-sm text-gray-500">{user.username}</td>
-                  <td className="px-6 py-4 text-sm">
-                    <span
-                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                        ${user.role === 'admin' ? 'bg-red-100 text-red-800' :
-                          user.role === 'employee' ? 'bg-blue-100 text-blue-800' :
-                            'bg-green-100 text-green-800'}`}
-                    >
-                      {user.role}
-                    </span>
-                  </td>
                   <td className="px-6 py-4 text-center text-sm font-medium">
                     <button
                       onClick={() => handleUpdateUser(user)}
