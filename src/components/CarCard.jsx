@@ -37,7 +37,7 @@ export default function CarCard({
         <div className="p-5 text-center">
           <h2 className="text-white text-xl font-bold mb-4">{make} <span className="text-sm text-gray-300">- {model}</span></h2>
 
-          <div className="flex justify-around items-center text-gray-300 mb-5 flex-wrap gap-2">
+          <div className="flex justify-around items-center text-gray-300 mb-2 flex-wrap">
             <div className="flex flex-col items-center text-sm p-2 rounded-lg shadow-sm">
               <FaUsers className="mb-1 text-orange-400 text-xl" />
               {seats} Seats

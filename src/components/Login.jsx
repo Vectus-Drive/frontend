@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
@@ -22,9 +22,6 @@ function Login() {
           <span className="text-white">DRIVE</span>
         </h1>
         <h2 className="text-3xl font-bold text-white mb-1">PremiumDrive</h2>
-        <p className="text-gray-400 text-sm mb-8">
-          LUXURY MOBILITY EXPERIENCE
-        </p>
 
         <form className="space-y-5">
           <div className="text-left">

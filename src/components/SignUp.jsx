@@ -16,7 +16,6 @@ function SignUp() {
     }
   };
 
-  // Helper function for the eye icon click handler
   const togglePasswordVisibility = (setter) => {
     setter((prev) => !prev);
   };
@@ -32,7 +31,6 @@ function SignUp() {
         </Link>
       </div>
 
-      {/* Increased overall container width slightly to prevent squishing */}
       <div className="bg-gray-800 bg-opacity-90 backdrop-blur-md p-6 md:p-8 rounded-2xl shadow-2xl w-[90%] md:w-[65%] lg:w-[50%] xl:w-[45%] text-center">
         <h1 className="text-2xl font-semibold tracking-wide mb-1">
           <span className="text-orange-500 font-bold">VECTUS</span>
@@ -42,12 +40,9 @@ function SignUp() {
         <p className="text-gray-400 text-sm mb-6">Join the PremiumDrive family</p>
 
         <form className="space-y-4 text-left">
-          {/* Main two-column layout */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             
-            {/* === Left Side: Image Upload and Basic Info === */}
             <div className="space-y-4">
-              {/* Image Upload is a consistent height */}
               <div className="flex justify-center mb-4">
                 <label className="relative cursor-pointer">
                   <div className="w-28 h-28 md:w-32 md:h-32 rounded-full bg-gray-700 flex items-center justify-center overflow-hidden border-4 border-gray-600 hover:border-orange-500 transition-all">
@@ -73,7 +68,6 @@ function SignUp() {
                 </label>
               </div>
 
-              {/* Full Name */}
               <div>
                 <label htmlFor="fullName" className="text-gray-300 text-sm">Full Name</label>
                 <input
@@ -84,7 +78,6 @@ function SignUp() {
                 />
               </div>
 
-              {/* NIC */}
               <div>
                 <label htmlFor="nic" className="text-gray-300 text-sm">NIC</label>
                 <input
@@ -95,7 +88,6 @@ function SignUp() {
                 />
               </div>
 
-              {/* Telephone No */}
               <div>
                 <label htmlFor="telNo" className="text-gray-300 text-sm">Telephone No</label>
                 <input
@@ -107,9 +99,7 @@ function SignUp() {
               </div>
             </div>
 
-            {/* === Right Side: Contact and Credentials === */}
             <div className="space-y-4">
-              {/* Email */}
               <div>
                 <label htmlFor="email" className="text-gray-300 text-sm">Email</label>
                 <input
@@ -120,18 +110,16 @@ function SignUp() {
                 />
               </div>
 
-              {/* Address - Changed to rows="2" for better alignment */}
               <div>
                 <label htmlFor="address" className="text-gray-300 text-sm">Address</label>
                 <textarea
                   id="address"
                   placeholder="Enter your address"
                   className="w-full p-2.5 md:p-3 bg-gray-700 text-white rounded-md outline-none focus:ring-2 focus:ring-orange-500 placeholder-gray-400 transition-all resize-none"
-                  rows="2" // Adjusted rows for better vertical balance
+                  rows="2" 
                 ></textarea>
               </div>
               
-              {/* Password */}
               <div className="relative">
                 <label htmlFor="password" className="text-gray-300 text-sm">Password</label>
                 <input
@@ -142,14 +130,12 @@ function SignUp() {
                 />
                 <span
                   onClick={() => togglePasswordVisibility(setShowPassword)}
-                  // Adjusted top position to be consistent with the field height
                   className="absolute right-3 top-[37px] md:top-[41px] text-gray-400 cursor-pointer"
                 >
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </span>
               </div>
 
-              {/* Confirm Password */}
               <div className="relative">
                 <label htmlFor="confirmPassword" className="text-gray-300 text-sm">Confirm Password</label>
                 <input
@@ -160,7 +146,6 @@ function SignUp() {
                 />
                 <span
                   onClick={() => togglePasswordVisibility(setShowConfirmPassword)}
-                  // Adjusted top position to be consistent with the field height
                   className="absolute right-3 top-[37px] md:top-[41px] text-gray-400 cursor-pointer"
                 >
                   {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
@@ -169,7 +154,6 @@ function SignUp() {
             </div>
             
           </div>
-          {/* End of two-column layout */}
 
           <button
             type="submit"

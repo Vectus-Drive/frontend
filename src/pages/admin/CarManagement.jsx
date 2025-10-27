@@ -1,33 +1,14 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { MdDeleteForever } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 
 import CarManageForm from "../../components/admin/CarManageForm";
 import CarDeleteModal from "../../components/admin/CarDeleteModal";
 
-import car1 from "../../assets/car_1.jpeg";
+import { CarContext } from "../../context/CarProvider";
 
 function CarManagement() {
-  const [cars, setCars] = useState([
-    {
-      car_id: 1,
-      license_no: "ADD3455",
-      name: "Toyota",
-      type: "Sedan",
-      image: car1,
-      seats: 4,
-      fuel: "Petrol",
-      transmission: "Automatic",
-      doors: 2,
-      description:
-        "A reliable and fuel-efficient sedan, perfect for city driving and long trips.",
-      features: "gd,gd",
-      price_per_day: 50,
-      availability_status: "Available",
-      condition: "Good",
-      services: "Last serviced on 2025-09-12",
-    },
-  ]);
+  const {cars} = useContext(CarContext);
 
   const [showCarForm, setShowCarForm] = useState(false);
   const [editCar, setEditCar] = useState(null);
@@ -111,18 +92,18 @@ function CarManagement() {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {cars.map((car) => (
-              <tr key={car.car_id} className="hover:bg-gray-50">
-                <td className="px-4 py-3">{car.car_id}</td>
-                <td className="px-4 py-3">{car.license_no}</td>
+              <tr key={car.id} className="hover:bg-gray-50">
+                <td className="px-4 py-3">{car.id}</td>
+                <td className="px-4 py-3">{car.no}</td>
                 <td className="px-4 py-3">
                   <img
-                    src={car.image}
+                    src={`../${car.image}`}
                     alt={car.name}
                     className="w-20 h-12 object-cover rounded"
                   />
                 </td>
-                <td className="px-4 py-3">{car.name}</td>
-                <td className="px-4 py-3">{car.type}</td>
+                <td className="px-4 py-3">{car.make}</td>
+                <td className="px-4 py-3">{car.model}</td>
                 <td className="px-4 py-3">{car.fuel}</td>
                 <td className="px-4 py-3 text-center">{car.seats}</td>
                 <td className="px-4 py-3">${car.price_per_day.toFixed(2)}</td>

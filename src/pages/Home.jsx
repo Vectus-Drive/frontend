@@ -4,6 +4,7 @@ import FeedbackList from "../components/hero/FeedbackList"
 import Hero from "../components/hero/Hero"
 import NewCar from "../components/hero/NewCar"
 import QualityShowcase from "../components/hero/QualityShowcase"
+import VehicleShowcaseSection from "../components/hero/VehicleShowcaseSection "
 
 function Home() {
   return (
@@ -11,12 +12,10 @@ function Home() {
       <Hero />
       <QualityShowcase />
       <NewCar />
-      
-      
       <Feature />
       <CarRentStatus />
+      <VehicleShowcaseSection />
       <FeedbackList />
-      
     </div>
   )
 }

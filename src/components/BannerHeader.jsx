@@ -1,9 +1,10 @@
+import carImg from '../assets/Image/car.jpg';
 function BannerHeader({ t1, t2, des, page }) {
   return (
     <div className="banner-container relative w-full overflow-hidden rounded-2xl min-h-[400px] md:min-h-[500px] flex items-center justify-center">
       <div
         className="banner-bg absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(./car.jpg)` }}
+        style={{ backgroundImage: `url(${carImg})` }}
       ></div>
 
       <div className="banner-overlay absolute inset-0"></div>

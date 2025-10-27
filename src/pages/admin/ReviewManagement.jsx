@@ -2,7 +2,6 @@ import React from "react";
 import { FaTrash } from "react-icons/fa";
 
 export default function ReviewManagement() {
-  // Sample review data
   const reviews = [
     {
       review_id: "R001",
