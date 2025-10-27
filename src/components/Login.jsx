@@ -1,10 +1,24 @@
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/AuthContext";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState({ username: "", password: "" });
+  const { login } = useAuth();
+    const navigate = useNavigate()
 
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await login(formData);
+      navigate("/admin")
+    } catch (err) {
+      alert("Invalid credentials");
+    }
+  };
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative">
       <div className="absolute top-6 left-6">
@@ -23,12 +37,14 @@ function Login() {
         </h1>
         <h2 className="text-3xl font-bold text-white mb-1">PremiumDrive</h2>
 
-        <form className="space-y-5">
+        <form className="space-y-5" onSubmit={handleSubmit}>
           <div className="text-left">
             <input
-              type="email"
+              type="text"
               placeholder="Enter your username"
               className="w-full p-3 bg-gray-700 text-white rounded-md outline-none focus:ring-2 focus:ring-orange-500 transition-all placeholder-gray-400"
+              value={formData.username}
+              onChange={(e) => setFormData({ ...formData, username: e.target.value })}
             />
           </div>
           <div className="text-left relative">
@@ -36,6 +52,8 @@ function Login() {
               type={showPassword ? "text" : "password"}
               placeholder="Enter your password"
               className="w-full p-3 bg-gray-700 text-white rounded-md outline-none focus:ring-2 focus:ring-orange-500 transition-all placeholder-gray-400"
+              value={formData.password}
+              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
             />
             <span
               onClick={() => setShowPassword(!showPassword)}

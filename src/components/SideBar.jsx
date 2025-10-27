@@ -7,10 +7,10 @@ import {
 } from "react-icons/fa";
 import { MdOutlineReviews } from "react-icons/md";
 import { GrTransaction } from "react-icons/gr";
-
 import {
   MdBookOnline,
 } from "react-icons/md";
+import { useAuth } from "../hooks/AuthContext";
 
 export default function Sidebar() {
   const menuItems = [
@@ -22,6 +22,8 @@ export default function Sidebar() {
     { label: "Transaction", icon: <GrTransaction />, path: "admin/transaction" },
     { label: "Review Management", icon: <MdOutlineReviews />, path: "admin/review" }
   ];
+
+  const { logout } = useAuth();
 
   return (
     <div className="w-20 sm:w-64 h-screen flex flex-col bg-[#0f172a] shadow-md">
@@ -39,7 +41,7 @@ export default function Sidebar() {
       </div>
 
       <div className="px-2 sm:px-8 mb-6">
-        <button className="flex items-center justify-center sm:justify-start space-x-0 sm:space-x-3 w-full text-red-400 hover:text-white hover:bg-red-600 px-4 py-2 rounded transition-colors">
+        <button className="flex items-center justify-center sm:justify-start space-x-0 sm:space-x-3 w-full text-red-400 hover:text-white hover:bg-red-600 px-4 py-2 rounded transition-colors" onClick={logout}>
           <FaSignOutAlt className="text-lg" />
           <span className="hidden sm:inline">Logout</span>
         </button>
