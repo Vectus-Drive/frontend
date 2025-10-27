@@ -35,7 +35,6 @@ function BookingManagement() {
 
   return (
     <div className="p-6">
-      {/* Header */}
       <div className="flex border-b pb-4 border-gray-200 mb-10 justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold text-gray-800">Booking Management</h1>
@@ -50,7 +49,6 @@ function BookingManagement() {
         </button>
       </div>
 
-      {/* Booking Table */}
       <div className="overflow-x-auto">
         <table className="min-w-full border border-gray-200 rounded-lg overflow-hidden shadow-sm">
           <thead className="bg-gray-100">
@@ -79,7 +77,6 @@ function BookingManagement() {
                 <td className="px-4 py-3 text-gray-700">{booking.fine}</td>
                 <td className="px-4 py-3 font-medium">{booking.total}</td>
 
-                {/* Status Column */}
                 <td className="px-4 py-3">
                   <select
                     value={booking.status}

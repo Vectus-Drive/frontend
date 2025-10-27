@@ -40,7 +40,6 @@ function UserProfile() {
   const bookedCars = booking.map((b) =>
     cars.find((car) => car.no === b.car_id)
   );
-  console.log(bookedCars);
 
   return (
     <div className="min-h-screen bg-[#0e1a2b] text-white p-6">

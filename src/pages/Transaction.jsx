@@ -39,11 +39,7 @@ function Transaction() {
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
             <div
-              className="backdrop-blur-lg rounded-2xl p-8 border"
-              style={{
-                backgroundColor: "rgba(22, 32, 51, 0.6)",
-                borderColor: "rgba(71, 85, 105, 0.4)",
-              }}
+              className="backdrop-blur-lg rounded-2xl p-8 border bg-slate-900/50 border-slate-700"
             >
               <CardTypeSelector cardType={cardType} setCardType={setCardType} />
               <PaymentForm formData={formData} setFormData={setFormData} />

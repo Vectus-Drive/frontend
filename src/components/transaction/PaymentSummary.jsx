@@ -1,11 +1,7 @@
 function PaymentSummary() {
   return (
     <div
-      className="backdrop-blur-lg rounded-2xl p-6 border sticky top-6"
-      style={{
-        backgroundColor: "rgba(22, 32, 51, 0.6)",
-        borderColor: "rgba(71, 85, 105, 0.4)",
-      }}
+      className="backdrop-blur-lg rounded-2xl p-6 border sticky top-6 bg-slate-900/50 border-slate-700"
     >
       <h3 className="text-xl font-bold text-white mb-6">Payment Summary</h3>
       <div className="space-y-4 mb-6">

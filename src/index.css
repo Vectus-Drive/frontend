@@ -4,6 +4,11 @@
   font-family: 'Poppins', sans-serif;
 }
 
+.trans{
+  background-color: "rgba(22, 32, 51, 0.6)";
+  border-color: "rgba(71, 85, 105, 0.4)";
+}
+
 .section-animation{
     animation: appear linear;
     animation-timeline: view();

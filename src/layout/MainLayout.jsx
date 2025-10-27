@@ -8,7 +8,7 @@ function MainLayout() {
   const location = useLocation();
   
   const isAdminRoute = location.pathname.startsWith('/admin');
-  const noHeaderFooterRoutes = ['/login', '/register', '/user', '/transaction','/NotFoundPage ', '/employee-profile'];
+  const noHeaderFooterRoutes = ['/login', '/register', '/user', '/transaction','/NotFoundPage', '/employee-profile'];
   const showHeaderFooter = !noHeaderFooterRoutes.includes(location.pathname) && !isAdminRoute;
 
   return (

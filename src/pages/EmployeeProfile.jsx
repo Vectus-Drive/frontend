@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   FaArrowLeft,
   FaLock,
@@ -6,8 +6,6 @@ import {
   FaSave,
   FaKey,
   FaCalendarAlt,
-  FaEye,
-  FaUserEdit,
 } from "react-icons/fa";
 import { MdOutlineLogout } from "react-icons/md";
 import { Link } from "react-router-dom";
@@ -24,6 +22,13 @@ const EmployeeProfile = () => {
     telephone: "0771234567",
     status: "Active",
   });
+
+  const arr = [
+                ["Full Name", "name", "text"],
+                ["NIC Number", "nic", "text"],
+                ["Email Address", "email", "email"],
+                ["Phone Number", "telephone", "tel"],
+              ];
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -133,12 +138,7 @@ const EmployeeProfile = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {[
-                  ["Full Name", "name", "text"],
-                  ["NIC Number", "nic", "text"],
-                  ["Email Address", "email", "email"],
-                  ["Phone Number", "telephone", "tel"],
-                ].map(([label, field, type]) => (
+                {arr.map(([label, field, type]) => (
                   <div key={field}>
                     <label className="block text-slate-400 text-sm mb-2 font-medium">
                       {label}

@@ -60,7 +60,7 @@ export default function CarProvider({ children }) {
     no: "BGA9983",
     make: "Suzuki",
     model: "Swift",
-    image: "car4.jpg",
+    image: "Suzuki.png",
     seats: 4,
     fuel: "Petrol",
     transmission: "Automatic",
