@@ -17,13 +17,14 @@ export default function Footer() {
     { name: "Contact Us", path: "/contact-us" },
   ];
 
-  const community = [
-    { name: "Newsletter", path: "/newsletter" },
-    { name: "Reviews", path: "/reviews" },
-    { name: "Testimonials", path: "/testimonials" },
-    { name: "Social Group", path: "/social-group" },
-    { name: "Helpdesk", path: "/helpdesk" },
-  ];
+const services = [
+  { name: "Car Rentals", path: "/services/car-rentals" },
+  { name: "Luxury Cars", path: "/services/luxury" },
+  { name: "Corporate Plans", path: "/services/corporate" },
+  { name: "Airport Transfers", path: "/services/airport" },
+  { name: "Event Rentals", path: "/services/event" },
+];
+
 
   return (
     <footer className="relative bg-gradient-to-b from-slate-900 via-[#0f1729] to-slate-950 text-gray-300 overflow-hidden">
@@ -32,8 +33,8 @@ export default function Footer() {
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"></div>
       </div>
 
-      <div className="relative z-10 py-12 md:py-16  lg:px-20">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 xl:gap-16 border-b border-slate-700/50 pb-12  mx-auto">
+      <div className="relative z-10 py-12 md:py-16 px-6 md:px-12 lg:px-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 xl:gap-16 border-b border-slate-700/50 pb-12 max-w-7xl mx-auto">
           
           <div className="space-y-5 lg:pr-4">
             <Link to="/" className="inline-block group">
@@ -90,11 +91,11 @@ export default function Footer() {
 
           <div>
             <h3 className="text-white font-bold text-lg mb-5 relative inline-block">
-              Community
+              services
               <div className="absolute -bottom-2 left-0 w-12 h-1 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full"></div>
             </h3>
             <ul className="space-y-3 mt-6">
-              {community.map((item) => (
+              {services.map((item) => (
                 <li key={item.name}>
                   <Link
                     to={item.path}

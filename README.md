@@ -43,6 +43,7 @@ npm install
 npm install tailwindcss @tailwindcss/vite
 npm install react-icons
 npm install react-router-dom
+npm install --save react-toastify
 
 # 5. Start the development server
 npm run dev

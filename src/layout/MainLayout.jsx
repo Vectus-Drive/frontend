@@ -30,7 +30,7 @@ function MainLayout() {
       ) : (
         <div className="text-white min-h-screen flex flex-col">
           <Header />
-          <main className="flex-grow bg-[#0f172a]">
+          <main className="flex-grow min-h-screen bg-gradient-to-b from-[#0f172a] via-[#141c2e] to-[#121c32]">
             <Outlet />
           </main>
           <Footer />
