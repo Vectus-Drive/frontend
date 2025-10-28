@@ -1,7 +1,7 @@
 function CarDeleteModal({ car, onCancel, onConfirm }) {
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-black/40 z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-96 text-center">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-96 text-center text-black">
         <h2 className="text-xl font-bold mb-4">Confirm Delete</h2>
         <p>
           Are you sure you want to delete{" "}

@@ -6,7 +6,7 @@ import BannerHeader from "../components/BannerHeader";
 
 function CarList() {
   const { cars } = useContext(CarContext);
-
+  
   const [searchText, setSearchText] = useState("");
   const [selectedType, setSelectedType] = useState("all");
 
@@ -84,7 +84,7 @@ const filteredCars = cars.filter((car) => {
 
       <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
         {filteredCars.map((car) => (
-          <CarCard key={car.id} {...car} />
+          <CarCard key={car.car_id} {...car} />
         ))}
       </div>
     </div>

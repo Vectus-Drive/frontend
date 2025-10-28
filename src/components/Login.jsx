@@ -13,7 +13,7 @@ function Login() {
     e.preventDefault();
     try {
       await login(formData);
-      navigate("/admin")
+      navigate("/dashboard");
     } catch (err) {
       alert("Invalid credentials");
     }

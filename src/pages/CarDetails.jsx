@@ -12,7 +12,7 @@ function CarDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const car = cars.find((cars) => cars.id === Number(id));
+  const car = cars.find((cars) => cars.car_id === id);
 
   const [showPaymentModal, setShowPaymentModal] = useState(false);
 

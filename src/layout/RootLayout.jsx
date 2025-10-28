@@ -15,6 +15,7 @@ function RootLayout() {
     "/notfoundpage",
     "/employee-profile",
     "/dashboard",
+    "/*"
   ];
 
   const shouldHide = hideHeaderFooterPaths.some((path) =>
