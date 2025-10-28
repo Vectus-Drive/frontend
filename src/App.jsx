@@ -62,14 +62,8 @@ function App() {
             <Route path="transaction" element={<Transaction />} />
             <Route path="user" element={<UserProfile />} />
             <Route path="employee-profile" element={<EmployeeProfile />} />
-          </Route>
 
-          <Route path="NotFoundPage" element={<NotFoundPage />} />
-          
-        </Route>
-        
-        <Route element={<ProtectedRoute />}>
-          <Route path="/dashboard" element={<AdminLayout />}>
+            <Route path="/dashboard" element={<AdminLayout />}>
             <Route index element={<AdminDashboard />} />
             <Route path="cars" element={<CarManagement />} />
             <Route path="users" element={<UserManagement />} />
@@ -78,7 +72,11 @@ function App() {
             <Route path="transaction" element={<TransactionManagement />} />
             <Route path="review" element={<ReviewManagement />} />
           </Route>
+          </Route>
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
+      
+          
       </>
     )
   );
