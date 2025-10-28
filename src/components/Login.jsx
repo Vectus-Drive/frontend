@@ -7,8 +7,7 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({ username: "", password: "" });
   const { login } = useAuth();
-    const navigate = useNavigate()
-
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
