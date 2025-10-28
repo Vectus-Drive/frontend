@@ -8,7 +8,7 @@ export default function AdminLayout() {
         <SideBar />
       </div>
 
-      <main className="flex-1 p-6 bg-gray-50 overflow-y-auto hide-scrollbar">
+      <main className="flex-1 p-6 bg-gray-50 text-black overflow-y-auto hide-scrollbar">
         <Outlet />
       </main>
     </div>

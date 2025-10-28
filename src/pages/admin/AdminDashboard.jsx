@@ -1,125 +1,180 @@
-import { FaCar, FaClipboardList, FaClock, FaCheckCircle } from "react-icons/fa";
-import CarStatsCard from "../../components/admin/CarStatsCard";
-import StatOverviewCard from "../../components/admin/StatOverviewCard";
-import HireVsCancel from "../../components/admin/HireVsCancel";
-import LiveCarStatus from "../../components/admin/LiveCarStatus";
-
-const liveTrips = [
-  {
-    no: "01",
-    carNo: "CAR-1024",
-    driver: "Alex Norman",
-    status: "Completed",
-    earning: "$45.80",
-    statusColor: "text-green-500",
-    image: "https://randomuser.me/api/portraits/men/32.jpg",
-  },
-  {
-    no: "02",
-    carNo: "CAR-2365",
-    driver: "Sofia Rahman",
-    status: "Pending",
-    earning: "$0.00",
-    statusColor: "text-yellow-500",
-    image: "https://randomuser.me/api/portraits/women/44.jpg",
-  },
-  {
-    no: "03",
-    carNo: "CAR-4589",
-    driver: "Luke Norton",
-    status: "In Route",
-    earning: "$32.60",
-    statusColor: "text-blue-500",
-    image: "https://randomuser.me/api/portraits/men/18.jpg",
-  },
-];
+import { useState } from 'react';
+import {
+  FaCar,
+  FaClipboardList,
+  FaClock,
+  FaCheckCircle,
+  FaCalendarAlt
+} from "react-icons/fa";
+import StatOverviewCard from '../../components/admin/StatOverviewCard';
+import CarStatsCard from '../../components/admin/CarStatsCard';
 
 function AdminDashboard() {
+  const [selectedPeriod, setSelectedPeriod] = useState('today');
+
+  const recentBookings = [
+    { id: 'BK-1024', customer: 'John Doe', car: 'Toyota Camry', status: 'confirmed', amount: 450 },
+    { id: 'BK-1025', customer: 'Sarah Smith', car: 'Honda Accord', status: 'pending', amount: 380 },
+    { id: 'BK-1026', customer: 'Mike Johnson', car: 'BMW X5', status: 'completed', amount: 890 },
+    { id: 'BK-1027', customer: 'Emily Davis', car: 'Tesla Model 3', status: 'confirmed', amount: 650 },
+  ];
+
+  const bookingStatusData = [
+    { name: 'Confirmed', value: 198, color: 'bg-green-500', percent: 77 },
+    { name: 'Pending', value: 18, color: 'bg-yellow-500', percent: 7 },
+    { name: 'Completed', value: 29, color: 'bg-blue-500', percent: 11 },
+    { name: 'Cancelled', value: 12, color: 'bg-red-500', percent: 5 },
+  ];
+
+  const getStatusColor = (status) => {
+    const colors = {
+      confirmed: 'bg-green-100 text-green-700',
+      pending: 'bg-yellow-100 text-yellow-700',
+      completed: 'bg-blue-100 text-blue-700',
+      cancelled: 'bg-red-100 text-red-700',
+    };
+    return colors[status] || 'bg-gray-100 text-gray-700';
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Today’s Overview</h1>
-        <p className="text-sm text-gray-600">Saturday, 11 Oct, 11:30 AM</p>
-      </div>
-
-      <div className="flex space-x-6 overflow-y-auto hide-scrollbar">
-        <div className="w-72 space-y-6">
-          <CarStatsCard title="Total Revenue" value={9450} change="+3.8%" comparedValue={8920} />
-          <CarStatsCard title="Total Expenses" value={5620} change="-1.2%" comparedValue={5690} />
-          <HireVsCancel />
-        </div>
-
-        <div className="flex-1 space-y-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <StatOverviewCard
-              title="Total Cars"
-              count={42}
-              icon={<FaCar className="text-white text-2xl" />}
-              color="bg-blue-500"
-            />
-            <StatOverviewCard
-              title="Total Bookings"
-              count={118}
-              icon={<FaClipboardList className="text-white text-2xl" />}
-              color="bg-orange-500"
-            />
-            <StatOverviewCard
-              title="Pending Bookings"
-              count={16}
-              icon={<FaClock className="text-white text-2xl" />}
-              color="bg-yellow-500"
-            />
-            <StatOverviewCard
-              title="Completed Trips"
-              count={94}
-              icon={<FaCheckCircle className="text-white text-2xl" />}
-              color="bg-green-500"
-            />
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-6">
+      
+      <div className="mb-8">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-800">Dashboard Overview</h1>
+            <p className="text-sm text-gray-600 mt-1">
+              Welcome back! Here's what's happening today.
+            </p>
           </div>
-
-          <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 flex items-center justify-between">
-            <h2 className="text-md font-semibold text-gray-700">Car Availability</h2>
-            <select className="border p-2 rounded-lg text-sm text-gray-600">
-              <option>Select Car No</option>
-              <option>CAR-1024</option>
-              <option>CAR-2365</option>
-              <option>CAR-4589</option>
+          <div className="flex items-center gap-3">
+            <select
+              value={selectedPeriod}
+              onChange={(e) => setSelectedPeriod(e.target.value)}
+              className="border border-gray-300 rounded-lg px-4 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="today">Today</option>
+              <option value="week">This Week</option>
+              <option value="month">This Month</option>
+              <option value="year">This Year</option>
             </select>
-            <input type="date" className="border p-2 rounded-lg text-sm text-gray-600" />
-            <input type="time" className="border p-2 rounded-lg text-sm text-gray-600" />
-            <button className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors">
-              Check
+            <button className="bg-blue-600 text-white px-5 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center gap-2">
+              <FaCalendarAlt className="text-sm" />
+              Generate Report
             </button>
           </div>
+        </div>
+      </div>
 
-          <LiveCarStatus trips={liveTrips} />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+        <StatOverviewCard
+          title="Total Cars"
+          count={42}
+          icon={<FaCar className="text-white text-2xl" />}
+          color="bg-blue-500"
+        />
+        <StatOverviewCard
+          title="Total Bookings"
+          count={118}
+          icon={<FaClipboardList className="text-white text-2xl" />}
+          color="bg-orange-500"
+        />
+        <StatOverviewCard
+          title="Pending Bookings"
+          count={16}
+          icon={<FaClock className="text-white text-2xl" />}
+          color="bg-yellow-500"
+        />
+        <StatOverviewCard
+          title="Completed Trips"
+          count={94}
+          icon={<FaCheckCircle className="text-white text-2xl" />}
+          color="bg-green-500"
+        />
+      </div>
 
-          <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold text-gray-800">Earnings Summary</h2>
-              <div className="flex items-center space-x-4 text-sm text-gray-600">
-                <div className="flex items-center">
-                  <span className="w-2 h-2 rounded-full bg-blue-500 mr-2"></span>
-                  <span>Last 6 months</span>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <CarStatsCard
+          title="Total Revenue"
+          value={9450}
+          change="+3.8%"
+          comparedValue={8920}
+        />
+        <CarStatsCard
+          title="Total Expenses"
+          value={5620}
+          change="-1.2%"
+          comparedValue={5690}
+        />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+          <h2 className="text-lg font-bold text-gray-800 mb-6">Booking Status Distribution</h2>
+          <div className="space-y-4">
+            {bookingStatusData.map((status, idx) => (
+              <div key={idx} className="space-y-2">
+                <div className="flex items-center justify-between text-sm">
+                  <div className="flex items-center gap-2">
+                    <span className={`w-3 h-3 rounded-full ${status.color}`}></span>
+                    <span className="font-medium text-gray-700">{status.name}</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="text-gray-600">{status.value} bookings</span>
+                    <span className="font-semibold text-gray-800">{status.percent}%</span>
+                  </div>
                 </div>
-                <div className="flex items-center">
-                  <span className="w-2 h-2 rounded-full bg-gray-300 mr-2"></span>
-                  <span>Same period last year</span>
+                <div className="w-full bg-gray-200 rounded-full h-3">
+                  <div
+                    className={`${status.color} h-3 rounded-full transition-all`}
+                    style={{ width: `${status.percent}%` }}
+                  ></div>
                 </div>
               </div>
-            </div>
+            ))}
+          </div>
+        </div>
 
-            <div className="h-64 flex items-end justify-center border-t border-l pt-2 px-2 text-gray-400">
-              <p>Chart component placeholder (use Recharts or Chart.js)</p>
-            </div>
-
-            <div className="flex justify-between text-xs text-gray-500 mt-2">
-              <span>May</span><span>Jun</span><span>Jul</span>
-              <span>Aug</span><span>Sep</span><span>Oct</span>
-            </div>
+        <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-bold text-gray-800">Recent Bookings</h2>
+            <button className="text-sm text-blue-600 hover:text-blue-700 font-medium">
+              View All
+            </button>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-gray-200">
+                  <th className="text-left text-xs font-semibold text-gray-600 pb-3">Booking ID</th>
+                  <th className="text-left text-xs font-semibold text-gray-600 pb-3">Customer</th>
+                  <th className="text-left text-xs font-semibold text-gray-600 pb-3">Car</th>
+                  <th className="text-left text-xs font-semibold text-gray-600 pb-3">Status</th>
+                  <th className="text-right text-xs font-semibold text-gray-600 pb-3">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                {recentBookings.map((booking) => (
+                  <tr key={booking.id} className="border-b border-gray-100 hover:bg-gray-50">
+                    <td className="py-3 text-sm font-medium text-gray-800">{booking.id}</td>
+                    <td className="py-3 text-sm text-gray-700">{booking.customer}</td>
+                    <td className="py-3 text-sm text-gray-700">{booking.car}</td>
+                    <td className="py-3">
+                      <span className={`text-xs font-semibold px-2 py-1 rounded ${getStatusColor(booking.status)}`}>
+                        {booking.status}
+                      </span>
+                    </td>
+                    <td className="py-3 text-sm font-semibold text-gray-800 text-right">
+                      ${booking.amount}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
+
     </div>
   );
 }

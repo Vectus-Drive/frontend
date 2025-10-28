@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import { FaGasPump, FaCogs, FaDoorOpen, FaUsers } from "react-icons/fa";
 
 export default function CarCard({
-  id,
+  car_id,
+  license_no,
   make,
   model,
   image,
@@ -13,7 +14,7 @@ export default function CarCard({
   doors,
   transmission,
 }) {
-  const isAvailable = availability_status.toLowerCase() === "available";
+  const isAvailable = availability_status;
 
   return (
     <div className="flex justify-center items-center p-4">
@@ -30,7 +31,7 @@ export default function CarCard({
               isAvailable ? "bg-green-500 text-white" : "bg-red-500 text-white"
             }`}
           >
-            {availability_status}
+            {isAvailable == true ? "Available" : "Unavailable"}
           </span>
         </div>
 
@@ -64,7 +65,7 @@ export default function CarCard({
               <p className="text-lg font-bold">${price_per_day}</p>
             </div>
 
-            <Link to={`/car-details/${id}`}>
+            <Link to={`/car-details/${car_id}`}>
               <button
                 className={`font-semibold px-6 py-2 rounded-lg transition-colors ${
                   isAvailable

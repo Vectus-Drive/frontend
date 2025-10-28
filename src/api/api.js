@@ -5,4 +5,9 @@ const api = axios.create({
   withCredentials: true
 });
 
+export const getCars = async () => {
+  const response = await api.get("/cars");
+  return response.data;
+}
+
 export default api;
