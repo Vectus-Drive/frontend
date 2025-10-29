@@ -63,35 +63,6 @@ function RentForm({ car, onOpenPayment }) {
         <p>{totalDays > 0 ? `${totalDays} day(s)` : "-"}</p>
       </div>
 
-      <label className="text-gray-300 text-sm font-semibold mt-2">
-        Full Name
-      </label>
-      <input
-        type="text"
-        placeholder="Your Name"
-        value={fullName}
-        onChange={(e) => setFullName(e.target.value)}
-        className="w-full bg-gray-700 text-white p-2 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none"
-      />
-
-      <label className="text-gray-300 text-sm font-semibold mt-2">Email</label>
-      <input
-        type="email"
-        placeholder="Your Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        className="w-full bg-gray-700 text-white p-2 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none"
-      />
-
-      <label className="text-gray-300 text-sm font-semibold mt-2">Phone</label>
-      <input
-        type="text"
-        placeholder="Your Phone"
-        value={phone}
-        onChange={(e) => setPhone(e.target.value)}
-        className="w-full bg-gray-700 text-white p-2 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none"
-      />
-
       <div className="flex justify-between mt-3 text-gray-300 font-semibold">
         <p>Rate/day:</p>
         <p>${car.price_per_day}</p>

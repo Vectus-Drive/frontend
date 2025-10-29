@@ -11,26 +11,10 @@ import {
 
 export default function ProfileSidebar({
   userData,
-  setUserData,
   setShowEditProfileModal,
   setShowImageModal,
 }) {
-  const fileInputRef = useRef(null);
 
-  const handleImageClick = () => {
-    fileInputRef.current.click();
-  };
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setUserData((prev) => ({ ...prev, image: reader.result }));
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
   return (
     <div className="space-y-6 w-150">
@@ -45,20 +29,6 @@ export default function ProfileSidebar({
               onClick={() => setShowImageModal(true)}
             />
 
-            <button
-              onClick={handleImageClick}
-              className="absolute bottom-0 right-0 bg-orange-500 hover:bg-orange-600 text-white p-1.5 rounded-full border-2 border-slate-800 transition-colors"
-              title="Change Profile Image"
-            >
-              <FaCamera size={14} />
-            </button>
-            <input
-              type="file"
-              accept="image/*"
-              ref={fileInputRef}
-              onChange={handleImageChange}
-              className="hidden"
-            />
           </div>
 
           <h2 className="text-2xl font-bold text-white mb-1">
