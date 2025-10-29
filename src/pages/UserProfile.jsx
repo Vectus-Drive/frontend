@@ -4,14 +4,15 @@ import ProfileSidebar from "../components/user/ProfileSidebar";
 import BookingTabs from "../components/user/BookingTabs";
 import EditProfileModal from "../components/user/EditProfileModal";
 import ChangePassword from "../components/user/ChangePassword";
-import BookingDetails from "../components/user/BookingDetails"
+import BookingDetails from "../components/user/BookingDetails";
+import EditProfileImageModal from "../components/user/EditProfileImageModal";
 
 function UserProfile() {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [showNotifDropdown, setShowNotifDropdown] = useState(false);
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
-
+  const [showImageModal, setShowImageModal] = useState(false);
   const [notifications, setNotifications] = useState([
     {
       id: 1,
@@ -101,7 +102,9 @@ function UserProfile() {
       <div className="max-w-7xl mx-auto px-6 py-8 flex gap-8">
         <ProfileSidebar
           userData={userData}
+          setUserData={setUserData}
           setShowEditProfileModal={setShowEditProfileModal}
+          setShowImageModal={setShowImageModal}
         />
         <div className="w-full h-[80vh]">
           <BookingTabs
@@ -126,10 +129,18 @@ function UserProfile() {
       )}
 
       {selectedBooking && (
-
         <BookingDetails
           selectedBooking={selectedBooking}
           setSelectedBooking={setSelectedBooking}
+        />
+      )}
+
+      {showImageModal && (
+        <EditProfileImageModal
+          show={showImageModal}
+          setShow={setShowImageModal}
+          userData={userData}
+          setUserData={setUserData}
         />
       )}
     </div>

@@ -1,26 +1,77 @@
-import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaIdCard, FaUser, FaEdit } from "react-icons/fa";
+import { useRef } from "react";
+import {
+  FaEnvelope,
+  FaPhone,
+  FaMapMarkerAlt,
+  FaIdCard,
+  FaUser,
+  FaEdit,
+  FaCamera,
+} from "react-icons/fa";
 
-export default function ProfileSidebar({ userData, setShowEditProfileModal }) {
+export default function ProfileSidebar({
+  userData,
+  setUserData,
+  setShowEditProfileModal,
+  setShowImageModal,
+}) {
+  const fileInputRef = useRef(null);
+
+  const handleImageClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setUserData((prev) => ({ ...prev, image: reader.result }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <div className="space-y-6 w-150">
       <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 overflow-hidden relative">
         <div className="h-24 bg-gradient-to-r from-orange-500 to-orange-600"></div>
         <div className="px-6 pb-6">
-          <div className="-mt-12 mb-4">
+          <div className="-mt-12 mb-4 relative w-24 h-24 mx-auto">
             <img
               src={userData.image}
               alt={userData.name}
-              className="w-24 h-24 rounded-full border-4 border-slate-800"
+              className="w-24 h-24 rounded-full border-4 border-slate-800 object-cover cursor-pointer"
+              onClick={() => setShowImageModal(true)}
+            />
+
+            <button
+              onClick={handleImageClick}
+              className="absolute bottom-0 right-0 bg-orange-500 hover:bg-orange-600 text-white p-1.5 rounded-full border-2 border-slate-800 transition-colors"
+              title="Change Profile Image"
+            >
+              <FaCamera size={14} />
+            </button>
+            <input
+              type="file"
+              accept="image/*"
+              ref={fileInputRef}
+              onChange={handleImageChange}
+              className="hidden"
             />
           </div>
 
-          <h2 className="text-2xl font-bold text-white mb-1">{userData.name}</h2>
+          <h2 className="text-2xl font-bold text-white mb-1">
+            {userData.name}
+          </h2>
           <p className="text-slate-400 text-sm mb-4">@{userData.username}</p>
 
           <div className="space-y-3">
             <div className="flex items-center gap-3 text-slate-300">
               <FaIdCard className="text-orange-400" size={16} />
-              <span className="text-sm">Customer ID: {userData.customer_id}</span>
+              <span className="text-sm">
+                Customer ID: {userData.customer_id}
+              </span>
             </div>
             <div className="flex items-center gap-3 text-slate-300">
               <FaUser className="text-orange-400" size={16} />
@@ -42,7 +93,7 @@ export default function ProfileSidebar({ userData, setShowEditProfileModal }) {
 
           <button
             onClick={() => setShowEditProfileModal(true)}
-            className="mt-6 flex items-center gap-2 text-sm bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg transition-colors"
+            className="mt-6 flex items-center gap-2 text-sm bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg transition-colors w-full justify-center"
           >
             <FaEdit size={14} />
             <span>Edit Profile</span>
