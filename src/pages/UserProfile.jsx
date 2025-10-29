@@ -1,89 +1,146 @@
-import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
-import { FaSignOutAlt, FaLock, FaArrowLeft } from "react-icons/fa";
-import ProfileCard from "../components/user/ProfileCard";
-import BookingList from "../components/user/BookingList";
-import ChangePasswordModal from "../components/user/ChangePasswordModal";
-import BookingDetailsModal from "../components/user/BookingDetailsModal";
-import { CarContext } from "../context/CarProvider";
+import { useState } from "react";
+import HeaderBar from "../components/user/HeaderBar";
+import ProfileSidebar from "../components/user/ProfileSidebar";
+import BookingTabs from "../components/user/BookingTabs";
+import EditProfileModal from "../components/user/EditProfileModal";
+import ChangePassword from "../components/user/ChangePassword";
+import BookingDetails from "../components/user/BookingDetails";
+import EditProfileImageModal from "../components/user/EditProfileImageModal";
 
 function UserProfile() {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
-  const [selectedCar, setSelectedCar] = useState(null);
-  const { cars } = useContext(CarContext);
-
-  const booking = [
+  const [selectedBooking, setSelectedBooking] = useState(null);
+  const [showNotifDropdown, setShowNotifDropdown] = useState(false);
+  const [showEditProfileModal, setShowEditProfileModal] = useState(false);
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [notifications, setNotifications] = useState([
     {
-      booking_id: "B001",
-      customer_id: "C001",
-      car_id: "ADD3455",
-      booked_at: "2025-09-11",
-      time_period: "12 days",
-      returned_at: "2025-09-23",
-      fine: "LKR 0.00",
-      payment_method: "Credit Card",
-      transaction_id: "pi_355vovRVkJoUVWZMojvGrce",
+      id: 1,
+      message: "Your booking for CAR_THLCY5Y1M1XRRMXQTFDD was canceled",
+      status: "canceled",
+      read: false,
+      time: "2 hours ago",
     },
     {
-      booking_id: "B001",
-      customer_id: "C001",
-      car_id: "CAD2189",
-      booked_at: "2025-09-11",
-      time_period: "12 days",
-      returned_at: "2025-09-23",
-      fine: "LKR 0.00",
-      payment_method: "Credit Card",
-      transaction_id: "pi_355vovRVkJoUVWZMojvGrce",
+      id: 2,
+      message: "Your new booking is confirmed",
+      status: "booked",
+      read: false,
+      time: "5 hours ago",
+    },
+  ]);
+
+  const [userData, setUserData] = useState({
+    customer_id: "C001",
+    name: "John Anderson",
+    nic: "982345678V",
+    username: "john_anderson",
+    email: "john.anderson@email.com",
+    telephone_no: "+94 77 123 4567",
+    address: "123 Palm Grove, Colombo, Sri Lanka",
+    image:
+      "https://ui-avatars.com/api/?name=John+Anderson&background=f97316&color=fff&size=200",
+  });
+
+  const [editForm, setEditForm] = useState(userData);
+
+  const cars = [
+    {
+      availability_status: true,
+      car_id: "CAR_Q0Q5TKC9M1ZOE1Q2BXNK",
+      condition: "Excellent",
+      description:
+        "A reliable and fuel-efficient sedan, perfect for city driving and long trips.",
+      doors: 4,
+      features: ["Air Conditioning", "Bluetooth", "Backup Camera"],
+      fuel: "petrol",
+      image: "Toyota - Corolla.jpg",
+      license_no: "ADD3458",
+      make: "Toyota",
+      model: "Corolla",
+      price_per_day: 50.0,
+      seats: 4,
+      services: [],
+      transmission: "automatic",
     },
   ];
 
-  const bookedCars = booking.map((b) =>
-    cars.find((car) => car.no === b.car_id)
-  );
+  const bookings = [
+    {
+      booking_id: "B001",
+      customer_id: "C001",
+      car_id: "CAR_Q0Q5TKC9M1ZOE1Q2BXNK",
+      booked_at: "2025-09-11",
+      time_period: "12 days",
+      returned_at: "2025-09-23",
+      fine: "LKR 0.00",
+      payment_method: "Credit Card",
+      transaction_id: "pi_355vovRVkJoUVWZMojvGrce",
+      status: "pending",
+      total: "LKR 102,000",
+    },
+  ];
+
+  const unreadCount = notifications.filter((n) => !n.read).length;
+
+  const handleNotifClick = () => {
+    setShowNotifDropdown(!showNotifDropdown);
+    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+  };
 
   return (
-    <div className="min-h-screen bg-[#0e1a2b] text-white p-6">
-      <div className="flex justify-between items-center mb-6">
-        <Link
-          to="/"
-          className="flex items-center gap-2 text-orange-400 hover:text-orange-500"
-        >
-          <FaArrowLeft /> Back to Home
-        </Link>
+    <div>
+      <HeaderBar
+        unreadCount={unreadCount}
+        showNotifDropdown={showNotifDropdown}
+        notifications={notifications}
+        setShowNotifDropdown={setShowNotifDropdown}
+        handleNotifClick={handleNotifClick}
+        setShowPasswordModal={setShowPasswordModal}
+      />
 
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => setShowPasswordModal(true)}
-            className="flex items-center gap-2 bg-orange-600 hover:bg-orange-700 px-4 py-2 rounded-lg"
-          >
-            <FaLock /> Change Password
-          </button>
-
-          <button className="flex items-center gap-2 bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-white">
-            <FaSignOutAlt /> Log Out
-          </button>
+      <div className="max-w-7xl mx-auto px-6 py-8 flex gap-8">
+        <ProfileSidebar
+          userData={userData}
+          setUserData={setUserData}
+          setShowEditProfileModal={setShowEditProfileModal}
+          setShowImageModal={setShowImageModal}
+        />
+        <div className="w-full h-[80vh]">
+          <BookingTabs
+            bookings={bookings}
+            cars={cars}
+            setSelectedBooking={setSelectedBooking}
+          />
         </div>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-1">
-          <ProfileCard onChangePassword={() => setShowPasswordModal(true)} />
-        </div>
-
-        <div className="lg:col-span-2">
-          <BookingList cars={bookedCars} onSelectCar={setSelectedCar} />
-        </div>
-      </div>
-
-      {showPasswordModal && (
-        <ChangePasswordModal onClose={() => setShowPasswordModal(false)} />
+      {showEditProfileModal && (
+        <EditProfileModal
+          editForm={editForm}
+          setEditForm={setEditForm}
+          setUserData={setUserData}
+          setShowEditProfileModal={setShowEditProfileModal}
+        />
       )}
 
-      {selectedCar && (
-        <BookingDetailsModal
-          car={selectedCar}
-          booking={booking.find((b) => b.car_id === selectedCar.no)}
-          onClose={() => setSelectedCar(null)}
+      {showPasswordModal && (
+        <ChangePassword setShowPasswordModal={setShowPasswordModal} />
+      )}
+
+      {selectedBooking && (
+        <BookingDetails
+          selectedBooking={selectedBooking}
+          setSelectedBooking={setSelectedBooking}
+        />
+      )}
+
+      {showImageModal && (
+        <EditProfileImageModal
+          show={showImageModal}
+          setShow={setShowImageModal}
+          userData={userData}
+          setUserData={setUserData}
         />
       )}
     </div>
