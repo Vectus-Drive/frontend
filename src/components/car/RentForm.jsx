@@ -1,14 +1,8 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 function RentForm({ car, onOpenPayment }) {
   const [pickupDate, setPickupDate] = useState("");
   const [returnDate, setReturnDate] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-
-  const navigate = useNavigate();
 
   const totalDays =
     pickupDate && returnDate

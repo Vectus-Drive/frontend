@@ -36,7 +36,7 @@ function InquiryForm() {
   return (
     <div className="bg-gray-800 bg-opacity-80 backdrop-blur-lg p-8 rounded-2xl shadow-xl">
       <h2 className="text-xl font-semibold mb-2 flex items-center gap-2 text-orange-500">
-        <FaEnvelope className="text-orange-500" /> Send Your Inquiry
+        <FaEnvelope className="text-orange-500" /> Contact us 
       </h2>
       <p className="text-gray-400 text-sm mb-6">
         Fill out the form and we'll get back to you promptly.

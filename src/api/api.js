@@ -10,4 +10,13 @@ export const getCars = async () => {
   return response.data;
 }
 
+export const addReview = async (reviewData) => {
+  try {
+    const response = await api.post("/reviews", reviewData)
+    return response.data
+  } catch (error) {
+    console.log(error)    
+  }
+}
+
 export default api;

@@ -56,7 +56,7 @@ export const AuthProvider = ({ children }) => {
       try {
         const response = await api.get("/auth/me", { signal });
         setIsAuthenticated(true);
-        setUser(response.data);
+        setUser(response.data.data);
       } catch {
         if (!signal.aborted) {
           setIsAuthenticated(false);
@@ -79,7 +79,7 @@ export const AuthProvider = ({ children }) => {
     await api.post("/auth/login", credentials, { withCredentials: true });
     setIsAuthenticated(true);
     const response = await api.get("/auth/me", { withCredentials: true });
-    setUser(response.data);
+    setUser(response.data.data);
   };
 
   const logout = async () => {
