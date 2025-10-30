@@ -1,80 +1,72 @@
 import { useState, useEffect } from "react";
 import { FaQuoteLeft, FaStar, FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import api from "../../api/api";
 
 function FeedbackList() {
-  const feedbacks = [
-    {
-      name: "Ass Lee",
-      role: "Senior Consultant",
-      feedback:
-        "Vectus Drive provided excellent service! The cars were well-maintained, and the booking process was seamless.",
-      image: "./car.jpg",
-      rating: 5,
-    },
-    {
-      name: "Creas Wokes",
-      role: "Managing Director",
-      feedback:
-        "Professional staff and flexible rental options. Highly recommend Vectus Drive for business travel.",
-      image: "user2.jpg",
-      rating: 5,
-    },
-    {
-      name: "Alex Jordan",
-      role: "Customer",
-      feedback:
-        "Great experience! Affordable pricing and smooth pickup and drop-off. Will definitely rent again.",
-      image: "user3.jpg",
-      rating: 5,
-    },
-    {
-      name: "Sophia Brown",
-      role: "Travel Blogger",
-      feedback:
-        "Loved the entire experience with Vectus Drive. Booking was fast, and the car was spotless!",
-      image: "user4.jpg",
-      rating: 5,
-    },
-    {
-      name: "Daniel Green",
-      role: "Entrepreneur",
-      feedback:
-        "Reliable service and great customer support! I'll definitely recommend this company to my colleagues.",
-      image: "user5.jpg",
-      rating: 5,
-    },
-    {
-      name: "Mila Stone",
-      role: "Tour Guide",
-      feedback:
-        "The staff was friendly and the process was easy. I was impressed by their professionalism.",
-      image: "user6.jpg",
-      rating: 5,
-    },
-  ];
-
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [feedbacks, setFeedbacks] = useState([]);
+
+  const getFeedback = async () => {
+    try {
+      const resFeed = await api.get("/reviews");
+
+      const transformed = await Promise.all(
+        resFeed.data.data.map(async (item) => {
+          try {
+            const userRes = await api.get(`/customers/${item.customer_id}`);
+            const username = userRes.data.data.name || "Anonymous";
+            console.log(username);
+
+            return {
+              topic: item.topic || "Anonymous",
+              name: username,
+              feedback: item.description,
+              rating: item.stars,
+            };
+          } catch (err) {
+            console.log("Error fetching username:", err);
+            return {
+              topic: item.topic || "Anonymous",
+              name: "Anonymous",
+              feedback: item.description,
+              rating: item.stars,
+            };
+          }
+        })
+      );
+
+      setFeedbacks(transformed);
+    } catch (error) {
+      console.error("Error fetching feedback:", error);
+    }
+  };
+
+  useEffect(() => {
+    getFeedback();
+  }, []);
+
+  useEffect(() => {
+    if (feedbacks.length === 0) return;
+    const interval = setInterval(nextSlide, 5000);
+    return () => clearInterval(interval);
+  }, [feedbacks]);
 
   const nextSlide = () => {
     setCurrentIndex((prev) => (prev + 1) % feedbacks.length);
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prev) =>
-      prev === 0 ? feedbacks.length - 1 : prev - 1
-    );
+    setCurrentIndex((prev) => (prev === 0 ? feedbacks.length - 1 : prev - 1));
   };
 
-  useEffect(() => {
-    const interval = setInterval(nextSlide, 5000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const visibleFeedbacks = [
-    feedbacks[currentIndex],
-    feedbacks[(currentIndex + 1) % feedbacks.length],
-    feedbacks[(currentIndex + 2) % feedbacks.length],
-  ];
+  const visibleFeedbacks =
+    feedbacks.length >= 3
+      ? [
+          feedbacks[currentIndex],
+          feedbacks[(currentIndex + 1) % feedbacks.length],
+          feedbacks[(currentIndex + 2) % feedbacks.length],
+        ]
+      : feedbacks;
 
   return (
     <section className="relative py-16 md:py-20 px-6 md:px-12 lg:px-20 text-white overflow-hidden section-animation">
@@ -111,19 +103,17 @@ function FeedbackList() {
               <div
                 key={index}
                 className={`bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm p-8 rounded-2xl shadow-xl border border-slate-700/50 w-full md:w-1/3 min-w-[280px] transition-all duration-500 hover:border-orange-500/50 hover:shadow-orange-500/20 hover:scale-105 ${
-                  index === 1 ? 'md:scale-105 border-orange-500/30' : 'hidden md:block'
+                  index === 1
+                    ? "md:scale-105 border-orange-500/30"
+                    : "hidden md:block"
                 }`}
               >
-
                 <FaQuoteLeft className="text-orange-400 text-3xl mb-4 mx-auto opacity-70" />
-
                 <p className="text-gray-300 text-sm md:text-base mb-6 leading-relaxed min-h-[100px]">
                   {f.feedback}
                 </p>
-
-                <h4 className="font-bold text-lg text-white mb-1">{f.name}</h4>
-                <p className="text-gray-400 text-sm mb-4">{f.role}</p>
-
+                <h4 className="font-bold text-lg text-white mb-1">{f.topic}</h4>
+                <p className="text-gray-400 text-sm mb-4">{f.name}</p>
                 <div className="flex justify-center gap-1">
                   {[...Array(f.rating)].map((_, i) => (
                     <FaStar key={i} className="text-orange-400 text-sm" />
@@ -149,8 +139,8 @@ function FeedbackList() {
               onClick={() => setCurrentIndex(index)}
               className={`h-2 rounded-full transition-all duration-300 ${
                 index === currentIndex
-                  ? 'w-8 bg-gradient-to-r from-orange-500 to-orange-600'
-                  : 'w-2 bg-slate-600 hover:bg-slate-500'
+                  ? "w-8 bg-gradient-to-r from-orange-500 to-orange-600"
+                  : "w-2 bg-slate-600 hover:bg-slate-500"
               }`}
               aria-label={`Go to testimonial ${index + 1}`}
             />
