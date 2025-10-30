@@ -1,14 +1,21 @@
 import { useState, useRef } from "react";
+import { useForm } from "react-hook-form";
 import { FaCloudUploadAlt, FaTimes } from "react-icons/fa";
-import { useFormik } from "formik";
 
 export default function CarManageForm({ car, onClose }) {
   const isEdit = !!car;
   const [previewImage, setPreviewImage] = useState(car?.image || "");
   const fileInputRef = useRef(null);
 
-  const formik = useFormik({
-    initialValues: {
+  // Initialize React Hook Form
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    reset,
+  } = useForm({
+    defaultValues: {
       brand: car?.make || "",
       model: car?.model || "",
       fuelType: car?.fuel || "",
@@ -20,52 +27,56 @@ export default function CarManageForm({ car, onClose }) {
       description: car?.description || "",
       image: car?.image || "",
     },
-    validate: (values) => {
-      const errors = {};
-      if (!values.brand) errors.brand = "Brand is required";
-      if (!values.model) errors.model = "Model is required";
-      if (!values.fuelType) errors.fuelType = "Fuel type is required";
-      if (!values.transmission) errors.transmission = "Transmission is required";
-      if (!values.price) errors.price = "Price per day is required";
-      return errors;
-    },
-    onSubmit: (values, { resetForm }) => {
-      console.log("🚗 Car Form Submitted:", { ...values, image: previewImage });
-      alert(`${isEdit ? "Car updated" : "Car added"} successfully!`);
-      resetForm();
-      onClose();
-    },
   });
 
+  // Handle image upload preview and simulated path
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewImage(reader.result);
-        formik.setFieldValue("image", `./upload/${file.name}`);
+        setValue("image", `./upload/${file.name}`);
         console.log("Simulated uploaded image path:", `./upload/${file.name}`);
       };
       reader.readAsDataURL(file);
     }
   };
 
+  // Handle form submission
+  const onSubmit = (data) => {
+    console.log("🚗 Car Form Submitted:", { ...data, image: previewImage });
+    alert(`${isEdit ? "Car updated" : "Car added"} successfully!`);
+    reset();
+    onClose();
+  };
+
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-black/50 z-50 p-4">
       <div className="bg-white w-full max-w-[900px] rounded-2xl shadow-2xl overflow-y-auto max-h-[95vh] p-6 relative animate-fadeIn">
+        {/* Header */}
         <div className="flex justify-between items-center mb-6 border-b pb-4">
           <h2 className="text-2xl font-bold text-gray-800">
             {isEdit ? "Edit Car Details" : "Add New Car"}
           </h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-700 transition">
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-700 transition"
+          >
             <FaTimes className="text-2xl" />
           </button>
         </div>
 
-        <form onSubmit={formik.handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-
+        {/* Form */}
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6"
+        >
+          {/* Left column - Image and Description */}
           <div className="flex flex-col items-center md:items-start order-1">
-            <label className="text-sm font-medium text-gray-700 mb-2">Car Image</label>
+            <label className="text-sm font-medium text-gray-700 mb-2">
+              Car Image
+            </label>
             <div
               className="relative w-40 h-40 border-2 border-dashed border-gray-300 rounded-lg flex justify-center items-center overflow-hidden bg-gray-50 hover:border-orange-500 transition cursor-pointer shadow-sm"
               onClick={() => fileInputRef.current.click()}
@@ -78,7 +89,11 @@ export default function CarManageForm({ car, onClose }) {
                 className="absolute w-full h-full opacity-0 cursor-pointer"
               />
               {previewImage ? (
-                <img src={previewImage} alt="Preview" className="object-cover w-full h-full" />
+                <img
+                  src={previewImage}
+                  alt="Preview"
+                  className="object-cover w-full h-full"
+                />
               ) : (
                 <div className="text-center text-gray-400 p-2">
                   <FaCloudUploadAlt className="text-3xl mx-auto mb-1" />
@@ -89,9 +104,11 @@ export default function CarManageForm({ car, onClose }) {
             </div>
 
             <div className="w-full mt-6">
-              <label className="text-sm font-medium text-gray-700">Description</label>
+              <label className="text-sm font-medium text-gray-700">
+                Description
+              </label>
               <textarea
-                {...formik.getFieldProps("description")}
+                {...register("description")}
                 placeholder="Write a brief description of the car..."
                 rows="4"
                 className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 outline-none resize-none"
@@ -99,87 +116,156 @@ export default function CarManageForm({ car, onClose }) {
             </div>
           </div>
 
+          {/* Right column - Details */}
           <div className="flex flex-col gap-6 order-2">
-
+            {/* Brand and Model */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="text-sm font-medium text-gray-700">Brand</label>
+                <label className="text-sm font-medium text-gray-700">
+                  Brand
+                </label>
                 <input
                   type="text"
-                  {...formik.getFieldProps("brand")}
                   placeholder="e.g. Toyota"
+                  {...register("brand", { required: "Brand is required" })}
                   className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 outline-none"
                 />
-                {formik.touched.brand && formik.errors.brand && (
-                  <p className="text-red-400 text-sm mt-1">{formik.errors.brand}</p>
+                {errors.brand && (
+                  <p className="text-red-400 text-sm mt-1">
+                    {errors.brand.message}
+                  </p>
                 )}
               </div>
+
               <div>
-                <label className="text-sm font-medium text-gray-700">Model</label>
+                <label className="text-sm font-medium text-gray-700">
+                  Model
+                </label>
                 <input
                   type="text"
-                  {...formik.getFieldProps("model")}
                   placeholder="e.g. Corolla"
+                  {...register("model", { required: "Model is required" })}
                   className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 outline-none"
                 />
-                {formik.touched.model && formik.errors.model && (
-                  <p className="text-red-400 text-sm mt-1">{formik.errors.model}</p>
+                {errors.model && (
+                  <p className="text-red-400 text-sm mt-1">
+                    {errors.model.message}
+                  </p>
                 )}
               </div>
             </div>
 
+            {/* Fuel and Transmission */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="text-sm font-medium text-gray-700">Fuel Type</label>
+                <label className="text-sm font-medium text-gray-700">
+                  Fuel Type
+                </label>
                 <select
-                  {...formik.getFieldProps("fuelType")}
+                  {...register("fuelType", { required: "Fuel type is required" })}
                   className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 bg-white focus:ring-2 focus:ring-orange-500 outline-none"
                 >
-                  <option value="" disabled>Select Fuel Type</option>
+                  <option value="">Select Fuel Type</option>
                   <option value="Petrol">Petrol</option>
                   <option value="Diesel">Diesel</option>
                 </select>
-                {formik.touched.fuelType && formik.errors.fuelType && (
-                  <p className="text-red-400 text-sm mt-1">{formik.errors.fuelType}</p>
+                {errors.fuelType && (
+                  <p className="text-red-400 text-sm mt-1">
+                    {errors.fuelType.message}
+                  </p>
                 )}
               </div>
+
               <div>
-                <label className="text-sm font-medium text-gray-700">Transmission</label>
+                <label className="text-sm font-medium text-gray-700">
+                  Transmission
+                </label>
                 <input
                   type="text"
-                  {...formik.getFieldProps("transmission")}
                   placeholder="Automatic / Manual"
+                  {...register("transmission", {
+                    required: "Transmission is required",
+                  })}
+                  className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 outline-none"
+                />
+                {errors.transmission && (
+                  <p className="text-red-400 text-sm mt-1">
+                    {errors.transmission.message}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* Seats, Doors, Price */}
+            <div className="grid grid-cols-3 gap-3">
+              <div>
+                <label className="text-sm font-medium text-gray-700">
+                  Seats
+                </label>
+                <input
+                  type="number"
+                  min="1"
+                  {...register("seats")}
                   className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 outline-none"
                 />
               </div>
+
+              <div>
+                <label className="text-sm font-medium text-gray-700">
+                  Doors
+                </label>
+                <input
+                  type="number"
+                  min="1"
+                  {...register("doors")}
+                  className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium text-gray-700">
+                  Price per Day (Rs)
+                </label>
+                <input
+                  type="text"
+                  {...register("price", { required: "Price per day is required" })}
+                  className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 outline-none"
+                />
+                {errors.price && (
+                  <p className="text-red-400 text-sm mt-1">
+                    {errors.price.message}
+                  </p>
+                )}
+              </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-3">
-              <div>
-                <label className="text-sm font-medium text-gray-700">Seats</label>
-                <input type="number" {...formik.getFieldProps("seats")} min="1" className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 outline-none"/>
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-700">Doors</label>
-                <input type="number" {...formik.getFieldProps("doors")} min="1" className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 outline-none"/>
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-700">Price per Day (Rs)</label>
-                <input type="text" {...formik.getFieldProps("price")} className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 outline-none"/>
-              </div>
-            </div>
-
+            {/* Features */}
             <div>
-              <label className="text-sm font-medium text-gray-700">Key Features</label>
-              <input type="text" {...formik.getFieldProps("features")} className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 outline-none"/>
+              <label className="text-sm font-medium text-gray-700">
+                Key Features
+              </label>
+              <input
+                type="text"
+                {...register("features")}
+                className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 outline-none"
+              />
             </div>
-
           </div>
         </form>
 
+        {/* Footer Buttons */}
         <div className="flex justify-end gap-3 mt-8 pt-4 border-t">
-          <button type="button" onClick={onClose} className="px-5 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition">Cancel</button>
-          <button onClick={formik.handleSubmit} className="px-6 py-2 rounded-lg bg-orange-600 text-white font-semibold hover:bg-orange-700 transition shadow-md hover:shadow-lg">
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-5 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={handleSubmit(onSubmit)}
+            className="px-6 py-2 rounded-lg bg-orange-600 text-white font-semibold hover:bg-orange-700 transition shadow-md hover:shadow-lg"
+          >
             {isEdit ? "Save Changes" : "Add Car"}
           </button>
         </div>
