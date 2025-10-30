@@ -26,7 +26,7 @@ function CarDetails() {
   };
 
   return (
-    <div className="bg-gray-900 min-h-screen text-white px-6 md:px-20 py-10 relative">
+    <div className="bg-gray-900 min-h-screen text-white px-6 md:px-20 py-10 mt-20 relative">
       {showPaymentModal && (
         <PaymentModal
           onClose={() => setShowPaymentModal(false)}
@@ -91,7 +91,7 @@ function CarDetails() {
           </div>
         </div>
 
-        <div className="bg-gray-800/50 backdrop-blur-md rounded-2xl p-6 shadow-lg border border-gray-700 sticky top-10 flex flex-col gap-4">
+        <div className="bg-gray-800/50 h-130 backdrop-blur-md rounded-2xl p-6 shadow-lg border border-gray-700 sticky top-25 flex flex-col gap-4">
           <RentForm car={car} onOpenPayment={() => setShowPaymentModal(true)} />
         </div>
       </div>

@@ -11,7 +11,12 @@ export default function EditProfileImageModal({ show, setShow, userData, setUser
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = () => setPreview(reader.result);
+      reader.onload = () => {
+        setPreview(reader.result);
+
+        const fakePath = `./upload/${file.name}`;
+        console.log("Simulated uploaded path:", fakePath);
+      };
       reader.readAsDataURL(file);
     }
   };

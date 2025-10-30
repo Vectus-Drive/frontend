@@ -74,7 +74,7 @@ function Header() {
                       onClick={() => setIsDropdownOpen(false)}
                       className="block px-4 py-2 text-gray-200 hover:bg-orange-500 hover:text-white transition-colors"
                     >
-                      Dashboard
+                      Profile
                     </Link>
                     <button
                       onClick={logout}
