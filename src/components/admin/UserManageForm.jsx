@@ -10,15 +10,9 @@ const schema = yup.object().shape({
     .string()
     .required("NIC is required")
     .matches(/^[0-9]{9}[vVxX]$|^[0-9]{12}$/, "Invalid NIC format"),
-  email: yup
-    .string()
-    .required("Email is required")
-    .email("Invalid email format"),
+  email: yup.string().required("Email is required").email("Invalid email format"),
   address: yup.string().required("Address is required"),
-  telephone_no: yup
-    .string()
-    .required("Telephone number is required")
-    .matches(/^\d{10}$/, "Must be 10 digits"),
+  telephone_no: yup.string().required("Telephone number is required").matches(/^\d{10}$/, "Must be 10 digits"),
   username: yup.string().required("Username is required"),
   role: yup.string().required(),
   image: yup.string(),
@@ -34,71 +28,72 @@ function UserManageForm({ user, role, onClose, onSave }) {
     setValue,
     formState: { errors },
   } = useForm({
-    defaultValues: {
-      id: "",
-      name: "",
-      nic: "",
-      email: "",
-      address: "",
-      telephone_no: "",
-      username: "",
-      role: role || "customer",
-      image: "",
-    },
     resolver: yupResolver(schema),
   });
 
+  // 🔧 Initialize form with existing user data
   useEffect(() => {
     if (user) {
-      reset({ ...user, role: role || user.role });
+      reset({
+        id: user.user?.u_id || "",
+        name: user.name || "",
+        nic: user.nic || "",
+        email: user.email || "",
+        address: user.address || "",
+        telephone_no: user.telephone_no || "",
+        username: user.user?.username || "",
+        role: user.user?.role || role || "customer",
+        image: user.image || "",
+      });
       setPreviewImage(user.image || "");
     }
   }, [user, reset, role]);
 
+  // 🔧 Handle image change (Base64 for preview + upload-ready)
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onloadend = () => setPreviewImage(reader.result);
+      reader.onloadend = () => {
+        setPreviewImage(reader.result);
+        setValue("image", reader.result);
+      };
       reader.readAsDataURL(file);
-      setValue("image", file.name);
     }
   };
 
+  // ✅ Submit handler
   const onSubmit = (data) => {
-    const userData = { ...data, image: previewImage };
-    
-    console.log("Form Submitted Data:", userData);
-    
-    if (onSave) onSave(userData);
-    onClose();
+    const formattedData = {
+      ...data,
+      user: {
+        u_id: user.user?.u_id,
+        username: data.username,
+        role: data.role,
+      },
+      image: data.image || previewImage,
+    };
+
+    if (onSave) onSave(formattedData);
   };
 
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-black/50 z-50 p-4">
-      <div className="bg-white w-full max-w-3xl rounded-xl shadow-2xl p-6 relative animate-fadeIn">
+      <div className="bg-white w-full max-w-3xl rounded-xl shadow-2xl p-6 relative">
         <div className="flex justify-between items-center mb-6 border-b pb-4">
           <h2 className="text-2xl font-bold text-gray-800">
-            Edit User: {user?.name}
+            Edit {user.user?.role === "employee" ? "Employee" : "Customer"}
           </h2>
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-gray-700 transition"
-            aria-label="Close form"
-          >
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-700">
             <FaTimes className="text-2xl" />
           </button>
         </div>
 
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4"
-        >
+        <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+          {/* LEFT COLUMN */}
           <div className="flex flex-col gap-4">
             <div className="flex flex-col items-center mb-4">
-              <label className="text-sm font-medium text-gray-700 mb-2">
-                Profile Image
-              </label>
+              <label className="text-sm font-medium text-gray-700 mb-2">Profile Image</label>
               <div className="relative w-28 h-28 border-2 border-dashed border-gray-300 rounded-full flex justify-center items-center overflow-hidden bg-gray-50 hover:border-indigo-500 transition cursor-pointer shadow-sm">
                 <input
                   type="file"
@@ -107,11 +102,7 @@ function UserManageForm({ user, role, onClose, onSave }) {
                   className="absolute w-full h-full opacity-0 cursor-pointer"
                 />
                 {previewImage ? (
-                  <img
-                    src={previewImage}
-                    alt="Profile Preview"
-                    className="object-cover w-full h-full"
-                  />
+                  <img src={previewImage} alt="Profile Preview" className="object-cover w-full h-full" />
                 ) : (
                   <div className="text-center text-gray-400">
                     <FaCloudUploadAlt className="text-2xl mx-auto mb-1" />
@@ -128,9 +119,7 @@ function UserManageForm({ user, role, onClose, onSave }) {
                 {...register("nic")}
                 className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"
               />
-              {errors.nic && (
-                <p className="text-red-500 text-sm mt-1">{errors.nic.message}</p>
-              )}
+              {errors.nic && <p className="text-red-500 text-sm mt-1">{errors.nic.message}</p>}
             </div>
 
             <div>
@@ -138,26 +127,22 @@ function UserManageForm({ user, role, onClose, onSave }) {
               <input
                 type="text"
                 {...register("role")}
-                value={role || "customer"}
                 disabled
                 className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 bg-gray-100 text-gray-700 cursor-not-allowed"
               />
             </div>
           </div>
 
+          {/* RIGHT COLUMN */}
           <div className="flex flex-col gap-4">
             <div>
-              <label className="text-sm font-medium text-gray-700">
-                Full Name
-              </label>
+              <label className="text-sm font-medium text-gray-700">Full Name</label>
               <input
                 type="text"
                 {...register("name")}
                 className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"
               />
-              {errors.name && (
-                <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
-              )}
+              {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
             </div>
 
             <div>
@@ -167,9 +152,7 @@ function UserManageForm({ user, role, onClose, onSave }) {
                 {...register("username")}
                 className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"
               />
-              {errors.username && (
-                <p className="text-red-500 text-sm mt-1">{errors.username.message}</p>
-              )}
+              {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username.message}</p>}
             </div>
 
             <div>
@@ -179,9 +162,7 @@ function UserManageForm({ user, role, onClose, onSave }) {
                 {...register("email")}
                 className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"
               />
-              {errors.email && (
-                <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
-              )}
+              {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
             </div>
 
             <div>
@@ -191,9 +172,7 @@ function UserManageForm({ user, role, onClose, onSave }) {
                 {...register("telephone_no")}
                 className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"
               />
-              {errors.telephone_no && (
-                <p className="text-red-500 text-sm mt-1">{errors.telephone_no.message}</p>
-              )}
+              {errors.telephone_no && <p className="text-red-500 text-sm mt-1">{errors.telephone_no.message}</p>}
             </div>
 
             <div>
@@ -203,9 +182,7 @@ function UserManageForm({ user, role, onClose, onSave }) {
                 {...register("address")}
                 className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none resize-none"
               ></textarea>
-              {errors.address && (
-                <p className="text-red-500 text-sm mt-1">{errors.address.message}</p>
-              )}
+              {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address.message}</p>}
             </div>
           </div>
 
@@ -219,7 +196,7 @@ function UserManageForm({ user, role, onClose, onSave }) {
             </button>
             <button
               type="submit"
-              className="px-6 py-2 rounded-lg bg-orange-600 text-white font-semibold hover:bg-orange-700 transition shadow-md hover:shadow-lg"
+              className="px-6 py-2 rounded-lg bg-orange-600 text-white font-semibold hover:bg-orange-700 transition shadow-md"
             >
               Save Changes
             </button>

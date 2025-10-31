@@ -1,13 +1,39 @@
 import { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { FaCloudUploadAlt, FaTimes } from "react-icons/fa";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+const carSchema = yup.object().shape({
+  brand: yup.string().required("Brand is required"),
+  model: yup.string().required("Model is required"),
+  fuelType: yup.string().required("Fuel type is required"),
+  transmission: yup.string().required("Transmission is required"),
+  seats: yup
+    .number()
+    .typeError("Seats must be a number")
+    .min(1, "Must have at least 1 seat")
+    .required("Number of seats is required"),
+  doors: yup
+    .number()
+    .typeError("Doors must be a number")
+    .min(1, "Must have at least 1 door")
+    .required("Number of doors is required"),
+  price: yup
+    .number()
+    .typeError("Price must be a number")
+    .positive("Price must be positive")
+    .required("Price per day is required"),
+  features: yup.string().nullable(),
+  description: yup.string().max(500, "Description too long"),
+  image: yup.string().required("Car image is required"),
+});
 
 export default function CarManageForm({ car, onClose }) {
   const isEdit = !!car;
   const [previewImage, setPreviewImage] = useState(car?.image || "");
   const fileInputRef = useRef(null);
 
-  // Initialize React Hook Form
   const {
     register,
     handleSubmit,
@@ -15,6 +41,7 @@ export default function CarManageForm({ car, onClose }) {
     setValue,
     reset,
   } = useForm({
+    resolver: yupResolver(carSchema),
     defaultValues: {
       brand: car?.make || "",
       model: car?.model || "",
@@ -29,21 +56,18 @@ export default function CarManageForm({ car, onClose }) {
     },
   });
 
-  // Handle image upload preview and simulated path
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewImage(reader.result);
-        setValue("image", `./upload/${file.name}`);
-        console.log("Simulated uploaded image path:", `./upload/${file.name}`);
+        setValue("image", file.name);
       };
       reader.readAsDataURL(file);
     }
   };
 
-  // Handle form submission
   const onSubmit = (data) => {
     console.log("🚗 Car Form Submitted:", { ...data, image: previewImage });
     alert(`${isEdit ? "Car updated" : "Car added"} successfully!`);
@@ -53,8 +77,7 @@ export default function CarManageForm({ car, onClose }) {
 
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-black/50 z-50 p-4">
-      <div className="bg-white w-full max-w-[900px] rounded-2xl shadow-2xl overflow-y-auto max-h-[95vh] p-6 relative animate-fadeIn">
-        {/* Header */}
+      <div className="bg-white w-full max-w-[900px] rounded-2xl shadow-2xl overflow-y-auto max-h-[95vh] p-6 relative">
         <div className="flex justify-between items-center mb-6 border-b pb-4">
           <h2 className="text-2xl font-bold text-gray-800">
             {isEdit ? "Edit Car Details" : "Add New Car"}
@@ -67,13 +90,11 @@ export default function CarManageForm({ car, onClose }) {
           </button>
         </div>
 
-        {/* Form */}
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6"
         >
-          {/* Left column - Image and Description */}
-          <div className="flex flex-col items-center md:items-start order-1">
+          <div className="flex flex-col items-center md:items-start">
             <label className="text-sm font-medium text-gray-700 mb-2">
               Car Image
             </label>
@@ -102,6 +123,11 @@ export default function CarManageForm({ car, onClose }) {
                 </div>
               )}
             </div>
+            {errors.image && (
+              <p className="text-red-400 text-sm mt-1">
+                {errors.image.message}
+              </p>
+            )}
 
             <div className="w-full mt-6">
               <label className="text-sm font-medium text-gray-700">
@@ -113,12 +139,15 @@ export default function CarManageForm({ car, onClose }) {
                 rows="4"
                 className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 outline-none resize-none"
               ></textarea>
+              {errors.description && (
+                <p className="text-red-400 text-sm mt-1">
+                  {errors.description.message}
+                </p>
+              )}
             </div>
           </div>
 
-          {/* Right column - Details */}
-          <div className="flex flex-col gap-6 order-2">
-            {/* Brand and Model */}
+          <div className="flex flex-col gap-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="text-sm font-medium text-gray-700">
@@ -126,8 +155,8 @@ export default function CarManageForm({ car, onClose }) {
                 </label>
                 <input
                   type="text"
+                  {...register("brand")}
                   placeholder="e.g. Toyota"
-                  {...register("brand", { required: "Brand is required" })}
                   className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 outline-none"
                 />
                 {errors.brand && (
@@ -143,8 +172,8 @@ export default function CarManageForm({ car, onClose }) {
                 </label>
                 <input
                   type="text"
+                  {...register("model")}
                   placeholder="e.g. Corolla"
-                  {...register("model", { required: "Model is required" })}
                   className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 outline-none"
                 />
                 {errors.model && (
@@ -155,20 +184,20 @@ export default function CarManageForm({ car, onClose }) {
               </div>
             </div>
 
-            {/* Fuel and Transmission */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="text-sm font-medium text-gray-700">
                   Fuel Type
                 </label>
                 <select
-                  {...register("fuelType", { required: "Fuel type is required" })}
+                  {...register("fuelType")}
                   className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 bg-white focus:ring-2 focus:ring-orange-500 outline-none"
                 >
                   <option value="">Select Fuel Type</option>
                   <option value="Petrol">Petrol</option>
                   <option value="Diesel">Diesel</option>
                 </select>
+
                 {errors.fuelType && (
                   <p className="text-red-400 text-sm mt-1">
                     {errors.fuelType.message}
@@ -182,10 +211,8 @@ export default function CarManageForm({ car, onClose }) {
                 </label>
                 <input
                   type="text"
+                  {...register("transmission")}
                   placeholder="Automatic / Manual"
-                  {...register("transmission", {
-                    required: "Transmission is required",
-                  })}
                   className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 outline-none"
                 />
                 {errors.transmission && (
@@ -196,7 +223,6 @@ export default function CarManageForm({ car, onClose }) {
               </div>
             </div>
 
-            {/* Seats, Doors, Price */}
             <div className="grid grid-cols-3 gap-3">
               <div>
                 <label className="text-sm font-medium text-gray-700">
@@ -204,10 +230,14 @@ export default function CarManageForm({ car, onClose }) {
                 </label>
                 <input
                   type="number"
-                  min="1"
                   {...register("seats")}
                   className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 outline-none"
                 />
+                {errors.seats && (
+                  <p className="text-red-400 text-sm mt-1">
+                    {errors.seats.message}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -216,10 +246,14 @@ export default function CarManageForm({ car, onClose }) {
                 </label>
                 <input
                   type="number"
-                  min="1"
                   {...register("doors")}
                   className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 outline-none"
                 />
+                {errors.doors && (
+                  <p className="text-red-400 text-sm mt-1">
+                    {errors.doors.message}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -227,8 +261,8 @@ export default function CarManageForm({ car, onClose }) {
                   Price per Day (Rs)
                 </label>
                 <input
-                  type="text"
-                  {...register("price", { required: "Price per day is required" })}
+                  type="number"
+                  {...register("price")}
                   className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 outline-none"
                 />
                 {errors.price && (
@@ -239,7 +273,6 @@ export default function CarManageForm({ car, onClose }) {
               </div>
             </div>
 
-            {/* Features */}
             <div>
               <label className="text-sm font-medium text-gray-700">
                 Key Features
@@ -253,7 +286,6 @@ export default function CarManageForm({ car, onClose }) {
           </div>
         </form>
 
-        {/* Footer Buttons */}
         <div className="flex justify-end gap-3 mt-8 pt-4 border-t">
           <button
             type="button"

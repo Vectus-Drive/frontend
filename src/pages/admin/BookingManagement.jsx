@@ -63,7 +63,7 @@ function BookingManagement() {
   const updateBookingStatus = async (bookingId, newStatus) => {
     try {
       await api.put(`/bookings/${bookingId}`, {
-        status: newStatus.toLowerCase(),
+        status: newStatus,
       });
       console.log(`Booking ${bookingId} updated to ${newStatus}`);
     } catch (error) {
