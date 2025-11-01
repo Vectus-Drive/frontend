@@ -10,7 +10,7 @@ export default function BookingTabs({ bookings, setSelectedBooking }) {
       <div className="p-6 space-y-4 overflow-y-auto flex-1 scrollbar-hide">
         {bookings.length > 0 ? (
           bookings.map((booking) => (
-            <BookingCard
+            booking.status !== "canceled" && <BookingCard
               key={booking.booking_id}
               booking={booking}
               car={booking.car}

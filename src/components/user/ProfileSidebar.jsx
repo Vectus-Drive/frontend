@@ -14,7 +14,6 @@ export default function ProfileSidebar({
   setShowImageModal,
 }) {
 
-
   return (
     <div className="space-y-6 w-150">
       <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 overflow-hidden relative">
@@ -33,7 +32,7 @@ export default function ProfileSidebar({
           <h2 className="text-2xl font-bold text-white mb-1">
             {userData.name}
           </h2>
-          <p className="text-slate-400 text-sm mb-4">@{userData.username}</p>
+          <p className="text-slate-400 text-sm mb-4">@{userData?.user?.username || ""}</p>
 
           <div className="space-y-3">
             <div className="flex items-center gap-3 text-slate-300">

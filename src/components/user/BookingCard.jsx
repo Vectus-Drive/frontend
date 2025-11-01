@@ -1,7 +1,18 @@
 import { FaCalendar, FaClock, FaCreditCard } from "react-icons/fa";
+import { updateBooking } from "../../api/api";
+import { toast } from "react-toastify";
 
 export default function BookingCard({ booking, car, setSelectedBooking }) {
-  
+
+  const cancelBooking = async (id) => {
+    booking = {
+      status: "canceled"
+    }
+    updateBooking(booking, id)
+    .then(res => {
+      toast.success("successfully canceled")
+    })
+  }
   
   return (
     <div
@@ -26,9 +37,9 @@ export default function BookingCard({ booking, car, setSelectedBooking }) {
 
             <span
               className={`px-3 py-1 rounded-full text-sm font-medium ${
-                booking.status === "active"
+                booking.status === "pending"
                   ? "bg-blue-500/20 text-blue-400"
-                  : booking.status === "completed"
+                  : booking.status === "booked"
                   ? "bg-green-500/20 text-green-400"
                   : "bg-red-500/20 text-red-400"
               }`}
@@ -83,7 +94,7 @@ export default function BookingCard({ booking, car, setSelectedBooking }) {
           </div>
 
         
-            <button
+            <button onClick={() => cancelBooking(booking.booking_id)}
               className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm rounded-lg transition-colors"
             >
               Cancel Booking

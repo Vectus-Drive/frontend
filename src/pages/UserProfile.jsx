@@ -43,47 +43,8 @@ function UserProfile() {
       setBookings(res.data)
     })
 
+  }, [showEditProfileModal, showImageModal, showPasswordModal])
 
-  }, [showEditProfileModal, showImageModal])
-
-
-
-  const cars = [
-    {
-      availability_status: true,
-      car_id: "CAR_Q0Q5TKC9M1ZOE1Q2BXNK",
-      condition: "Excellent",
-      description:
-        "A reliable and fuel-efficient sedan, perfect for city driving and long trips.",
-      doors: 4,
-      features: ["Air Conditioning", "Bluetooth", "Backup Camera"],
-      fuel: "petrol",
-      image: "Toyota - Corolla.jpg",
-      license_no: "ADD3458",
-      make: "Toyota",
-      model: "Corolla",
-      price_per_day: 50.0,
-      seats: 4,
-      services: [],
-      transmission: "automatic",
-    },
-  ];
-
-  // const bookings = [
-  //   {
-  //     booking_id: "B001",
-  //     customer_id: "C001",
-  //     car_id: "CAR_Q0Q5TKC9M1ZOE1Q2BXNK",
-  //     booked_at: "2025-09-11",
-  //     time_period: "12 days",
-  //     returned_at: "2025-09-23",
-  //     fine: "LKR 0.00",
-  //     payment_method: "Credit Card",
-  //     transaction_id: "pi_355vovRVkJoUVWZMojvGrce",
-  //     status: "pending",
-  //     total: "LKR 102,000",
-  //   },
-  // ];
 
   const handleNotifClick = () => {
     setShowNotifDropdown(!showNotifDropdown);
@@ -110,7 +71,6 @@ function UserProfile() {
         <div className="w-full h-[80vh]">
           <BookingTabs
             bookings={bookings}
-            cars={cars}
             setSelectedBooking={setSelectedBooking}
           />
         </div>
@@ -125,11 +85,11 @@ function UserProfile() {
       )}
 
       {showEditUserName && (
-        <EditUserName setShowEditUserName={setShowEditUserName} />
+        <EditUserName setShowEditUserName={setShowEditUserName} userData={userData} id={user.id}/>
       )}
 
       {showPasswordModal && (
-        <ChangePassword setShowPasswordModal={setShowPasswordModal} />
+        <ChangePassword setShowPasswordModal={setShowPasswordModal} userData={userData} id={user.id} />
       )}
 
       {selectedBooking && (

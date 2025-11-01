@@ -1,4 +1,5 @@
 import { FaArrowLeft, FaBell, FaLock, FaSignOutAlt } from "react-icons/fa";
+import { useAuth } from "../../hooks/AuthContext";
 
 export default function HeaderBar({
   showNotifDropdown,
@@ -8,6 +9,7 @@ export default function HeaderBar({
   setShowPasswordModal,
 }) {
   const handleBackToHome = () => (window.location.href = "/");
+  const { logout } = useAuth()
 
   return (
     <header className="bg-slate-900/50 backdrop-blur-sm border-b border-slate-700/50 sticky top-0 z-40">
@@ -78,7 +80,9 @@ export default function HeaderBar({
             <FaLock size={14} /> Change Password
           </button>
 
-          <button className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 px-4 py-2.5 rounded-lg font-medium">
+          <button className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 px-4 py-2.5 rounded-lg font-medium"
+            onClick={logout}
+          >
             <FaSignOutAlt size={14} /> Log Out
           </button>
         </div>
