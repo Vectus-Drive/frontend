@@ -5,7 +5,7 @@ import * as yup from "yup";
 import { FaStar } from "react-icons/fa";
 import { addReview } from "../../api/api";
 import { useAuth } from "../../hooks/AuthContext";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 const schema = yup.object().shape({
   topic: yup.string().required("Review topic is required"),
@@ -16,7 +16,7 @@ const schema = yup.object().shape({
 export default function ReviewForm() {
   const [stars, setStars] = useState(0);
   const { user } = useAuth();
-  
+
   const {
     register,
     handleSubmit,
@@ -111,15 +111,6 @@ export default function ReviewForm() {
           Submit Review
         </button>
       </form>
-
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        closeOnClick
-        pauseOnHover
-        draggable
-      />
     </>
   );
 }

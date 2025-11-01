@@ -5,8 +5,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { FaUpload, FaEye, FaEyeSlash } from "react-icons/fa";
 import { uploadImage, signUpUser } from "../api/api.js"
-// import { ToastContainer, toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
 
 // ✅ Validation schema using Yup
 const schema = yup.object().shape({
