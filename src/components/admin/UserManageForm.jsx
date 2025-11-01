@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { FaTimes, FaCloudUploadAlt } from "react-icons/fa";
-import api from "../../api/api";
+import { FaTimes } from "react-icons/fa";
 
 const schema = yup.object().shape({
   name: yup.string().required("Full name is required"),
@@ -20,13 +19,10 @@ const schema = yup.object().shape({
 });
 
 function UserManageForm({ user, role, onClose, onSave }) {
-  const [previewImage, setPreviewImage] = useState("");
-
   const {
     register,
     handleSubmit,
     reset,
-    setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -45,21 +41,8 @@ function UserManageForm({ user, role, onClose, onSave }) {
         role: user.user?.role || role || "customer",
         image: user.image || "",
       });
-      setPreviewImage(user.image || "");
     }
   }, [user, reset, role]);
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewImage(reader.result);
-        setValue("image", reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
   const onSubmit = (data) => {
     const formattedData = {
@@ -69,7 +52,7 @@ function UserManageForm({ user, role, onClose, onSave }) {
         username: data.username,
         role: data.role,
       },
-      image: data.image || previewImage,
+      image: data.image || user.image,
     };
 
     if (onSave) onSave(formattedData);
@@ -88,25 +71,15 @@ function UserManageForm({ user, role, onClose, onSave }) {
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-col items-center mb-4">
-              <label className="text-sm font-medium text-gray-700 mb-2">Profile Image</label>
-              <div className="relative w-28 h-28 border-2 border-dashed border-gray-300 rounded-full flex justify-center items-center overflow-hidden bg-gray-50 hover:border-indigo-500 transition cursor-pointer shadow-sm">
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="absolute w-full h-full opacity-0 cursor-pointer"
-                />
-                {previewImage ? (
-                  <img src={previewImage} alt="Profile Preview" className="object-cover w-full h-full" />
-                ) : (
-                  <div className="text-center text-gray-400">
-                    <FaCloudUploadAlt className="text-2xl mx-auto mb-1" />
-                    <span className="text-xs">Upload</span>
-                  </div>
-                )}
-              </div>
+          {/* LEFT COLUMN */}
+          <div className="flex flex-col gap-4 items-center">
+            <label className="text-sm font-medium text-gray-700 mb-2">Profile Image</label>
+            <div className="w-28 h-28 rounded-full overflow-hidden border border-gray-300 shadow-sm">
+              <img
+                src={user.image || "../default-user.png"}
+                alt="Profile"
+                className="object-cover w-full h-full"
+              />
             </div>
 
             <div>
@@ -130,6 +103,7 @@ function UserManageForm({ user, role, onClose, onSave }) {
             </div>
           </div>
 
+          {/* RIGHT COLUMN */}
           <div className="flex flex-col gap-4">
             <div>
               <label className="text-sm font-medium text-gray-700">Full Name</label>
@@ -139,6 +113,16 @@ function UserManageForm({ user, role, onClose, onSave }) {
                 className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"
               />
               {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
+            </div>
+
+            <div>
+              <label className="text-sm font-medium text-gray-700">Username</label>
+              <input
+                type="text"
+                {...register("username")}
+                className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"
+              />
+              {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username.message}</p>}
             </div>
 
             <div>

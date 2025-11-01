@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import api from "../../api/api";
 
 export default function ReviewManagement() {
@@ -57,6 +57,17 @@ export default function ReviewManagement() {
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen relative">
+      <ToastContainer
+              position="top-right"
+              autoClose={3000}
+              hideProgressBar={false}
+              closeOnClick
+              pauseOnHover
+              draggable
+              toastClassName={() =>
+                "relative flex p-5 min-h-10 rounded-md justify-between overflow-hidden cursor-pointer bg-[#0f172a] text-white"
+              }
+      />
       <div className="flex border-b pb-4 border-gray-200 mb-10 justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold text-gray-800">Review Management</h1>
