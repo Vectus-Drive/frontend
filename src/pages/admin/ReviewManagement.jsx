@@ -57,8 +57,6 @@ export default function ReviewManagement() {
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen relative">
-      <ToastContainer position="top-right" autoClose={2500} theme="colored" />
-
       <div className="flex border-b pb-4 border-gray-200 mb-10 justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold text-gray-800">Review Management</h1>
@@ -125,6 +123,18 @@ export default function ReviewManagement() {
           </div>
         </div>
       )}
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        toastClassName={() =>
+          "relative flex p-5 min-h-10 rounded-md justify-between overflow-hidden cursor-pointer bg-[#0f172a] text-white"
+        }
+      />
     </div>
+    
   );
 }

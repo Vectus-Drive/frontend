@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { FaDownload } from "react-icons/fa";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import api from "../../api/api";
 
 function BookingManagement() {
@@ -20,21 +22,22 @@ function BookingManagement() {
 
             const customerName = userRes.data?.data?.name || b.customer_id;
 
-            const carInfo = carRes.data?.data
-              ? `${carRes.data.data.make || " " } - ${carRes.data.data.model || " " }`
-              : b.car_id;
+            const carData = carRes.data?.data || {};
+            const carInfo = `${carData.make || ""} - ${carData.model || ""}`;
+            const licenseNo = carData.license_no || "N/A";
 
             return {
               booking_id: b.booking_id,
               customer_name: customerName,
               car_info: carInfo,
+              license_no: licenseNo,
               booked_at: new Date(b.booked_at).toLocaleDateString(),
               time_period: `${b.time_period} Days`,
               returned_at: b.returned_at
                 ? new Date(b.returned_at).toLocaleDateString()
                 : "Not Returned",
               fine: `$${b.fine}`,
-              status: b.status.charAt(0).toUpperCase() + b.status.slice(1),
+              status: b.status.toLowerCase(),
             };
           } catch (err) {
             console.error("Error fetching customer/car info:", err);
@@ -42,13 +45,14 @@ function BookingManagement() {
               booking_id: b.booking_id,
               customer_name: b.customer_id,
               car_info: b.car_id,
+              license_no: "N/A",
               booked_at: new Date(b.booked_at).toLocaleDateString(),
               time_period: `${b.time_period} Days`,
               returned_at: b.returned_at
                 ? new Date(b.returned_at).toLocaleDateString()
                 : "Not Returned",
               fine: `$${b.fine}`,
-              status: b.status.charAt(0).toUpperCase() + b.status.slice(1),
+              status: b.status.toLowerCase(),
             };
           }
         })
@@ -57,17 +61,18 @@ function BookingManagement() {
       setBookings(formatted);
     } catch (error) {
       console.error("Error fetching bookings:", error);
+      toast.error("❌ Failed to load bookings!");
     }
   };
 
-  const updateBookingStatus = async (bookingId, newStatus) => {
+  const updateBookingStatus = async (bookingId, newStatus, licenseNo) => {
     try {
-      await api.put(`/bookings/${bookingId}`, {
-        status: newStatus,
-      });
-      console.log(`Booking ${bookingId} updated to ${newStatus}`);
+      const payload = { status: newStatus };
+      await api.put(`/bookings/${bookingId}`, payload);
+      toast.success(`✅ Car ${licenseNo} ${newStatus} successfully!`);
     } catch (error) {
-      console.error("Error updating booking status:", error);
+      console.error("❌ Error updating booking status:", error);
+      toast.error("❌ Failed to update booking status!");
     }
   };
 
@@ -76,14 +81,17 @@ function BookingManagement() {
   }, []);
 
   const handleStatusChange = (id, newStatus) => {
+    const selectedBooking = bookings.find((b) => b.booking_id === id);
+
     setBookings((prev) =>
       prev.map((b) => (b.booking_id === id ? { ...b, status: newStatus } : b))
     );
-    updateBookingStatus(id, newStatus);
+
+    updateBookingStatus(id, newStatus, selectedBooking?.license_no);
   };
 
   const getStatusColor = (status) => {
-    switch (status.toLowerCase()) {
+    switch (status) {
       case "booked":
         return "bg-green-100 text-green-700";
       case "canceled":
@@ -94,7 +102,9 @@ function BookingManagement() {
   };
 
   return (
+    <>
     <div className="p-6">
+
       <div className="flex border-b pb-4 border-gray-200 mb-10 justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold text-gray-800">
@@ -117,6 +127,9 @@ function BookingManagement() {
             <tr>
               <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
                 Car Info
+              </th>
+              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
+                License No
               </th>
               <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
                 Customer Name
@@ -150,9 +163,11 @@ function BookingManagement() {
                     {booking.car_info}
                   </td>
                   <td className="px-4 py-3 text-gray-700">
+                    {booking.license_no}
+                  </td>
+                  <td className="px-4 py-3 text-gray-700">
                     {booking.customer_name}
                   </td>
-
                   <td className="px-4 py-3 text-gray-700">
                     {booking.booked_at}
                   </td>
@@ -173,9 +188,9 @@ function BookingManagement() {
                         booking.status
                       )}`}
                     >
-                      <option value="Pending">Pending</option>
-                      <option value="Booked">Booked</option>
-                      <option value="Canceled">Canceled</option>
+                      <option value="pending">Pending</option>
+                      <option value="booked">Booked</option>
+                      <option value="canceled">Canceled</option>
                     </select>
                   </td>
                 </tr>
@@ -191,6 +206,18 @@ function BookingManagement() {
         </table>
       </div>
     </div>
+<ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        toastClassName={() =>
+          "relative flex p-5 min-h-10 rounded-md justify-between overflow-hidden cursor-pointer bg-[#0f172a] text-white"
+        }
+      />
+    </>
   );
 }
 
