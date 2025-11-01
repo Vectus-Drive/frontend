@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { MdDeleteForever } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
-import { toast } from "react-toastify";
-
+import { toast, ToastContainer } from "react-toastify";
 import CarManageForm from "../../components/admin/CarManageForm";
 import CarDeleteModal from "../../components/admin/CarDeleteModal";
 import api from "../../api/api";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 function CarManagement() {
   const [cars, setCars] = useState([]);
@@ -59,12 +60,75 @@ function CarManagement() {
     }
   };
 
-  
+  const handleDownloadReport = () => {
+    if (cars.length == 0) {
+      toast.error("No Cars to generate remports");
+      return;
+    }
+
+    const data = cars.flatMap((car) => {
+      if (!car.services || car.services.length === 0) {
+        return [
+          {
+            "License No": car.license_no,
+            Make: car.make,
+            Model: car.model,
+            Availability: car.availability_status
+              ? "Available"
+              : "Not Available",
+            Condition: car.condition,
+            Description: car.description,
+            Doors: car.doors,
+            Features: car.features.join(", "),
+            Fuel: car.fuel,
+            "Price/Day": car.price_per_day,
+            Seats: car.seats,
+            Transmission: car.transmission,
+            "Service Date": "",
+            "Service Details": "",
+            "Service Amount": "",
+          },
+        ];
+      }
+
+      return car.services.map((s) => ({
+        "License No": car.license_no,
+        Make: car.make,
+        Model: car.model,
+        Availability: car.availability_status ? "Available" : "Not Available",
+        Condition: car.condition,
+        Description: car.description,
+        Doors: car.doors,
+        Features: car.features.join(", "),
+        Fuel: car.fuel,
+        "Price/Day": car.price_per_day,
+        Seats: car.seats,
+        Transmission: car.transmission,
+        "Service Date": new Date(s.service_date).toLocaleDateString(),
+        "Service Details": s.details,
+        "Service Amount": s.transaction_amount,
+      }));
+    });
+
+    const worksheet = XLSX.utils.json_to_sheet(data);
+
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Cars");
+
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+
+    const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
+    saveAs(blob, `car_report_${new Date().toISOString().slice(0, 10)}.xlsx`);
+  };
+
   useEffect(() => {
     const fetchCars = async () => {
       try {
         const res = await api.get("/cars");
-        setCars(res.data.data || []);
+        setCars(res.data.data);
       } catch (err) {
         console.error(err);
         toast.error("Failed to fetch cars");
@@ -73,11 +137,19 @@ function CarManagement() {
     fetchCars();
   }, [handleAdd, handleDelete, handleEdit]);
 
-
   return (
     <div className="p-6 relative">
-
-      {/* Header */}
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        toastClassName={() =>
+          "relative flex p-5 min-h-10 rounded-md justify-between overflow-hidden cursor-pointer bg-[#0f172a] text-white"
+        }
+      />
       <div className="flex justify-between items-center border-b pb-4 border-gray-200 mb-10">
         <div>
           <h1 className="text-2xl font-bold text-gray-800">Car Management</h1>
@@ -86,7 +158,10 @@ function CarManagement() {
           </p>
         </div>
         <div>
-          <button className="bg-orange-600 hover:bg-orange-700 text-white mr-2 px-4 py-2 rounded">
+          <button
+            onClick={handleDownloadReport}
+            className="bg-orange-600 hover:bg-orange-700 text-white mr-2 px-4 py-2 rounded"
+          >
             Download Report
           </button>
           <button
@@ -98,20 +173,37 @@ function CarManagement() {
         </div>
       </div>
 
-      {/* Table */}
       <div className="overflow-x-auto">
         <table className="min-w-full border border-gray-200 divide-y divide-gray-200">
           <thead className="bg-gray-100">
             <tr>
-              <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">License No</th>
-              <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Image</th>
-              <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Make</th>
-              <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Model</th>
-              <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Fuel</th>
-              <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Seats</th>
-              <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Price/Day (Rs)</th>
-              <th className="px-4 py-2 text-center text-sm font-medium text-gray-700">Status</th>
-              <th className="px-4 py-2 text-center text-sm font-medium text-gray-700">Actions</th>
+              <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">
+                License No
+              </th>
+              <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">
+                Image
+              </th>
+              <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">
+                Make
+              </th>
+              <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">
+                Model
+              </th>
+              <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">
+                Fuel
+              </th>
+              <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">
+                Seats
+              </th>
+              <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">
+                Price/Day (Rs)
+              </th>
+              <th className="px-4 py-2 text-center text-sm font-medium text-gray-700">
+                Status
+              </th>
+              <th className="px-4 py-2 text-center text-sm font-medium text-gray-700">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -121,7 +213,7 @@ function CarManagement() {
                   <td className="px-4 py-3">{car.license_no}</td>
                   <td className="px-4 py-3">
                     <img
-                      src={car.image ? `../${car.image}` : "/default-car.jpg"}
+                      src={car.image ? `${car.image}` : "/default-car.jpg"}
                       alt={car.make}
                       className="w-20 h-12 object-cover rounded"
                     />
@@ -130,7 +222,9 @@ function CarManagement() {
                   <td className="px-4 py-3">{car.model}</td>
                   <td className="px-4 py-3">{car.fuel}</td>
                   <td className="px-4 py-3 text-center">{car.seats}</td>
-                  <td className="px-4 py-3">Rs {Number(car.price_per_day || 0).toFixed(2)}</td>
+                  <td className="px-4 py-3">
+                    Rs {Number(car.price_per_day || 0).toFixed(2)}
+                  </td>
                   <td className="px-4 py-3 text-center">
                     <button
                       onClick={() =>
@@ -163,7 +257,10 @@ function CarManagement() {
               ))
             ) : (
               <tr>
-                <td colSpan="9" className="text-center py-5 text-gray-500 italic">
+                <td
+                  colSpan="9"
+                  className="text-center py-5 text-gray-500 italic"
+                >
                   No cars available
                 </td>
               </tr>
@@ -172,7 +269,6 @@ function CarManagement() {
         </table>
       </div>
 
-      {/* Add/Edit Car Modal */}
       {showCarForm && (
         <CarManageForm
           car={editCar}
@@ -189,7 +285,6 @@ function CarManagement() {
         />
       )}
 
-      {/* Delete Confirmation Modal */}
       {showDeleteModal && (
         <CarDeleteModal
           car={carToDelete}

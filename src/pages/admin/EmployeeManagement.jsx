@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { FaEdit, FaUserTie, FaTrash } from "react-icons/fa";
-import { toast } from "react-toastify";
+import { toast, ToastContainer} from "react-toastify";
 import UserManageForm from "../../components/admin/UserManageForm";
 import api from "../../api/api";
 
@@ -47,6 +47,8 @@ function EmployeeManagement() {
   };
 
   const handleSaveEmployee = async (updatedEmp) => {
+    console.log(updatedEmp);
+    
     try {
       await api.put(`/employees/${updatedEmp.user.u_id}`, updatedEmp);
       const updatedList = employees.map((e) =>
@@ -64,6 +66,17 @@ function EmployeeManagement() {
 
   return (
     <div className="container mx-auto p-6 bg-gray-50 min-h-screen">
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        toastClassName={() =>
+          "relative flex p-5 min-h-10 rounded-md justify-between overflow-hidden cursor-pointer bg-[#0f172a] text-white"
+        }
+      />
       <div className="border-b pb-4 border-gray-200 mb-10">
         <h1 className="text-2xl font-bold text-gray-800">Employee Management</h1>
         <p className="text-gray-600">

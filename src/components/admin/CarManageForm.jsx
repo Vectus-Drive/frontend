@@ -3,8 +3,8 @@ import { useForm } from "react-hook-form";
 import { FaCloudUploadAlt, FaTimes } from "react-icons/fa";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { toast } from "react-toastify";
-import api from "../../api/api";
+import { toast, ToastContainer } from "react-toastify";
+import api , {uploadImage} from "../../api/api";
 
 const carSchema = yup.object().shape({
   license_no: yup.string().required("License number is required"),
@@ -34,8 +34,10 @@ const carSchema = yup.object().shape({
 });
 
 export default function CarManageForm({ car, onClose, onSaved }) {
-  const isEdit = car;
+  const isEdit = !!car;
+
   const [previewImage, setPreviewImage] = useState(car?.image || "");
+  const [selectedFile, setSelectedFile] = useState(null);
   const fileInputRef = useRef(null);
 
   const {
@@ -59,22 +61,42 @@ export default function CarManageForm({ car, onClose, onSaved }) {
         ? car.features.join(", ")
         : car?.features || "",
       description: car?.description || "",
-      image: car?.image || "",
       condition: car?.condition || "Excellent",
       availability_status: car?.availability_status ?? true,
     },
   });
 
+  // Handle selecting a new image
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      setSelectedFile(file); // store file for upload
       setPreviewImage(URL.createObjectURL(file));
-      setValue("image", file.name);
     }
   };
 
+  // Upload image and return URL
+  const handleImageUpload = async () => {
+    if (!selectedFile) return car?.image || null; // keep existing image if no new file
+
+    try {
+      const formData = new FormData();
+      formData.append("image", selectedFile);
+
+      const res = await uploadImage(formData, isEdit ? car.car_id : null);
+      return res.image_url || res.filename || null; // adjust according to backend
+    } catch (err) {
+      console.error("Image upload failed:", err);
+      toast.error("Image upload failed!");
+      return null;
+    }
+  };
+
+  // Submit form
   const onSubmit = async (data) => {
     try {
+      const uploadedImage = await handleImageUpload();
+
       const payload = {
         license_no: data.license_no,
         make: data.make,
@@ -88,7 +110,7 @@ export default function CarManageForm({ car, onClose, onSaved }) {
           ? data.features.split(",").map((f) => f.trim())
           : [],
         description: data.description,
-        image: null,
+        image: uploadedImage,
         condition: data.condition,
         availability_status: data.availability_status,
       };
@@ -104,6 +126,7 @@ export default function CarManageForm({ car, onClose, onSaved }) {
 
       onSaved(res.data);
       reset();
+      setSelectedFile(null);
       onClose();
     } catch (error) {
       console.error(error);
@@ -113,6 +136,18 @@ export default function CarManageForm({ car, onClose, onSaved }) {
 
   return (
     <>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        toastClassName={() =>
+          "relative flex p-5 min-h-10 rounded-md justify-between overflow-hidden cursor-pointer bg-[#0f172a] text-white"
+        }
+      />
+
       <div className="fixed inset-0 flex justify-center items-center bg-black/50 z-50 p-4">
         <div className="bg-white w-full max-w-[900px] rounded-2xl shadow-2xl overflow-y-auto max-h-[95vh] p-6 relative">
           <div className="flex justify-between items-center mb-6 border-b pb-4">
