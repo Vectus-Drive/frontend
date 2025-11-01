@@ -19,4 +19,26 @@ export const addReview = async (reviewData) => {
   }
 }
 
+export const uploadImage = async (formData) => {
+  try {
+    const response = await api.post(`/upload-image`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const signUpUser = async (userData) => {
+  try {
+    const response = await api.post("/auth/register", userData);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export default api;
