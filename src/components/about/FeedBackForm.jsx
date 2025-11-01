@@ -5,8 +5,8 @@ import * as yup from "yup";
 import { FaStar } from "react-icons/fa";
 import { addReview } from "../../api/api";
 import { useAuth } from "../../hooks/AuthContext";
+import { ToastContainer, toast } from "react-toastify";
 
-// ✅ Yup schema for review
 const schema = yup.object().shape({
   topic: yup.string().required("Review topic is required"),
   description: yup.string().required("Description is required"),
@@ -16,7 +16,7 @@ const schema = yup.object().shape({
 export default function ReviewForm() {
   const [stars, setStars] = useState(0);
   const { user } = useAuth();
-
+  
   const {
     register,
     handleSubmit,
@@ -28,21 +28,17 @@ export default function ReviewForm() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => {
-    console.log(user);
-    data = {
-      ...data,
-      customer_id: user.id,
-    };
-    console.log("⭐ Review Data:", data);
-
-    addReview(data)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
-
-    alert("Review submitted successfully!");
-    reset({ topic: "", description: "", stars: 0 });
-    setStars(0);
+  const onSubmit = async (data) => {
+    try {
+      data = { ...data, customer_id: user.id };
+      await addReview(data);
+      toast.success("Review submitted successfully!");
+      reset({ topic: "", description: "", stars: 0 });
+      setStars(0);
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to submit review. Please try again.");
+    }
   };
 
   return (
@@ -55,7 +51,6 @@ export default function ReviewForm() {
         onSubmit={handleSubmit(onSubmit)}
         className="bg-gray-900 p-8 rounded-2xl shadow-lg space-y-5"
       >
-        {/* ⭐ Star Rating */}
         <Controller
           control={control}
           name="stars"
@@ -84,7 +79,6 @@ export default function ReviewForm() {
           )}
         />
 
-        {/* 📝 Review Topic */}
         <div>
           <input
             type="text"
@@ -97,7 +91,6 @@ export default function ReviewForm() {
           )}
         </div>
 
-        {/* 💬 Review Description */}
         <div>
           <textarea
             placeholder="Your Description..."
@@ -111,7 +104,6 @@ export default function ReviewForm() {
           )}
         </div>
 
-        {/* 🚀 Submit Button */}
         <button
           type="submit"
           className="w-full py-3 bg-orange-500 hover:bg-orange-600 rounded-lg text-white font-semibold transition"
@@ -119,6 +111,16 @@ export default function ReviewForm() {
           Submit Review
         </button>
       </form>
+
+      {/* Toast container */}
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+      />
     </>
   );
 }
