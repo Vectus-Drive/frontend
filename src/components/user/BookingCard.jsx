@@ -2,6 +2,7 @@ import { FaCalendar, FaClock, FaCreditCard } from "react-icons/fa";
 
 export default function BookingCard({ booking, car, setSelectedBooking }) {
   
+  
   return (
     <div
       className="bg-slate-900/50 rounded-xl border border-slate-700/50 overflow-hidden hover:border-orange-400/50 transition-all cursor-pointer"

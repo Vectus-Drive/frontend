@@ -1,25 +1,43 @@
 import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { updateCustomer } from "../../api/api";
 
-export default function EditProfileModal({
-  editForm,
-  setUserData,
-  setShowEditProfileModal,
-}) {
+function EditProfileModal({ userData, setShowEditProfileModal, id }) {
+  // ✅ Validation Schema with Yup
+  const schema = yup.object().shape({
+    name: yup.string().required("Name is required"),
+    nic: yup.string().required("NIC is required"),
+    email: yup
+      .string()
+      .email("Invalid email format")
+      .required("Email is required"),
+    telephone_no: yup
+      .string()
+      .matches(/^\d{10}$/, "Telephone number must be 10 digits")
+      .required("Telephone number is required"),
+    address: yup.string().required("Address is required"),
+  });
+
+  // ✅ React Hook Form setup
   const {
     register,
     handleSubmit,
-    formState: { errors },
     reset,
+    formState: { errors },
   } = useForm({
-    defaultValues: editForm,
+    resolver: yupResolver(schema),
+    defaultValues: userData,
   });
 
-  const onSubmit = (data) => {
-    console.log("📝 Updated Profile Data:", data);
-    alert("Profile updated successfully!");
-    setUserData(data);
-    reset();
-    setShowEditProfileModal(false);
+  const onSubmit = async (data) => {
+    try {
+      await updateCustomer(data, id);
+      reset();
+      setShowEditProfileModal(false);
+      } catch (err) {
+        console.error(err);
+      }
   };
 
   return (
@@ -39,38 +57,70 @@ export default function EditProfileModal({
           </button>
         </div>
 
-        {/* Input Fields */}
-        {[
-          { label: "Name", name: "name" },
-          { label: "NIC", name: "nic" },
-          { label: "Username", name: "username" },
-          { label: "Email", name: "email", type: "email" },
-          { label: "Telephone No", name: "telephone_no" },
-          { label: "Address", name: "address" },
-        ].map(({ label, name, type = "text" }) => (
-          <div key={name}>
-            <label className="block text-gray-300 text-sm mb-1">{label}</label>
-            <input
-              type={type}
-              placeholder={label}
-              className="w-full p-2 bg-gray-700 rounded-md border border-gray-600 outline-none text-white"
-              {...register(name, {
-                required: `${label} is required`,
-                ...(name === "email" && {
-                  pattern: {
-                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                    message: "Invalid email format",
-                  },
-                }),
-              })}
-            />
-            {errors[name] && (
-              <p className="text-red-400 text-sm mt-1">
-                {errors[name]?.message}
-              </p>
-            )}
-          </div>
-        ))}
+        {/* ✅ Normal fields instead of mapping */}
+        <div>
+          <label className="block text-gray-300 text-sm mb-1">Name</label>
+          <input
+            {...register("name")}
+            placeholder="Name"
+            className="w-full p-2 bg-gray-700 rounded-md border border-gray-600 outline-none text-white"
+          />
+          {errors.name && (
+            <p className="text-red-400 text-sm mt-1">{errors.name.message}</p>
+          )}
+        </div>
+
+        <div>
+          <label className="block text-gray-300 text-sm mb-1">NIC</label>
+          <input
+            {...register("nic")}
+            placeholder="NIC"
+            className="w-full p-2 bg-gray-700 rounded-md border border-gray-600 outline-none text-white"
+          />
+          {errors.nic && (
+            <p className="text-red-400 text-sm mt-1">{errors.nic.message}</p>
+          )}
+        </div>
+        <div>
+          <label className="block text-gray-300 text-sm mb-1">Email</label>
+          <input
+            type="email"
+            {...register("email")}
+            placeholder="Email"
+            className="w-full p-2 bg-gray-700 rounded-md border border-gray-600 outline-none text-white"
+          />
+          {errors.email && (
+            <p className="text-red-400 text-sm mt-1">{errors.email.message}</p>
+          )}
+        </div>
+
+        <div>
+          <label className="block text-gray-300 text-sm mb-1">Telephone No</label>
+          <input
+            {...register("telephone_no")}
+            placeholder="Telephone No"
+            className="w-full p-2 bg-gray-700 rounded-md border border-gray-600 outline-none text-white"
+          />
+          {errors.telephone_no && (
+            <p className="text-red-400 text-sm mt-1">
+              {errors.telephone_no.message}
+            </p>
+          )}
+        </div>
+
+        <div>
+          <label className="block text-gray-300 text-sm mb-1">Address</label>
+          <input
+            {...register("address")}
+            placeholder="Address"
+            className="w-full p-2 bg-gray-700 rounded-md border border-gray-600 outline-none text-white"
+          />
+          {errors.address && (
+            <p className="text-red-400 text-sm mt-1">
+              {errors.address.message}
+            </p>
+          )}
+        </div>
 
         {/* Buttons */}
         <div className="flex gap-3 pt-2">
@@ -92,3 +142,5 @@ export default function EditProfileModal({
     </div>
   );
 }
+
+export default EditProfileModal;

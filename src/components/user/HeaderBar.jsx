@@ -1,7 +1,6 @@
 import { FaArrowLeft, FaBell, FaLock, FaSignOutAlt } from "react-icons/fa";
 
 export default function HeaderBar({
-  unreadCount,
   showNotifDropdown,
   notifications,
   setShowNotifDropdown,
@@ -28,11 +27,9 @@ export default function HeaderBar({
               className="relative p-2.5 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors"
             >
               <FaBell size={18} className="text-slate-300" />
-              {unreadCount > 0 && (
                 <span className="absolute -top-1 -right-1 w-5 h-5 text-xs font-bold text-white bg-orange-500 rounded-full flex items-center justify-center">
-                  {unreadCount}
+                  {notifications.length}
                 </span>
-              )}
             </button>
 
             {showNotifDropdown && (
@@ -49,22 +46,23 @@ export default function HeaderBar({
                 <div className="max-h-80 overflow-y-auto">
                   {notifications.map((n) => (
                     <div
-                      key={n.id}
+                      key={n.notification_id}
                       className={`p-4 border-b border-slate-700 hover:bg-slate-700/50 ${
                         !n.read ? "bg-slate-700/30" : ""
                       }`}
                     >
                       <p
-                        className={`text-sm ${
-                          n.status === "booked"
-                            ? "text-green-400"
-                            : "text-red-400"
-                        }`}
+                        // className={`text-sm ${
+                        //   n.status === "booked"
+                        //     ? "text-green-400"
+                        //     : "text-red-400"
+                        // }`}
+                        className={`text-sm`}
                       >
-                        {n.message}
+                        {n.text}
                       </p>
                       <span className="text-xs text-slate-400 mt-1 block">
-                        {n.time}
+                        {n.created_at}
                       </span>
                     </div>
                   ))}
