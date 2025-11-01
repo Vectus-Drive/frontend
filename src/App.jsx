@@ -5,6 +5,7 @@ import {
   RouterProvider,
   Navigate,
 } from "react-router-dom";
+import { ToastContainer } from 'react-toastify';
 
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -21,6 +22,7 @@ import UserManagement from "./pages/admin/UserManagement";
 import EmployeeManagement from "./pages/admin/EmployeeManagement";
 import BookingManagement from "./pages/admin/BookingManagement";
 import TransactionManagement from "./pages/admin/TransactionManagement";
+import Services from "./pages/admin/Services";
 import ReviewManagement from "./pages/admin/ReviewManagement";
 import Transaction from "./pages/Transaction";
 import NotFoundPage from "./pages/NotFoundPage ";
@@ -51,11 +53,15 @@ function App() {
 
           <Route
             path="login"
-            element={!isAuthenticated ? <Login /> : <Navigate to="/dashboard" />}
+            element={
+              !isAuthenticated ? <Login /> : <Navigate to="/dashboard" />
+            }
           />
           <Route
             path="register"
-            element={!isAuthenticated ? <SignUp /> : <Navigate to="/dashboard" />}
+            element={
+              !isAuthenticated ? <SignUp /> : <Navigate to="/dashboard" />
+            }
           />
 
           <Route element={<ProtectedRoute />}>
@@ -64,24 +70,38 @@ function App() {
             <Route path="employee-profile" element={<EmployeeProfile />} />
 
             <Route path="/dashboard" element={<AdminLayout />}>
-            <Route index element={<AdminDashboard />} />
-            <Route path="cars" element={<CarManagement />} />
-            <Route path="users" element={<UserManagement />} />
-            <Route path="employee" element={<EmployeeManagement />} />
-            <Route path="bookings" element={<BookingManagement />} />
-            <Route path="transaction" element={<TransactionManagement />} />
-            <Route path="review" element={<ReviewManagement />} />
-          </Route>
+              <Route index element={<AdminDashboard />} />
+              <Route path="cars" element={<CarManagement />} />
+              <Route path="users" element={<UserManagement />} />
+              <Route path="employee" element={<EmployeeManagement />} />
+              <Route path="bookings" element={<BookingManagement />} />
+              <Route path="transaction" element={<TransactionManagement />} />
+              <Route path="review" element={<ReviewManagement />} />
+              <Route path="services" element={<Services />} />
+            </Route>
           </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Route>
-      
-          
       </>
     )
   );
 
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <RouterProvider router={router} />
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        toastClassName={() =>
+          "relative flex p-5 min-h-10 rounded-md justify-between overflow-hidden cursor-pointer bg-[#0f172a] text-white"
+        }
+      />
+    </>
+  );
 }
 
 export default App;

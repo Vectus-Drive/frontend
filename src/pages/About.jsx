@@ -66,85 +66,144 @@ function About() {
         page="ABOUT US"
       />
 
-      <div>
-        <h2 className="text-3xl font-semibold text-center mb-8 text-orange-400">
-          Our Services
-        </h2>
-        <div className="grid md:grid-cols-3 gap-6">
-          <div className="bg-gray-800 p-8 rounded-2xl shadow-lg text-center hover:scale-105 transition">
-            <FaCar className="text-4xl text-orange-500 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold mb-2">Car Rentals</h3>
-            <p className="text-gray-400">
-              Wide range of vehicles for daily, weekly, or monthly rentals.
-            </p>
-          </div>
-          <div className="bg-gray-800 p-8 rounded-2xl shadow-lg text-center hover:scale-105 transition">
-            <FaKey className="text-4xl text-orange-500 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold mb-2">Long-Term Leasing</h3>
-            <p className="text-gray-400">
-              Affordable leasing options for individuals and businesses.
-            </p>
-          </div>
-          <div className="bg-gray-800 p-8 rounded-2xl shadow-lg text-center hover:scale-105 transition">
-            <FaHeadset className="text-4xl text-orange-500 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold mb-2">24/7 Support</h3>
-            <p className="text-gray-400">
-              Our team is always ready to assist you anytime, anywhere.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div className="grid md:grid-cols-2 gap-10">
-        <div className="bg-gray-800 p-8 rounded-2xl shadow-md">
-          <h2 className="text-2xl font-bold text-orange-400 mb-3">
-            Our Vision
+      <div className="relative">
+        <div className="absolute inset-0 bg-gradient-to-r from-orange-500/5 to-transparent rounded-3xl blur-2xl"></div>
+        <div className="relative">
+          <h2 className="text-4xl font-bold text-center mb-12">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">
+              Our Services
+            </span>
           </h2>
-          <p className="text-gray-300">
-            To be the most trusted car rental service by offering innovation,
-            safety, and superior customer experiences.
-          </p>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="relative group bg-gradient-to-br from-gray-800 to-gray-900 p-10 rounded-3xl shadow-2xl border border-gray-700 hover:border-orange-500 text-center transform hover:-translate-y-2 transition duration-300">
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-500/0 to-orange-600/0 group-hover:from-orange-500/10 group-hover:to-orange-600/10 rounded-3xl transition duration-300"></div>
+              <div className="relative">
+                <div className="bg-orange-500/20 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition duration-300">
+                  <FaCar className="text-5xl text-orange-500" />
+                </div>
+                <h3 className="text-2xl font-bold mb-3 text-white">
+                  Car Rentals
+                </h3>
+                <p className="text-gray-400 leading-relaxed">
+                  Wide range of vehicles for daily, weekly, or monthly rentals.
+                </p>
+              </div>
+            </div>
+
+            <div className="relative group bg-gradient-to-br from-gray-800 to-gray-900 p-10 rounded-3xl shadow-2xl border border-gray-700 hover:border-orange-500 text-center transform hover:-translate-y-2 transition duration-300">
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-500/0 to-orange-600/0 group-hover:from-orange-500/10 group-hover:to-orange-600/10 rounded-3xl transition duration-300"></div>
+              <div className="relative">
+                <div className="bg-orange-500/20 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition duration-300">
+                  <FaKey className="text-5xl text-orange-500" />
+                </div>
+                <h3 className="text-2xl font-bold mb-3 text-white">
+                  Long-Term Leasing
+                </h3>
+                <p className="text-gray-400 leading-relaxed">
+                  Affordable leasing options for individuals and businesses.
+                </p>
+              </div>
+            </div>
+
+            <div className="relative group bg-gradient-to-br from-gray-800 to-gray-900 p-10 rounded-3xl shadow-2xl border border-gray-700 hover:border-orange-500 text-center transform hover:-translate-y-2 transition duration-300">
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-500/0 to-orange-600/0 group-hover:from-orange-500/10 group-hover:to-orange-600/10 rounded-3xl transition duration-300"></div>
+              <div className="relative">
+                <div className="bg-orange-500/20 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition duration-300">
+                  <FaHeadset className="text-5xl text-orange-500" />
+                </div>
+                <h3 className="text-2xl font-bold mb-3 text-white">
+                  24/7 Support
+                </h3>
+                <p className="text-gray-400 leading-relaxed">
+                  Our team is always ready to assist you anytime, anywhere.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="bg-gray-800 p-8 rounded-2xl shadow-md">
-          <h2 className="text-2xl font-bold text-orange-400 mb-3">
-            Our Mission
-          </h2>
-          <p className="text-gray-300">
-            Deliver reliable and affordable transportation solutions with a
-            customer-first approach while ensuring comfort and safety.
-          </p>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-8">
+        <div className="relative group bg-gradient-to-br from-gray-800 to-gray-900 p-10 rounded-3xl shadow-2xl border border-gray-700 hover:border-orange-500 transition duration-300">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/10 rounded-full blur-2xl group-hover:bg-orange-500/20 transition"></div>
+          <div className="relative">
+            <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600 mb-4">
+              Our Vision
+            </h2>
+            <p className="text-gray-300 text-lg leading-relaxed">
+              To be the most trusted car rental service by offering innovation,
+              safety, and superior customer experiences.
+            </p>
+          </div>
+        </div>
+
+        <div className="relative group bg-gradient-to-br from-gray-800 to-gray-900 p-10 rounded-3xl shadow-2xl border border-gray-700 hover:border-orange-500 transition duration-300">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/10 rounded-full blur-2xl group-hover:bg-orange-500/20 transition"></div>
+          <div className="relative">
+            <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600 mb-4">
+              Our Mission
+            </h2>
+            <p className="text-gray-300 text-lg leading-relaxed">
+              Deliver reliable and affordable transportation solutions with a
+              customer-first approach while ensuring comfort and safety.
+            </p>
+          </div>
         </div>
       </div>
 
       <div>
-        <h2 className="text-3xl font-semibold text-center mb-8 text-orange-400">
-          Why Choose Us
+        <h2 className="text-4xl font-bold text-center mb-12">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">
+            Why Choose Us
+          </span>
         </h2>
-        <div className="grid md:grid-cols-3 gap-6">
-          <div className="bg-gray-800 p-6 rounded-2xl shadow-lg text-center hover:scale-105 transition">
-            <FaShieldAlt className="text-3xl text-orange-500 mx-auto mb-3" />
-            <h3 className="font-semibold mb-1">Safe & Reliable</h3>
-            <p className="text-gray-400 text-sm">
-              Our vehicles undergo regular inspections to ensure your safety.
-            </p>
+        <div className="grid md:grid-cols-3 gap-8">
+          <div className="relative group bg-gradient-to-br from-gray-800 to-gray-900 p-8 rounded-3xl shadow-2xl border border-gray-700 hover:border-orange-500 text-center transform hover:-translate-y-2 transition duration-300">
+            <div className="absolute inset-0 bg-gradient-to-br from-orange-500/0 to-orange-600/0 group-hover:from-orange-500/10 group-hover:to-orange-600/10 rounded-3xl transition duration-300"></div>
+            <div className="relative">
+              <div className="bg-orange-500/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-5 group-hover:scale-110 transition duration-300">
+                <FaShieldAlt className="text-4xl text-orange-500" />
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-white">
+                Safe & Reliable
+              </h3>
+              <p className="text-gray-400 leading-relaxed">
+                Our vehicles undergo regular inspections to ensure your safety.
+              </p>
+            </div>
           </div>
-          <div className="bg-gray-800 p-6 rounded-2xl shadow-lg text-center hover:scale-105 transition">
-            <FaThumbsUp className="text-3xl text-orange-500 mx-auto mb-3" />
-            <h3 className="font-semibold mb-1">Trusted Service</h3>
-            <p className="text-gray-400 text-sm">
-              Over 1000+ satisfied customers with excellent reviews.
-            </p>
+
+          <div className="relative group bg-gradient-to-br from-gray-800 to-gray-900 p-8 rounded-3xl shadow-2xl border border-gray-700 hover:border-orange-500 text-center transform hover:-translate-y-2 transition duration-300">
+            <div className="absolute inset-0 bg-gradient-to-br from-orange-500/0 to-orange-600/0 group-hover:from-orange-500/10 group-hover:to-orange-600/10 rounded-3xl transition duration-300"></div>
+            <div className="relative">
+              <div className="bg-orange-500/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-5 group-hover:scale-110 transition duration-300">
+                <FaThumbsUp className="text-4xl text-orange-500" />
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-white">
+                Trusted Service
+              </h3>
+              <p className="text-gray-400 leading-relaxed">
+                Over 1000+ satisfied customers with excellent reviews.
+              </p>
+            </div>
           </div>
-          <div className="bg-gray-800 p-6 rounded-2xl shadow-lg text-center hover:scale-105 transition">
-            <FaClock className="text-3xl text-orange-500 mx-auto mb-3" />
-            <h3 className="font-semibold mb-1">24/7 Availability</h3>
-            <p className="text-gray-400 text-sm">
-              Our team and vehicles are ready whenever you need them.
-            </p>
+
+          <div className="relative group bg-gradient-to-br from-gray-800 to-gray-900 p-8 rounded-3xl shadow-2xl border border-gray-700 hover:border-orange-500 text-center transform hover:-translate-y-2 transition duration-300">
+            <div className="absolute inset-0 bg-gradient-to-br from-orange-500/0 to-orange-600/0 group-hover:from-orange-500/10 group-hover:to-orange-600/10 rounded-3xl transition duration-300"></div>
+            <div className="relative">
+              <div className="bg-orange-500/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-5 group-hover:scale-110 transition duration-300">
+                <FaClock className="text-4xl text-orange-500" />
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-white">
+                24/7 Availability
+              </h3>
+              <p className="text-gray-400 leading-relaxed">
+                Our team and vehicles are ready whenever you need them.
+              </p>
+            </div>
           </div>
         </div>
       </div>
-
       <div>
         <h2 className="text-3xl font-semibold text-center mb-10 text-orange-400">
           Meet Our Team

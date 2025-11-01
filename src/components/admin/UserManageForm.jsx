@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { FaTimes, FaCloudUploadAlt } from "react-icons/fa";
+import api from "../../api/api";
 
 const schema = yup.object().shape({
   name: yup.string().required("Full name is required"),

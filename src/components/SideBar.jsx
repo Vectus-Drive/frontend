@@ -4,6 +4,7 @@ import {
   FaUsers,
   FaCarSide,
   FaSignOutAlt,
+  FaServicestack,
 } from "react-icons/fa";
 import { MdOutlineReviews } from "react-icons/md";
 import { GrTransaction } from "react-icons/gr";
@@ -21,6 +22,7 @@ export default function Sidebar() {
     { label: "Employees Management", icon: <FaUsers />, path: "/dashboard/employee" },
     { label: "Transaction", icon: <GrTransaction />, path: "/dashboard/transaction" },
     { label: "Review Management", icon: <MdOutlineReviews />, path: "/dashboard/review" },
+    { label: "Services", icon: <FaServicestack />, path: "/dashboard/services" },
   ];
 
   const { logout } = useAuth();

@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { FaEdit, FaUserCircle, FaTrash } from "react-icons/fa";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import UserManageForm from "../../components/admin/UserManageForm";
 import api from "../../api/api";
 
@@ -195,18 +194,6 @@ function UserManagement() {
           </div>
         </div>
       )}
-
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        closeOnClick
-        pauseOnHover
-        draggable
-        toastClassName={() =>
-          "relative flex p-5 min-h-10 rounded-md justify-between overflow-hidden cursor-pointer bg-[#0f172a] text-white"
-        }
-      />
     </div>
   );
 }

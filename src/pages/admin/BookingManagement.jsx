@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { FaDownload } from "react-icons/fa";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import api from "../../api/api";
 
 function BookingManagement() {
@@ -103,120 +102,108 @@ function BookingManagement() {
 
   return (
     <>
-    <div className="p-6">
+      <div className="p-6">
+        <div className="flex border-b pb-4 border-gray-200 mb-10 justify-between items-center">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-800">
+              Booking Management
+            </h1>
+            <p className="text-gray-600">
+              Track all customer bookings, approve or cancel requests, and
+              manage booking status.
+            </p>
+          </div>
 
-      <div className="flex border-b pb-4 border-gray-200 mb-10 justify-between items-center">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-800">
-            Booking Management
-          </h1>
-          <p className="text-gray-600">
-            Track all customer bookings, approve or cancel requests, and manage
-            booking status.
-          </p>
+          <button className="flex items-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg shadow-lg transition duration-200">
+            <FaDownload /> Download Report
+          </button>
         </div>
 
-        <button className="flex items-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg shadow-lg transition duration-200">
-          <FaDownload /> Download Report
-        </button>
-      </div>
+        <div className="overflow-x-auto">
+          <table className="min-w-full border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+            <thead className="bg-gray-100">
+              <tr>
+                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
+                  Car Info
+                </th>
+                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
+                  License No
+                </th>
+                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
+                  Customer Name
+                </th>
+                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
+                  Booked At
+                </th>
+                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
+                  Time Period
+                </th>
+                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
+                  Returned At
+                </th>
+                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
+                  Fine
+                </th>
+                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
+                  Status
+                </th>
+              </tr>
+            </thead>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full border border-gray-200 rounded-lg overflow-hidden shadow-sm">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
-                Car Info
-              </th>
-              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
-                License No
-              </th>
-              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
-                Customer Name
-              </th>
-              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
-                Booked At
-              </th>
-              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
-                Time Period
-              </th>
-              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
-                Returned At
-              </th>
-              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
-                Fine
-              </th>
-              <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
-                Status
-              </th>
-            </tr>
-          </thead>
-
-          <tbody className="divide-y divide-gray-200 bg-white">
-            {bookings.length > 0 ? (
-              bookings.map((booking) => (
-                <tr
-                  key={booking.booking_id}
-                  className="hover:bg-gray-50 transition-colors"
-                >
-                  <td className="px-4 py-3 text-gray-700">
-                    {booking.car_info}
-                  </td>
-                  <td className="px-4 py-3 text-gray-700">
-                    {booking.license_no}
-                  </td>
-                  <td className="px-4 py-3 text-gray-700">
-                    {booking.customer_name}
-                  </td>
-                  <td className="px-4 py-3 text-gray-700">
-                    {booking.booked_at}
-                  </td>
-                  <td className="px-4 py-3 text-gray-700">
-                    {booking.time_period}
-                  </td>
-                  <td className="px-4 py-3 text-gray-700">
-                    {booking.returned_at}
-                  </td>
-                  <td className="px-4 py-3 text-gray-700">{booking.fine}</td>
-                  <td className="px-4 py-3">
-                    <select
-                      value={booking.status}
-                      onChange={(e) =>
-                        handleStatusChange(booking.booking_id, e.target.value)
-                      }
-                      className={`px-3 py-1.5 rounded-full text-sm font-semibold border-0 focus:ring-2 focus:ring-orange-400 ${getStatusColor(
-                        booking.status
-                      )}`}
-                    >
-                      <option value="pending">Pending</option>
-                      <option value="booked">Booked</option>
-                      <option value="canceled">Canceled</option>
-                    </select>
+            <tbody className="divide-y divide-gray-200 bg-white">
+              {bookings.length > 0 ? (
+                bookings.map((booking) => (
+                  <tr
+                    key={booking.booking_id}
+                    className="hover:bg-gray-50 transition-colors"
+                  >
+                    <td className="px-4 py-3 text-gray-700">
+                      {booking.car_info}
+                    </td>
+                    <td className="px-4 py-3 text-gray-700">
+                      {booking.license_no}
+                    </td>
+                    <td className="px-4 py-3 text-gray-700">
+                      {booking.customer_name}
+                    </td>
+                    <td className="px-4 py-3 text-gray-700">
+                      {booking.booked_at}
+                    </td>
+                    <td className="px-4 py-3 text-gray-700">
+                      {booking.time_period}
+                    </td>
+                    <td className="px-4 py-3 text-gray-700">
+                      {booking.returned_at}
+                    </td>
+                    <td className="px-4 py-3 text-gray-700">{booking.fine}</td>
+                    <td className="px-4 py-3">
+                      <select
+                        value={booking.status}
+                        onChange={(e) =>
+                          handleStatusChange(booking.booking_id, e.target.value)
+                        }
+                        className={`px-3 py-1.5 rounded-full text-sm font-semibold border-0 focus:ring-2 focus:ring-orange-400 ${getStatusColor(
+                          booking.status
+                        )}`}
+                      >
+                        <option value="pending">Pending</option>
+                        <option value="booked">Booked</option>
+                        <option value="canceled">Canceled</option>
+                      </select>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="8" className="text-center py-6 text-gray-500">
+                    No bookings found
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="8" className="text-center py-6 text-gray-500">
-                  No bookings found
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
-<ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        closeOnClick
-        pauseOnHover
-        draggable
-        toastClassName={() =>
-          "relative flex p-5 min-h-10 rounded-md justify-between overflow-hidden cursor-pointer bg-[#0f172a] text-white"
-        }
-      />
     </>
   );
 }
