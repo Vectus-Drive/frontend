@@ -112,7 +112,6 @@ export default function ReviewForm() {
         </button>
       </form>
 
-      {/* Toast container */}
       <ToastContainer
         position="top-right"
         autoClose={3000}

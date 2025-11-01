@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import {
   FaEnvelope,
   FaPhone,
@@ -6,12 +5,12 @@ import {
   FaIdCard,
   FaUser,
   FaEdit,
-  FaCamera,
 } from "react-icons/fa";
 
 export default function ProfileSidebar({
   userData,
   setShowEditProfileModal,
+  setShowEditUserName,
   setShowImageModal,
 }) {
 
@@ -67,6 +66,13 @@ export default function ProfileSidebar({
           >
             <FaEdit size={14} />
             <span>Edit Profile</span>
+          </button>
+          <button
+            onClick={() => setShowEditUserName(true)}
+             className="mt-6 flex items-center gap-2 text-sm bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg transition-colors w-full justify-center"
+          >
+            <FaEdit size={14} />
+            <span>Edit Username</span>
           </button>
         </div>
       </div>

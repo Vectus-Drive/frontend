@@ -17,7 +17,7 @@ export default function Sidebar() {
     { label: "Dashboard", icon: <FaHome />, path: "/dashboard" },
     { label: "Bookings", icon: <MdBookOnline />, path: "/dashboard/bookings" },
     { label: "Car Management", icon: <FaCarSide />, path: "/dashboard/cars" },
-    { label: "User Management", icon: <FaUsers />, path: "/dashboard/users" },
+    { label: "Customer Management", icon: <FaUsers />, path: "/dashboard/users" },
     { label: "Employees Management", icon: <FaUsers />, path: "/dashboard/employee" },
     { label: "Transaction", icon: <GrTransaction />, path: "/dashboard/transaction" },
     { label: "Review Management", icon: <MdOutlineReviews />, path: "/dashboard/review" },
