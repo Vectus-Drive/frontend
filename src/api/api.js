@@ -87,4 +87,40 @@ export const getCarData = async (id) => {
   }
 }
 
+export const updateBooking = async (booking, id) => {
+  try {
+    const response = await api.put(`/bookings/${id}`, booking);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const generateOTP = async (email) => {
+  try {
+    const response = await api.get(`/auth/generate-otp?email=${email}`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const validateOTP = async (otp) => {
+  try {
+    const response = await api.get(`/auth/validate-otp?otp=${otp}`);
+    return response.data;
+  } catch (error) {
+    return error.response?.data
+  }
+}
+
+export const updateUser = async (userData, id) => {
+  try {
+    const response = await api.put(`/auth/update/${id}`, userData);
+    return response.data;
+  } catch (error) {
+    return error.response?.data
+  }
+}
+
 export default api;

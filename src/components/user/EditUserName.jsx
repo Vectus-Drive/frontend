@@ -1,10 +1,16 @@
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { FaTimes } from "react-icons/fa";
+import OTPModal from "../OTPModal";
+import { generateOTP, updateUser } from "../../api/api";
 
-function EditUserName({ setShowEditUserName }) {
-  const oldUsername = "john_anderson";
+function EditUserName({ setShowEditUserName, userData, id }) {
+  const oldUsername = userData.user.username;
+  const [showOTP, setShowOTP] = useState(false);
+  const [otpVerified, setOtpVerified] = useState(false);
+  const [newUsername, setNewUsername] = useState("");
 
   const schema = yup.object().shape({
     newUsername: yup
@@ -18,22 +24,34 @@ function EditUserName({ setShowEditUserName }) {
       ),
   });
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm({
+  const { register, handleSubmit, formState: { errors }, reset } = useForm({
     resolver: yupResolver(schema),
   });
 
+  // ✅ Trigger OTP modal on valid username submission
   const onSubmit = (data) => {
-    console.log("✅ Username updated successfully!", data);
-    setTimeout(() => {
-      setShowEditUserName(false);
-    }, 2000);
-    reset();
+    setNewUsername(data.newUsername); // save new username for later
+    generateOTP(userData.email)
+      .then(res => console.log(res));
+    setShowOTP(true);
   };
+
+  // ✅ Run username update after OTP verification
+  useEffect(() => {
+    if (otpVerified) {
+      const data = {
+        username: newUsername
+      }
+      
+      updateUser(data, id)
+        .then(res => {
+          console.log("Username updated successfully:", res);
+          setShowEditUserName(false);
+          reset();
+        })
+        .catch(err => console.error("Failed to update username:", err));
+    }
+  }, [otpVerified]);
 
   return (
     <>
@@ -46,15 +64,11 @@ function EditUserName({ setShowEditUserName }) {
             <FaTimes size={18} />
           </button>
 
-          <h2 className="text-xl font-semibold mb-4 text-center">
-            Edit Username
-          </h2>
+          <h2 className="text-xl font-semibold mb-4 text-center">Edit Username</h2>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
-              <label className="block text-sm text-slate-400 mb-1">
-                Old Username
-              </label>
+              <label className="block text-sm text-slate-400 mb-1">Old Username</label>
               <input
                 type="text"
                 value={oldUsername}
@@ -64,9 +78,7 @@ function EditUserName({ setShowEditUserName }) {
             </div>
 
             <div>
-              <label className="block text-sm text-slate-400 mb-1">
-                New Username
-              </label>
+              <label className="block text-sm text-slate-400 mb-1">New Username</label>
               <input
                 type="text"
                 placeholder="Enter new username"
@@ -78,9 +90,7 @@ function EditUserName({ setShowEditUserName }) {
                 } text-white focus:outline-none focus:ring-2`}
               />
               {errors.newUsername && (
-                <p className="text-red-400 text-sm mt-1">
-                  {errors.newUsername.message}
-                </p>
+                <p className="text-red-400 text-sm mt-1">{errors.newUsername.message}</p>
               )}
             </div>
 
@@ -93,6 +103,15 @@ function EditUserName({ setShowEditUserName }) {
           </form>
         </div>
       </div>
+
+      {showOTP && (
+        <OTPModal
+          show={showOTP}
+          setShow={setShowOTP}
+          setOtpVerified={setOtpVerified}
+          userData={userData}
+        />
+      )}
     </>
   );
 }
