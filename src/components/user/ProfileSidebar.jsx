@@ -39,12 +39,12 @@ export default function ProfileSidebar({
             <div className="flex items-center gap-3 text-slate-300">
               <FaIdCard className="text-orange-400" size={16} />
               <span className="text-sm">
-                Customer ID: {userData.customer_id}
+                {userData.customer_id}
               </span>
             </div>
             <div className="flex items-center gap-3 text-slate-300">
               <FaUser className="text-orange-400" size={16} />
-              <span className="text-sm">NIC: {userData.nic}</span>
+              <span className="text-sm">{userData.nic}</span>
             </div>
             <div className="flex items-center gap-3 text-slate-300">
               <FaEnvelope className="text-orange-400" size={16} />

@@ -1,6 +1,6 @@
 import BookingCard from "./BookingCard";
 
-export default function BookingTabs({ bookings, cars, setSelectedBooking }) {
+export default function BookingTabs({ bookings, setSelectedBooking }) {
   return (
     <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 overflow-hidden flex flex-col h-[80vh]">
       <div className="border-b border-slate-700 px-6 py-4 flex-shrink-0">
@@ -13,7 +13,7 @@ export default function BookingTabs({ bookings, cars, setSelectedBooking }) {
             <BookingCard
               key={booking.booking_id}
               booking={booking}
-              car={cars.find((c) => c.car_id === booking.car_id)}
+              car={booking.car}
               setSelectedBooking={setSelectedBooking}
             />
           ))

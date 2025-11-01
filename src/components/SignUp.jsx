@@ -89,12 +89,14 @@ function SignUp() {
       ? await handleImageUpload(data.profileImage)
       : null;
 
+
     const finalData = {
       ...data,
       image: img_url,
     };
 
-    console.log(finalData);
+    delete finalData.profileImage;
+    delete finalData.confirmPassword;
 
     await signUpUser(finalData);
   } catch (err) {
