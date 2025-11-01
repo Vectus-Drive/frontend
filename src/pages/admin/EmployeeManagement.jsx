@@ -161,9 +161,8 @@ function EmployeeManagement() {
         />
       )}
 
-      {/* Custom Delete Confirmation Modal */}
       {confirmDelete.open && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-black/60 bg-opacity-40 z-50">
           <div className="bg-white rounded-xl shadow-xl p-6 w-96 text-center">
             <h2 className="text-xl font-semibold text-gray-800 mb-3">
               Confirm Delete
@@ -189,7 +188,6 @@ function EmployeeManagement() {
         </div>
       )}
 
-      {/* Toast Notification */}
       <ToastContainer
         position="top-right"
         autoClose={3000}

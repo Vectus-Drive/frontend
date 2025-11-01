@@ -31,7 +31,6 @@ function UserManageForm({ user, role, onClose, onSave }) {
     resolver: yupResolver(schema),
   });
 
-  // 🔧 Initialize form with existing user data
   useEffect(() => {
     if (user) {
       reset({
@@ -49,7 +48,6 @@ function UserManageForm({ user, role, onClose, onSave }) {
     }
   }, [user, reset, role]);
 
-  // 🔧 Handle image change (Base64 for preview + upload-ready)
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -62,7 +60,6 @@ function UserManageForm({ user, role, onClose, onSave }) {
     }
   };
 
-  // ✅ Submit handler
   const onSubmit = (data) => {
     const formattedData = {
       ...data,
@@ -90,7 +87,6 @@ function UserManageForm({ user, role, onClose, onSave }) {
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
-          {/* LEFT COLUMN */}
           <div className="flex flex-col gap-4">
             <div className="flex flex-col items-center mb-4">
               <label className="text-sm font-medium text-gray-700 mb-2">Profile Image</label>
@@ -133,7 +129,6 @@ function UserManageForm({ user, role, onClose, onSave }) {
             </div>
           </div>
 
-          {/* RIGHT COLUMN */}
           <div className="flex flex-col gap-4">
             <div>
               <label className="text-sm font-medium text-gray-700">Full Name</label>
@@ -143,16 +138,6 @@ function UserManageForm({ user, role, onClose, onSave }) {
                 className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"
               />
               {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
-            </div>
-
-            <div>
-              <label className="text-sm font-medium text-gray-700">Username</label>
-              <input
-                type="text"
-                {...register("username")}
-                className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"
-              />
-              {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username.message}</p>}
             </div>
 
             <div>

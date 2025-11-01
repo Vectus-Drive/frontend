@@ -9,7 +9,10 @@ function UserManagement() {
   const [users, setUsers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userToEdit, setUserToEdit] = useState(null);
-  const [confirmDelete, setConfirmDelete] = useState({ open: false, u_id: null });
+  const [confirmDelete, setConfirmDelete] = useState({
+    open: false,
+    u_id: null,
+  });
 
   const getUsers = async () => {
     try {
@@ -77,14 +80,30 @@ function UserManagement() {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-100">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Image</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">NIC</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Address</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Telephone No.</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Username</th>
-                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Actions</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Image
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Name
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  NIC
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Email
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Address
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Telephone No.
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Username
+                </th>
+                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
@@ -92,17 +111,33 @@ function UserManagement() {
                 <tr key={user.user.u_id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
                     {user.image ? (
-                      <img className="h-10 w-10 rounded-full object-cover" src={user.image} alt={user.name} />
+                      <img
+                        className="h-10 w-10 rounded-full object-cover"
+                        src={user.image}
+                        alt={user.name}
+                      />
                     ) : (
                       <FaUserCircle className="h-10 w-10 text-gray-400" />
                     )}
                   </td>
-                  <td className="px-6 py-4 text-sm font-medium text-gray-900">{user.name}</td>
-                  <td className="px-6 py-4 text-sm text-gray-500">{user.nic}</td>
-                  <td className="px-6 py-4 text-sm text-gray-500">{user.email}</td>
-                  <td className="px-6 py-4 text-sm text-gray-500 truncate max-w-xs">{user.address}</td>
-                  <td className="px-6 py-4 text-sm text-gray-500">{user.telephone_no}</td>
-                  <td className="px-6 py-4 text-sm text-gray-500">{user.user.username}</td>
+                  <td className="px-6 py-4 text-sm font-medium text-gray-900">
+                    {user.name}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-500">
+                    {user.nic}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-500">
+                    {user.email}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-500 truncate max-w-xs">
+                    {user.address}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-500">
+                    {user.telephone_no}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-500">
+                    {user.user.username}
+                  </td>
                   <td className="px-6 py-4 text-center text-sm font-medium">
                     <button
                       onClick={() => handleUpdateUser(user)}
@@ -124,7 +159,6 @@ function UserManagement() {
         </div>
       </div>
 
-      {/* User Edit Modal */}
       {isModalOpen && (
         <UserManageForm
           user={userToEdit}
@@ -134,13 +168,15 @@ function UserManagement() {
         />
       )}
 
-      {/* Custom Delete Confirmation Modal */}
       {confirmDelete.open && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-black/60 bg-opacity-40 z-50">
           <div className="bg-white rounded-xl shadow-xl p-6 w-96 text-center">
-            <h2 className="text-xl font-semibold text-gray-800 mb-3">Confirm Delete</h2>
+            <h2 className="text-xl font-semibold text-gray-800 mb-3">
+              Confirm Delete
+            </h2>
             <p className="text-gray-600 mb-6">
-              Are you sure you want to delete this user? This action cannot be undone.
+              Are you sure you want to delete this user? This action cannot be
+              undone.
             </p>
             <div className="flex justify-center space-x-4">
               <button
@@ -161,17 +197,16 @@ function UserManagement() {
       )}
 
       <ToastContainer
-  position="top-right"
-  autoClose={3000}
-  hideProgressBar={false}
-  closeOnClick
-  pauseOnHover
-  draggable
-  toastClassName={() =>
-    "relative flex p-5 min-h-10 rounded-md justify-between overflow-hidden cursor-pointer bg-[#0f172a] text-white"
-  }
-/>
-
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        toastClassName={() =>
+          "relative flex p-5 min-h-10 rounded-md justify-between overflow-hidden cursor-pointer bg-[#0f172a] text-white"
+        }
+      />
     </div>
   );
 }

@@ -6,13 +6,16 @@ import EditProfileModal from "../components/user/EditProfileModal";
 import ChangePassword from "../components/user/ChangePassword";
 import BookingDetails from "../components/user/BookingDetails";
 import EditProfileImageModal from "../components/user/EditProfileImageModal";
+import EditUserName from "../components/user/EditUserName";
 
 function UserProfile() {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [showNotifDropdown, setShowNotifDropdown] = useState(false);
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
+  const [showEditUserName, setShowEditUserName] = useState(false);
   const [showImageModal, setShowImageModal] = useState(false);
+
   const [notifications, setNotifications] = useState([
     {
       id: 1,
@@ -104,6 +107,7 @@ function UserProfile() {
           userData={userData}
           setUserData={setUserData}
           setShowEditProfileModal={setShowEditProfileModal}
+          setShowEditUserName={setShowEditUserName}
           setShowImageModal={setShowImageModal}
         />
         <div className="w-full h-[80vh]">
@@ -122,6 +126,10 @@ function UserProfile() {
           setUserData={setUserData}
           setShowEditProfileModal={setShowEditProfileModal}
         />
+      )}
+
+      {showEditUserName && (
+        <EditUserName setShowEditUserName={setShowEditUserName} />
       )}
 
       {showPasswordModal && (
