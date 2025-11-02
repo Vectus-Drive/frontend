@@ -421,7 +421,7 @@ function AdminDashboard() {
                 Recent Bookings
               </h2>
               <button
-                onClick={() => navigate("/dashboard/bookings")}
+                onClick={() => navigate("/dashboard/booking-management")}
                 className="text-sm text-orange-600 hover:text-orange-700 font-semibold transition-colors"
               >
                 View All →

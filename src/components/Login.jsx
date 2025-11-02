@@ -6,18 +6,25 @@ import { useAuth } from "../hooks/AuthContext";
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({ username: "", password: "" });
-  const { login } = useAuth();
-  const navigate = useNavigate()
+  const { login, user, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await login(formData);
-      navigate("/dashboard");
+      const loggedUser = await login(formData);
+      
+      if (loggedUser.role === "employee") {
+        navigate("/employee-profile");
+      } else if (loggedUser.role === "customer") {
+        navigate("/user");
+      }
+
     } catch (err) {
-      alert("Invalid credentials");
+      console.log(err);
     }
   };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative">
       <div className="absolute top-6 left-6">
@@ -43,7 +50,9 @@ function Login() {
               placeholder="Enter your username"
               className="w-full p-3 bg-gray-700 text-white rounded-md outline-none focus:ring-2 focus:ring-orange-500 transition-all placeholder-gray-400"
               value={formData.username}
-              onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, username: e.target.value })
+              }
             />
           </div>
           <div className="text-left relative">
@@ -52,7 +61,9 @@ function Login() {
               placeholder="Enter your password"
               className="w-full p-3 bg-gray-700 text-white rounded-md outline-none focus:ring-2 focus:ring-orange-500 transition-all placeholder-gray-400"
               value={formData.password}
-              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, password: e.target.value })
+              }
             />
             <span
               onClick={() => setShowPassword(!showPassword)}
@@ -70,9 +81,7 @@ function Login() {
           </button>
         </form>
 
-        <p className="text-gray-400 text-sm mt-8">
-          Don’t have an account?
-        </p>
+        <p className="text-gray-400 text-sm mt-8">Don’t have an account?</p>
         <Link
           to="/register"
           className="inline-block border border-orange-500 text-orange-500 hover:bg-orange-600 hover:text-white transition-all py-2 px-6 mt-2 rounded-md text-sm font-medium"

@@ -146,7 +146,7 @@ function Header() {
                       <span className="text-sm text-gray-400">{user?.role || "User"} </span>
                     </div>
                     <Link
-                      to="/dashboard"
+                      to={user.role == "customer" ? "/user" : "/dashboard"}
                       onClick={() => setIsDropdownOpen(false)}
                       className="block px-4 py-2.5 text-gray-300 hover:bg-gradient-to-r hover:from-orange-500 hover:to-orange-600 hover:text-white transition-all"
                     >

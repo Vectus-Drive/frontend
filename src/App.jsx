@@ -35,51 +35,66 @@ import AdminLayout from "./layout/AdminLayout";
 import RootLayout from "./layout/RootLayout";
 
 function App() {
-  const { isAuthenticated, loading } = useAuth();
+  const { isAuthenticated, loading, user } = useAuth();
 
-  if (loading) {
-    return <Preloader />;
-  }
+  if (loading) return <Preloader />;
 
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
+        {/* 🌍 Public Layout */}
         <Route path="/" element={<RootLayout />}>
+          {/* --- Public Pages --- */}
           <Route index element={<Home />} />
           <Route path="about" element={<About />} />
           <Route path="cars" element={<CarList />} />
           <Route path="car-details/:id" element={<CarDetails />} />
           <Route path="contact-us" element={<ContactUs />} />
 
+          {/* --- Auth Pages --- */}
           <Route
             path="login"
             element={
-              !isAuthenticated ? <Login /> : <Navigate to="/dashboard" />
+              !isAuthenticated ? (
+                <Login />
+              ) : user?.role === "customer" ? (
+                <Navigate to="/user" />
+              ) : (
+                <Navigate to="/dashboard" />
+              )
             }
           />
+
           <Route
             path="register"
             element={
-              !isAuthenticated ? <SignUp /> : <Navigate to="/dashboard" />
+              !isAuthenticated ? <SignUp /> : <Navigate to="/login" />
             }
           />
 
-          <Route element={<ProtectedRoute />}>
-            <Route path="transaction" element={<Transaction />} />
+          {/* --- Protected Routes --- */}
+          <Route element={<ProtectedRoute allowedRoles={["customer"]} />}>
+            {/* Customer Routes */}
             <Route path="user" element={<UserProfile />} />
-            <Route path="employee-profile" element={<EmployeeProfile />} />
+            <Route path="transaction" element={<Transaction />} />
+          </Route>
 
-            <Route path="/dashboard" element={<AdminLayout />}>
+            {/* Employee/Admin Routes */}
+          <Route element={<ProtectedRoute allowedRoles={["employee"]} />} >
+            <Route path="employee-profile" element={<EmployeeProfile />} />
+            <Route path="dashboard" element={<AdminLayout />}>
               <Route index element={<AdminDashboard />} />
-              <Route path="cars" element={<CarManagement />} />
-              <Route path="users" element={<UserManagement />} />
-              <Route path="employee" element={<EmployeeManagement />} />
-              <Route path="bookings" element={<BookingManagement />} />
-              <Route path="transaction" element={<TransactionManagement />} />
-              <Route path="review" element={<ReviewManagement />} />
-              <Route path="services" element={<Services />} />
+              <Route path="car-management" element={<CarManagement />} />
+              <Route path="user-management" element={<UserManagement />} />
+              <Route path="employee-management" element={<EmployeeManagement />} />
+              <Route path="booking-management" element={<BookingManagement />} />
+              <Route path="transaction-management" element={<TransactionManagement />} />
+              <Route path="review-management" element={<ReviewManagement />} />
+              <Route path="service-management" element={<Services />} />
             </Route>
           </Route>
+
+          {/* --- 404 Page --- */}
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </>

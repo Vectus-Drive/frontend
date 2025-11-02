@@ -16,13 +16,13 @@ import { useAuth } from "../hooks/AuthContext";
 export default function Sidebar() {
   const menuItems = [
     { label: "Dashboard", icon: <FaHome />, path: "/dashboard" },
-    { label: "Bookings", icon: <MdBookOnline />, path: "/dashboard/bookings" },
-    { label: "Car Management", icon: <FaCarSide />, path: "/dashboard/cars" },
-    { label: "Customer Management", icon: <FaUsers />, path: "/dashboard/users" },
-    { label: "Employees Management", icon: <FaUsers />, path: "/dashboard/employee" },
-    { label: "Transaction", icon: <GrTransaction />, path: "/dashboard/transaction" },
-    { label: "Review Management", icon: <MdOutlineReviews />, path: "/dashboard/review" },
-    { label: "Services", icon: <FaServicestack />, path: "/dashboard/services" },
+    { label: "Bookings", icon: <MdBookOnline />, path: "/dashboard/booking-management" },
+    { label: "Car Management", icon: <FaCarSide />, path: "/dashboard/car-management" },
+    { label: "Customer Management", icon: <FaUsers />, path: "/dashboard/user-management" },
+    { label: "Employees Management", icon: <FaUsers />, path: "/dashboard/employee-management" },
+    { label: "Transaction", icon: <GrTransaction />, path: "/dashboard/transaction-management" },
+    { label: "Review Management", icon: <MdOutlineReviews />, path: "/dashboard/review-management" },
+    { label: "Services", icon: <FaServicestack />, path: "/dashboard/service-management" },
   ];
 
   const { logout } = useAuth();
