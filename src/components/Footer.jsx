@@ -10,21 +10,12 @@ import {
 } from "react-icons/fa";
 
 export default function Footer() {
-  const resources = [
+  const quickLinks = [
     { name: "Home", path: "/" },
     { name: "Car List", path: "/car" },
     { name: "About", path: "/about" },
     { name: "Contact Us", path: "/contact-us" },
   ];
-
-const services = [
-  { name: "Car Rentals", path: "/services/car-rentals" },
-  { name: "Luxury Cars", path: "/services/luxury" },
-  { name: "Corporate Plans", path: "/services/corporate" },
-  { name: "Airport Transfers", path: "/services/airport" },
-  { name: "Event Rentals", path: "/services/event" },
-];
-
 
   return (
     <footer className="relative bg-gradient-to-b from-slate-900 via-[#0f1729] to-slate-950 text-gray-300 overflow-hidden">
@@ -34,19 +25,84 @@ const services = [
       </div>
 
       <div className="relative z-10 py-12 md:py-16 px-6 md:px-12 lg:px-20">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 xl:gap-16 border-b border-slate-700/50 pb-12 max-w-7xl mx-auto">
-          
-          <div className="space-y-5 lg:pr-4">
-            <Link to="/" className="inline-block group">
-              <h2 className="text-2xl md:text-3xl font-extrabold">
-                Vectus<span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Drive</span>
-              </h2>
-            </Link>
-            <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
-              Your trusted partner for premium car rentals. Experience luxury, comfort, and reliability on every journey.
-            </p>
-            
-            <div className="space-y-3 pt-2">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-12 pb-8 border-b border-slate-700/50">
+            <div className="flex flex-col lg:flex-row items-start justify-between gap-8">
+              <Link to="/" className="inline-block group">
+                <div className="flex items-center gap-4">
+                  <svg 
+                    width="70" 
+                    height="70" 
+                    viewBox="0 0 100 100" 
+                    className="animate-bounce flex-shrink-0"
+                    style={{ animationDuration: '2s' }}
+                  >
+                    <path
+                      d="M20 55 L30 40 L70 40 L80 55 L75 55 L75 65 L25 65 L25 55 Z"
+                      fill="#1e293b"
+                      stroke="#f97316"
+                      strokeWidth="2"
+                    />
+                    <path
+                      d="M35 40 L40 48 L60 48 L65 40"
+                      fill="#334155"
+                      stroke="#f97316"
+                      strokeWidth="1.5"
+                    />
+                    <rect x="32" y="48" width="14" height="7" fill="#475569" stroke="#f97316" strokeWidth="1" />
+                    <rect x="54" y="48" width="14" height="7" fill="#475569" stroke="#f97316" strokeWidth="1" />
+                    <circle cx="32" cy="65" r="8" fill="#1e293b" stroke="#f97316" strokeWidth="2">
+                      <animateTransform
+                        attributeName="transform"
+                        type="rotate"
+                        from="0 32 65"
+                        to="360 32 65"
+                        dur="1s"
+                        repeatCount="indefinite"
+                      />
+                    </circle>
+                    <circle cx="32" cy="65" r="4" fill="#f97316" />
+                    <circle cx="68" cy="65" r="8" fill="#1e293b" stroke="#f97316" strokeWidth="2">
+                      <animateTransform
+                        attributeName="transform"
+                        type="rotate"
+                        from="0 68 65"
+                        to="360 68 65"
+                        dur="1s"
+                        repeatCount="indefinite"
+                      />
+                    </circle>
+                    <circle cx="68" cy="65" r="4" fill="#f97316" />
+                    <circle cx="78" cy="52" r="2" fill="#fbbf24">
+                      <animate
+                        attributeName="opacity"
+                        values="1;0.3;1"
+                        dur="2s"
+                        repeatCount="indefinite"
+                      />
+                    </circle>
+                  </svg>
+                  <div>
+                    <h2 className="text-4xl md:text-5xl font-extrabold">
+                      Vectus<span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Drive</span>
+                    </h2>
+                  </div>
+                </div>
+              </Link>
+              <div className="lg:max-w-md lg:pt-3">
+                <p className="text-gray-400 text-base leading-relaxed">
+                  Your trusted partner for premium car rentals. Experience luxury, comfort, and reliability on every journey.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 pb-12 border-b border-slate-700/50">
+            <div className="space-y-4">
+              <h3 className="text-white font-bold text-lg mb-6 relative inline-block">
+                Contact Us
+                <div className="absolute -bottom-2 left-0 w-12 h-1 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full"></div>
+              </h3>
               <div className="flex items-start gap-3 text-sm group">
                 <FaMapMarkerAlt className="text-orange-400 mt-1 flex-shrink-0 group-hover:scale-110 transition-transform" />
                 <p className="text-gray-400">
@@ -67,107 +123,73 @@ const services = [
                 </a>
               </div>
             </div>
+
+            <div>
+              <h3 className="text-white font-bold text-lg mb-6 relative inline-block">
+                Quick Links
+                <div className="absolute -bottom-2 left-0 w-12 h-1 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full"></div>
+              </h3>
+              <ul className="space-y-3">
+                {quickLinks.map((item) => (
+                  <li key={item.name}>
+                    <Link
+                      to={item.path}
+                      className="text-gray-400 hover:text-orange-400 transition-colors text-sm flex items-center gap-2 group"
+                    >
+                      <span className="w-0 group-hover:w-2 h-0.5 bg-orange-400 transition-all duration-300"></span>
+                      {item.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-white font-bold text-lg mb-6 relative inline-block">
+                Follow Us
+                <div className="absolute -bottom-2 left-0 w-12 h-1 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full"></div>
+              </h3>
+              <p className="text-gray-400 text-sm mb-5 leading-relaxed">
+                Stay connected with us on social media for the latest updates and offers.
+              </p>
+              <div className="flex gap-3">
+                <a
+                  href="#"
+                  className="w-10 h-10 bg-slate-800/50 border border-slate-700/50 rounded-full hover:bg-gradient-to-r hover:from-orange-500 hover:to-orange-600 hover:border-orange-500 transition-all flex items-center justify-center group hover:scale-110 duration-300"
+                  aria-label="Facebook"
+                >
+                  <FaFacebookF className="text-gray-400 group-hover:text-white transition-colors" />
+                </a>
+                <a
+                  href="#"
+                  className="w-10 h-10 bg-slate-800/50 border border-slate-700/50 rounded-full hover:bg-gradient-to-r hover:from-orange-500 hover:to-orange-600 hover:border-orange-500 transition-all flex items-center justify-center group hover:scale-110 duration-300"
+                  aria-label="Twitter"
+                >
+                  <FaTwitter className="text-gray-400 group-hover:text-white transition-colors" />
+                </a>
+                <a
+                  href="#"
+                  className="w-10 h-10 bg-slate-800/50 border border-slate-700/50 rounded-full hover:bg-gradient-to-r hover:from-orange-500 hover:to-orange-600 hover:border-orange-500 transition-all flex items-center justify-center group hover:scale-110 duration-300"
+                  aria-label="LinkedIn"
+                >
+                  <FaLinkedinIn className="text-gray-400 group-hover:text-white transition-colors" />
+                </a>
+                <a
+                  href="#"
+                  className="w-10 h-10 bg-slate-800/50 border border-slate-700/50 rounded-full hover:bg-gradient-to-r hover:from-orange-500 hover:to-orange-600 hover:border-orange-500 transition-all flex items-center justify-center group hover:scale-110 duration-300"
+                  aria-label="Instagram"
+                >
+                  <FaInstagram className="text-gray-400 group-hover:text-white transition-colors" />
+                </a>
+              </div>
+            </div>
           </div>
 
-          <div>
-            <h3 className="text-white font-bold text-lg mb-5 relative inline-block">
-              Resources
-              <div className="absolute -bottom-2 left-0 w-12 h-1 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full"></div>
-            </h3>
-            <ul className="space-y-3 mt-6">
-              {resources.map((item) => (
-                <li key={item.name}>
-                  <Link
-                    to={item.path}
-                    className="text-gray-400 hover:text-orange-400 transition-colors text-sm flex items-center gap-2 group"
-                  >
-                    <span className="w-0 group-hover:w-2 h-0.5 bg-orange-400 transition-all duration-300"></span>
-                    {item.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-white font-bold text-lg mb-5 relative inline-block">
-              services
-              <div className="absolute -bottom-2 left-0 w-12 h-1 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full"></div>
-            </h3>
-            <ul className="space-y-3 mt-6">
-              {services.map((item) => (
-                <li key={item.name}>
-                  <Link
-                    to={item.path}
-                    className="text-gray-400 hover:text-orange-400 transition-colors text-sm flex items-center gap-2 group"
-                  >
-                    <span className="w-0 group-hover:w-2 h-0.5 bg-orange-400 transition-all duration-300"></span>
-                    {item.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-white font-bold text-lg mb-5 relative inline-block">
-              Subscribe Newsletter
-              <div className="absolute -bottom-2 left-0 w-12 h-1 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full"></div>
-            </h3>
-            <p className="text-sm text-gray-400 mb-5 leading-relaxed mt-6">
-              Join our newsletter to stay updated on our latest offers and news.
+          <div className="pt-8 text-center">
+            <p className="text-gray-400 text-sm">
+              © 2025{" "}
+              <span className="font-semibold text-white">VectusDrive</span>. All Rights Reserved.
             </p>
-            <div className="flex flex-col gap-3">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="w-full bg-slate-800/50 border border-slate-700/50 rounded-lg px-4 py-3 focus:outline-none focus:border-orange-500/50 text-sm text-white placeholder:text-gray-500 transition-all backdrop-blur-sm"
-              />
-              <button className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 px-5 py-3 text-white font-semibold rounded-lg transition-all shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50 hover:scale-105 duration-300">
-                Subscribe
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex flex-col md:flex-row justify-between items-center mt-8 pt-8 text-sm space-y-6 md:space-y-0 max-w-7xl mx-auto">
-          <p className="text-gray-400 text-center md:text-left">
-            © 2025{" "}
-            <span className="font-semibold text-white">VectusDrive</span>. All Rights Reserved.
-          </p>
-
-          <div className="flex items-center gap-5">
-            <span className="text-gray-400 hidden sm:block">Follow Us:</span>
-            <div className="flex gap-3">
-              <a
-                href="#"
-                className="w-10 h-10 bg-slate-800/50 border border-slate-700/50 rounded-full hover:bg-gradient-to-r hover:from-orange-500 hover:to-orange-600 hover:border-orange-500 transition-all flex items-center justify-center group hover:scale-110 duration-300"
-                aria-label="Facebook"
-              >
-                <FaFacebookF className="text-gray-400 group-hover:text-white transition-colors" />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 bg-slate-800/50 border border-slate-700/50 rounded-full hover:bg-gradient-to-r hover:from-orange-500 hover:to-orange-600 hover:border-orange-500 transition-all flex items-center justify-center group hover:scale-110 duration-300"
-                aria-label="Twitter"
-              >
-                <FaTwitter className="text-gray-400 group-hover:text-white transition-colors" />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 bg-slate-800/50 border border-slate-700/50 rounded-full hover:bg-gradient-to-r hover:from-orange-500 hover:to-orange-600 hover:border-orange-500 transition-all flex items-center justify-center group hover:scale-110 duration-300"
-                aria-label="LinkedIn"
-              >
-                <FaLinkedinIn className="text-gray-400 group-hover:text-white transition-colors" />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 bg-slate-800/50 border border-slate-700/50 rounded-full hover:bg-gradient-to-r hover:from-orange-500 hover:to-orange-600 hover:border-orange-500 transition-all flex items-center justify-center group hover:scale-110 duration-300"
-                aria-label="Instagram"
-              >
-                <FaInstagram className="text-gray-400 group-hover:text-white transition-colors" />
-              </a>
-            </div>
           </div>
         </div>
       </div>
