@@ -1,6 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const NotFoundPage = () => {
+
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    setTimeout(() => {
+      navigate("/")
+    }, 8000)
+  })
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0f1729] to-[#1a2332] flex items-center justify-center px-4">
       <div className="max-w-4xl w-full text-center">
@@ -34,7 +44,7 @@ const NotFoundPage = () => {
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <button 
-            onClick={() => window.location.href = '/'}
+            onClick={() => navigate('/')}
             className="group flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold px-8 py-4 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-orange-500/30"
           >
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -47,7 +57,7 @@ const NotFoundPage = () => {
           </button>
 
           <button 
-            onClick={() => window.location.href = '/car'}
+            onClick={() => navigate('/cars')}
             className="flex items-center gap-2 bg-slate-700 hover:bg-slate-600 text-white font-semibold px-8 py-4 rounded-lg transition-all duration-300 hover:scale-105 border border-slate-600"
           >
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -56,30 +66,6 @@ const NotFoundPage = () => {
             Book Cars
           </button>
         </div>
-
-        <div className="mt-16 pt-8 border-t border-slate-700/50">
-          <p className="text-slate-500 text-sm uppercase tracking-wider mb-4">
-            Popular Pages
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <a href="/" className="text-slate-400 hover:text-orange-500 transition-colors">
-              Home
-            </a>
-            <span className="text-slate-700">|</span>
-            <a href="/car" className="text-slate-400 hover:text-orange-500 transition-colors">
-              Book Now
-            </a>
-            <span className="text-slate-700">|</span>
-            <a href="/about" className="text-slate-400 hover:text-orange-500 transition-colors">
-              About Us
-            </a>
-            <span className="text-slate-700">|</span>
-            <a href="/contact-us" className="text-slate-400 hover:text-orange-500 transition-colors">
-              Contact
-            </a>
-          </div>
-        </div>
-
         <div className="absolute top-20 left-10 w-32 h-32 bg-orange-500/5 rounded-full blur-3xl"></div>
         <div className="absolute bottom-20 right-10 w-40 h-40 bg-orange-500/5 rounded-full blur-3xl"></div>
       </div>

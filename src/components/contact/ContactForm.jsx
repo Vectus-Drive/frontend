@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { FaEnvelope, FaUser, FaPhone, FaWhatsapp } from "react-icons/fa";
+import { FaEnvelope, FaUser, FaPhone } from "react-icons/fa";
 import { SiMinutemailer } from "react-icons/si";
 
 function ContactForm() {
@@ -7,20 +8,39 @@ function ContactForm() {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm({
     defaultValues: {
       name: "",
       email: "",
       phone: "",
+      subject: "",
       message: "",
     },
   });
 
+  const [mailtoLink, setMailtoLink] = useState("");
+
   const onSubmit = (data) => {
-    console.log("🚗 Inquiry Form Data:", data);
-    alert("Inquiry submitted successfully!");
-    reset();
+    // cleaner subject
+    const subject = encodeURIComponent(
+      data.subject || `Car Rental Inquiry from ${data.name || "Customer"}`
+    );
+
+    // structured email body (less spammy, looks human-written)
+    const body = encodeURIComponent(
+      `Hello VectusDrive Team,\n\n` +
+      `I would like to inquire about your car rental services.\n\n` +
+      `Message:\n${data.message}\n\n` +
+      `-------------------------------\n` +
+      `Name: ${data.name}\n` +
+      `Email: ${data.email}\n` +
+      `Phone: ${data.phone}\n\n` +
+      `Best regards,\n${data.name}\n\n` +
+      `---\nVectusDrive | Premium Car Rentals\n📞 +94 77 123 4567\n✉️ vectusdrive@gmail.com\n🌐 www.vectusdrive.com\n"Your journey, our drive."`
+    );
+
+    const link = `mailto:vectusdrive@gmail.com?subject=${subject}&body=${body}`;
+    setMailtoLink(link);
   };
 
   return (
@@ -79,18 +99,28 @@ function ContactForm() {
             <input
               type="tel"
               placeholder="Phone Number"
-              {...register("phone", {
-                required: "Phone number is required",
-                pattern: {
-                  value: /^\d{10}$/,
-                  message: "Phone number must be 10 digits",
-                },
-              })}
+              {...register("phone", { required: "Phone number is required" })}
               className="bg-transparent w-full py-3 text-white outline-none placeholder-gray-400"
             />
           </div>
           {errors.phone && (
             <p className="text-red-400 text-sm mt-1">{errors.phone.message}</p>
+          )}
+        </div>
+
+        {/* Subject */}
+        <div>
+          <div className="flex items-center bg-gray-700 rounded-md px-3">
+            <FaEnvelope className="text-gray-400 mr-2" />
+            <input
+              type="text"
+              placeholder="Subject"
+              {...register("subject", { required: "Subject is required" })}
+              className="bg-transparent w-full py-3 text-white outline-none placeholder-gray-400"
+            />
+          </div>
+          {errors.subject && (
+            <p className="text-red-400 text-sm mt-1">{errors.subject.message}</p>
           )}
         </div>
 
@@ -110,13 +140,22 @@ function ContactForm() {
           )}
         </div>
 
-        {/* Submit Button */}
-        <button
-          type="submit"
-          className="w-full bg-orange-600 hover:bg-orange-700 text-white py-3 rounded-md font-semibold tracking-wide transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
-        >
-          Send Email <SiMinutemailer />
-        </button>
+        {/* Submit (as link) */}
+        {mailtoLink ? (
+          <a
+            href={mailtoLink}
+            className="w-full text-center bg-orange-600 hover:bg-orange-700 text-white py-3 rounded-md font-semibold tracking-wide transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+          >
+            Send Email <SiMinutemailer />
+          </a>
+        ) : (
+          <button
+            type="submit"
+            className="w-full bg-orange-600 hover:bg-orange-700 text-white py-3 rounded-md font-semibold tracking-wide transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+          >
+            Prepare Email <SiMinutemailer />
+          </button>
+        )}
       </form>
     </div>
   );
