@@ -1,15 +1,22 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const NotFoundPage = () => {
 
   const navigate = useNavigate()
+  const location = useLocation();
 
   useEffect(() => {
-    setTimeout(() => {
-      navigate("/")
-    }, 8000)
-  })
+    const currentPath = location.pathname;
+
+    const timer = setTimeout(() => {
+      if (location.pathname === currentPath) {
+        navigate("/");
+      }
+    }, 8000);
+
+    return () => clearTimeout(timer);
+  }, [navigate, location]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0f1729] to-[#1a2332] flex items-center justify-center px-4">

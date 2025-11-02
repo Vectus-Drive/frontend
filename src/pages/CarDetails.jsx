@@ -1,38 +1,17 @@
-import { useContext, useState } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
-import { FaChair, FaGasPump, FaCogs, FaCar } from "react-icons/fa";
-
+import { useContext } from "react";
+import { useParams, Link } from "react-router-dom";
 import { CarContext } from "../context/CarProvider";
 import RentForm from "../components/car/RentForm";
 import CarFeatures from "../components/car/CarFeatures";
-import PaymentModal from "../components/car/PaymentModal";
 
 function CarDetails() {
   const { cars } = useContext(CarContext);
   const { id } = useParams();
-  const navigate = useNavigate();
 
   const car = cars.find((cars) => cars.car_id === id);
 
-  const [showPaymentModal, setShowPaymentModal] = useState(false);
-
-  const handlePaymentChoice = (method) => {
-    setShowPaymentModal(false);
-    if (method === "card") {
-      navigate("/transaction");
-    } else {
-      console.log("Booked by Cash");
-    }
-  };
-
   return (
     <div className="bg-gray-900 min-h-screen text-white px-6 md:px-20 py-10 mt-20 relative">
-      {showPaymentModal && (
-        <PaymentModal
-          onClose={() => setShowPaymentModal(false)}
-          onSelectMethod={handlePaymentChoice}
-        />
-      )}
 
       <div className="top-6 left-6 mb-6">
         <Link
@@ -44,10 +23,11 @@ function CarDetails() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+        {/* LEFT: Car Details */}
         <div className="lg:col-span-2 space-y-6">
           <div className="rounded-2xl overflow-hidden shadow-lg border border-gray-700 bg-gray-800">
             <img
-              src={`/${car.image}`}
+              src={car.image || "car.jpg"}
               alt={car.make}
               className="w-full h-96 object-cover hover:scale-105 transition-transform duration-300"
             />
@@ -63,36 +43,17 @@ function CarDetails() {
 
           <hr className="border-gray-700 my-4" />
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
-            <div className="bg-gray-800 p-4 rounded-lg flex flex-col items-center justify-center border border-gray-700 hover:bg-gray-700 transition">
-              <FaChair className="text-orange-500 text-2xl mb-2" />
-              <p className="text-gray-300 text-sm">Seats</p>
-              <p className="text-white font-semibold">{car.seats}</p>
-            </div>
-            <div className="bg-gray-800 p-4 rounded-lg flex flex-col items-center justify-center border border-gray-700 hover:bg-gray-700 transition">
-              <FaGasPump className="text-orange-500 text-2xl mb-2" />
-              <p className="text-gray-300 text-sm">Fuel</p>
-              <p className="text-white font-semibold">{car.fuel}</p>
-            </div>
-            <div className="bg-gray-800 p-4 rounded-lg flex flex-col items-center justify-center border border-gray-700 hover:bg-gray-700 transition">
-              <FaCogs className="text-orange-500 text-2xl mb-2" />
-              <p className="text-gray-300 text-sm">Transmission</p>
-              <p className="text-white font-semibold">{car.transmission}</p>
-            </div>
-            <div className="bg-gray-800 p-4 rounded-lg flex flex-col items-center justify-center border border-gray-700 hover:bg-gray-700 transition">
-              <FaCar className="text-orange-500 text-2xl mb-2" />
-              <p className="text-gray-300 text-sm">Doors</p>
-              <p className="text-white font-semibold">{car.doors}</p>
-            </div>
-          </div>
-
+          {/* Features */}
           <div className="mt-6 p-6 bg-gray-800 rounded-2xl border border-gray-700 space-y-4">
             <CarFeatures car={car} />
           </div>
         </div>
 
-        <div className="bg-gray-800/50 h-130 backdrop-blur-md rounded-2xl p-6 shadow-lg border border-gray-700 sticky top-25 flex flex-col gap-4">
-          <RentForm car={car} onOpenPayment={() => setShowPaymentModal(true)} />
+        {/* RIGHT: Booking Form */}
+        <div className="bg-gray-800/50 h-fit rounded-2xl p-6 shadow-lg border border-gray-700 sticky top-25 flex flex-col gap-4">
+          <RentForm
+            car={car}
+          />
         </div>
       </div>
     </div>

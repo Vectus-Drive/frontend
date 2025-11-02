@@ -149,5 +149,14 @@ export const deleteReview = async (id) => {
   }
 }
 
+export const bookCar = async (bookingData) => {
+  try {
+    const response = await api.post(`/bookings`, bookingData);
+    return response.data;
+  } catch (error) {
+    return error.response?.data
+  }
+}
+
 
 export default api;

@@ -10,8 +10,6 @@ function BookingManagement() {
     try {
       const res = await api.get("/bookings");
       const bookingData = res.data.data;
-      console.log(bookingData.total);
-      console.log(bookingData);
       
       const formatted = await Promise.all(
         bookingData.map(async (b) => {
@@ -39,23 +37,10 @@ function BookingManagement() {
                 : "",
               fine: b.fine ? `$${b.fine}` : "$0",
               status: b.status.toLowerCase(),
+              total: b.total
             };
           } catch (err) {
             console.error("Error fetching customer/car info:", err);
-            return {
-              booking_id: b.booking_id,
-              customer_id: b.customer_id,
-              customer_name: b.customer_id,
-              car_info: b.car_id,
-              license_no: "N/A",
-              booked_at: new Date(b.booked_at).toISOString().split("T")[0],
-              time_period: b.time_period,
-              returned_at: b.returned_at
-                ? new Date(b.returned_at).toISOString().split("T")[0]
-                : "",
-              fine: b.fine ? `$${b.fine}` : "$0",
-              status: b.status.toLowerCase(),
-            };
           }
         })
       );
