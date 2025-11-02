@@ -12,51 +12,52 @@ import MemberCard from "../components/about/MemberCard";
 import BannerHeader from "../components/BannerHeader";
 
 function About() {
-  const teamMembers = [
+const teamMembers = [
     {
       name: "Dilusha Madushan",
       role: "Car Rental Specialist",
-      img: "https://i.pravatar.cc/150?img=10",
+      img: "./team/Car_Rental_Specialist.jpg",
       description:
         "Passionate about providing excellent service and keeping customers happy.",
     },
     {
-      name: "Shireen Fernando",
+      name: "Kavishan Rathnayake",
       role: "Customer Support",
-      img: "https://i.pravatar.cc/150?img=11",
+      img: "./team/Customer_Support.jpg",
       description: "Always ready to assist customers with a smile.",
     },
     {
-      name: "Kasun Perera",
+      name: "Amila Bandara",
       role: "Fleet Manager",
-      img: "https://i.pravatar.cc/150?img=12",
+      img: "./team/Fleet_Manager.jpeg",
       description: "Ensures all cars are in perfect condition for our clients.",
     },
     {
-      name: "Nadeesha Silva",
+      name: "Kaveesha Keshali",
       role: "Marketing Specialist",
-      img: "https://i.pravatar.cc/150?img=13",
+      img: "./team/Marketing_Specialist.jpg",
       description: "Spreads the word about our amazing car rental services.",
     },
     {
-      name: "Hiran Jayasuriya",
+      name: "Ishan Sivmal",
       role: "Operations Lead",
-      img: "https://i.pravatar.cc/150?img=14",
+      img: "./team/Operations_Lead.jpg",
       description: "Manages daily operations efficiently and smoothly.",
     },
     {
-      name: "Amal Wickramasinghe",
+      name: "Jayani Madusha",
       role: "Finance Manager",
-      img: "https://i.pravatar.cc/150?img=15",
+      img: "./team/Finance_Manager.jpg",
       description: "Keeps track of all financial activities accurately.",
     },
     {
-      name: "Shanika Perera",
+      name: "Kolitha Gayanath",
       role: "Customer Relations",
-      img: "https://i.pravatar.cc/150?img=16",
+      img: "./team/Customer_Relations.jpg",
       description: "Builds strong relationships with our valued clients.",
     },
-  ];
+  ];  
+
   return (
     <div className="text-white px-6 md:px-20 py-10 space-y-20">
       <BannerHeader

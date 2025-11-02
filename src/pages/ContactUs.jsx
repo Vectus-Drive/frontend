@@ -1,6 +1,6 @@
 import Infor from "../components/contact/Infor";
-import InquiryForm from "../components/contact/InquiryForm";
 import BannerHeader from "../components/BannerHeader";
+import ContactForm from "../components/contact/contactForm";
 
 function ContactUs() {
   return (
@@ -15,7 +15,7 @@ function ContactUs() {
       <div className="flex flex-col items-center justify-center">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 w-full max-w-6xl">
           < Infor/>
-          < InquiryForm/>
+          < ContactForm/>
         </div>
       </div>
     </div>

@@ -5,6 +5,8 @@ import {
   FaClock,
   FaCheckCircle,
   FaCalendarAlt,
+  FaDollarSign,
+  FaChartLine,
 } from "react-icons/fa";
 import StatOverviewCard from "../../components/admin/StatOverviewCard";
 import CarStatsCard from "../../components/admin/CarStatsCard";
@@ -24,13 +26,13 @@ function AdminDashboard() {
 
   const getStatusColor = (status) => {
     const colors = {
-      confirmed: "bg-green-100 text-green-700",
-      pending: "bg-yellow-100 text-yellow-700",
-      booked: "bg-blue-100 text-blue-700",
-      completed: "bg-blue-100 text-blue-700",
-      cancelled: "bg-red-100 text-red-700",
+      confirmed: "bg-gradient-to-r from-green-500 to-green-600 text-white",
+      pending: "bg-gradient-to-r from-yellow-500 to-yellow-600 text-white",
+      booked: "bg-gradient-to-r from-blue-500 to-blue-600 text-white",
+      completed: "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white",
+      cancelled: "bg-gradient-to-r from-red-500 to-red-600 text-white",
     };
-    return colors[status] || "bg-gray-100 text-gray-700";
+    return colors[status] || "bg-gradient-to-r from-gray-500 to-gray-600 text-white";
   };
 
   const getStatusData = async () => {
@@ -65,19 +67,19 @@ function AdminDashboard() {
         {
           name: "Completed",
           value: completed,
-          color: "bg-green-500",
+          color: "from-green-500 to-green-600",
           percent: Math.round((completed / total) * 100),
         },
         {
           name: "Pending",
           value: pending,
-          color: "bg-yellow-500",
+          color: "from-yellow-500 to-yellow-600",
           percent: Math.round((pending / total) * 100),
         },
         {
           name: "Cancelled",
           value: cancelled,
-          color: "bg-red-500",
+          color: "from-red-500 to-red-600",
           percent: Math.round((cancelled / total) * 100),
         },
       ];
@@ -127,120 +129,204 @@ function AdminDashboard() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-6">
-      <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-800">Dashboard Overview</h1>
-          <p className="text-sm text-gray-600 mt-1">
-            Welcome back! Here's what's happening today.
-          </p>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 p-6">
+      {/* Ambient Background Effects */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-orange-500/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl"></div>
+      </div>
+
+      <div className="relative z-10">
+        {/* Header Section */}
+        <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <h1 className="text-3xl md:text-4xl font-extrabold text-gray-800">
+              Dashboard <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Overview</span>
+            </h1>
+            <p className="text-sm text-gray-600 mt-2">
+              Welcome back! Here's what's happening today.
+            </p>
+          </div>
+          <button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-3 rounded-lg font-semibold transition-all flex items-center gap-2 shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50 hover:scale-105 duration-300">
+            <FaCalendarAlt className="text-sm" />
+            Generate Report
+          </button>
         </div>
-        <button className="bg-blue-600 text-white px-5 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center gap-2">
-          <FaCalendarAlt className="text-sm" />
-          Generate Report
-        </button>
-      </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
-        <StatOverviewCard
-          title="Total Cars"
-          count={carCount}
-          icon={<FaCar className="text-white text-2xl" />}
-          color="bg-blue-500"
-        />
-        <StatOverviewCard
-          title="Total Bookings"
-          count={bookingCount}
-          icon={<FaClipboardList className="text-white text-2xl" />}
-          color="bg-orange-500"
-        />
-        <StatOverviewCard
-          title="Pending Bookings"
-          count={pendingBookingCount}
-          icon={<FaClock className="text-white text-2xl" />}
-          color="bg-yellow-500"
-        />
-        <StatOverviewCard
-          title="Completed Bookings"
-          count={completedBookingCount}
-          icon={<FaCheckCircle className="text-white text-2xl" />}
-          color="bg-green-500"
-        />
-      </div>
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+          <div className="bg-white border border-gray-200 rounded-xl p-6 hover:scale-105 hover:shadow-xl transition-all duration-300 shadow-md">
+            <div className="flex items-center justify-between mb-4">
+              <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-3 rounded-lg shadow-lg shadow-blue-500/30">
+                <FaCar className="text-white text-2xl" />
+              </div>
+              <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded">+12%</span>
+            </div>
+            <h3 className="text-gray-600 text-sm font-medium mb-1">Total Cars</h3>
+            <p className="text-3xl font-bold text-gray-800">{carCount}</p>
+          </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <CarStatsCard title="Total Revenue" value={9450} change="+3.8%" comparedValue={8920} />
-        <CarStatsCard title="Total Expenses" value={5620} change="-1.2%" comparedValue={5690} />
-      </div>
+          <div className="bg-white border border-gray-200 rounded-xl p-6 hover:scale-105 hover:shadow-xl transition-all duration-300 shadow-md">
+            <div className="flex items-center justify-between mb-4">
+              <div className="bg-gradient-to-r from-orange-500 to-orange-600 p-3 rounded-lg shadow-lg shadow-orange-500/30">
+                <FaClipboardList className="text-white text-2xl" />
+              </div>
+              <span className="text-xs font-semibold text-orange-600 bg-orange-50 px-2 py-1 rounded">+8%</span>
+            </div>
+            <h3 className="text-gray-600 text-sm font-medium mb-1">Total Bookings</h3>
+            <p className="text-3xl font-bold text-gray-800">{bookingCount}</p>
+          </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
-          <h2 className="text-lg font-bold text-gray-800 mb-6">Booking Status Distribution</h2>
-          <div className="space-y-4">
-            {bookingStatusData.map((status, idx) => (
-              <div key={idx} className="space-y-2">
-                <div className="flex items-center justify-between text-sm">
-                  <div className="flex items-center gap-2">
-                    <span className={`w-3 h-3 rounded-full ${status.color}`}></span>
-                    <span className="font-medium text-gray-700">{status.name}</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-gray-600">{status.value} bookings</span>
-                    <span className="font-semibold text-gray-800">{status.percent}%</span>
-                  </div>
+          <div className="bg-white border border-gray-200 rounded-xl p-6 hover:scale-105 hover:shadow-xl transition-all duration-300 shadow-md">
+            <div className="flex items-center justify-between mb-4">
+              <div className="bg-gradient-to-r from-yellow-500 to-yellow-600 p-3 rounded-lg shadow-lg shadow-yellow-500/30">
+                <FaClock className="text-white text-2xl" />
+              </div>
+              <span className="text-xs font-semibold text-yellow-600 bg-yellow-50 px-2 py-1 rounded">{pendingBookingCount}</span>
+            </div>
+            <h3 className="text-gray-600 text-sm font-medium mb-1">Pending Bookings</h3>
+            <p className="text-3xl font-bold text-gray-800">{pendingBookingCount}</p>
+          </div>
+
+          <div className="bg-white border border-gray-200 rounded-xl p-6 hover:scale-105 hover:shadow-xl transition-all duration-300 shadow-md">
+            <div className="flex items-center justify-between mb-4">
+              <div className="bg-gradient-to-r from-green-500 to-green-600 p-3 rounded-lg shadow-lg shadow-green-500/30">
+                <FaCheckCircle className="text-white text-2xl" />
+              </div>
+              <span className="text-xs font-semibold text-green-600 bg-green-50 px-2 py-1 rounded">+15%</span>
+            </div>
+            <h3 className="text-gray-600 text-sm font-medium mb-1">Completed Bookings</h3>
+            <p className="text-3xl font-bold text-gray-800">{completedBookingCount}</p>
+          </div>
+        </div>
+
+        {/* Revenue & Expenses Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow duration-300">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 p-3 rounded-lg shadow-lg shadow-emerald-500/30">
+                  <FaDollarSign className="text-white text-xl" />
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-3">
-                  <div
-                    className={`${status.color} h-3 rounded-full transition-all`}
-                    style={{ width: `${status.percent}%` }}
-                  ></div>
+                <div>
+                  <h3 className="text-gray-600 text-sm font-medium">Total Revenue</h3>
+                  <p className="text-2xl font-bold text-gray-800">$9,450</p>
                 </div>
               </div>
-            ))}
+              <div className="text-right">
+                <span className="text-green-600 font-semibold flex items-center gap-1 text-sm">
+                  <FaChartLine /> +3.8%
+                </span>
+                <p className="text-xs text-gray-500 mt-1">vs $8,920</p>
+              </div>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-2">
+              <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 h-2 rounded-full shadow-sm" style={{ width: '75%' }}></div>
+            </div>
+          </div>
+
+          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow duration-300">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="bg-gradient-to-r from-red-500 to-red-600 p-3 rounded-lg shadow-lg shadow-red-500/30">
+                  <FaDollarSign className="text-white text-xl" />
+                </div>
+                <div>
+                  <h3 className="text-gray-600 text-sm font-medium">Total Expenses</h3>
+                  <p className="text-2xl font-bold text-gray-800">$5,620</p>
+                </div>
+              </div>
+              <div className="text-right">
+                <span className="text-green-600 font-semibold flex items-center gap-1 text-sm">
+                  <FaChartLine className="rotate-180" /> -1.2%
+                </span>
+                <p className="text-xs text-gray-500 mt-1">vs $5,690</p>
+              </div>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-2">
+              <div className="bg-gradient-to-r from-red-500 to-red-600 h-2 rounded-full shadow-sm" style={{ width: '60%' }}></div>
+            </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-bold text-gray-800">Recent Bookings</h2>
-            <button
-              onClick={() => navigate("/booking")}
-              className="text-sm text-blue-600 hover:text-blue-700 font-medium"
-            >
-              View All
-            </button>
+        {/* Bottom Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Booking Status Distribution */}
+          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow duration-300">
+            <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+              <span className="w-1 h-6 bg-gradient-to-b from-orange-500 to-orange-600 rounded"></span>
+              Booking Status Distribution
+            </h2>
+            <div className="space-y-5">
+              {bookingStatusData.map((status, idx) => (
+                <div key={idx} className="space-y-2">
+                  <div className="flex items-center justify-between text-sm">
+                    <div className="flex items-center gap-3">
+                      <div className={`w-3 h-3 rounded-full bg-gradient-to-r ${status.color} shadow-md`}></div>
+                      <span className="font-medium text-gray-700">{status.name}</span>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <span className="text-gray-600">{status.value} bookings</span>
+                      <span className="font-bold text-gray-800 min-w-[3rem] text-right">{status.percent}%</span>
+                    </div>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                    <div
+                      className={`bg-gradient-to-r ${status.color} h-3 rounded-full transition-all duration-500 shadow-sm`}
+                      style={{ width: `${status.percent}%` }}
+                    ></div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left text-xs font-semibold text-gray-600 pb-3">Customer</th>
-                  <th className="text-left text-xs font-semibold text-gray-600 pb-3">Car License</th>
-                  <th className="text-left text-xs font-semibold text-gray-600 pb-3">Status</th>
-                  <th className="text-right text-xs font-semibold text-gray-600 pb-3">Amount</th>
-                </tr>
-              </thead>
-              <tbody>
-                {recentBookings.map((b) => (
-                  <tr key={b.id} className="border-b border-gray-100 hover:bg-gray-50">
-                    <td className="py-3 text-sm text-gray-700">{b.customer}</td>
-                    <td className="py-3 text-sm text-gray-700">{b.car}</td>
-                    <td className="py-3">
-                      <span
-                        className={`text-xs font-semibold px-2 py-1 rounded ${getStatusColor(
-                          b.status
-                        )}`}
-                      >
-                        {b.status}
-                      </span>
-                    </td>
-                    <td className="py-3 text-sm font-semibold text-gray-800 text-right">
-                      ${b.amount}
-                    </td>
+
+          {/* Recent Bookings */}
+          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow duration-300">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                <span className="w-1 h-6 bg-gradient-to-b from-orange-500 to-orange-600 rounded"></span>
+                Recent Bookings
+              </h2>
+              <button
+                onClick={() => navigate("/booking")}
+                className="text-sm text-orange-600 hover:text-orange-700 font-semibold transition-colors"
+              >
+                View All →
+              </button>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-gray-200">
+                    <th className="text-left text-xs font-semibold text-gray-600 pb-3 px-2">Customer</th>
+                    <th className="text-left text-xs font-semibold text-gray-600 pb-3 px-2">Car License</th>
+                    <th className="text-left text-xs font-semibold text-gray-600 pb-3 px-2">Status</th>
+                    <th className="text-right text-xs font-semibold text-gray-600 pb-3 px-2">Amount</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {recentBookings.map((b) => (
+                    <tr key={b.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                      <td className="py-3 px-2 text-sm text-gray-700">{b.customer}</td>
+                      <td className="py-3 px-2 text-sm text-gray-700">{b.car}</td>
+                      <td className="py-3 px-2">
+                        <span
+                          className={`text-xs font-semibold px-3 py-1 rounded-full ${getStatusColor(
+                            b.status
+                          )} shadow-md`}
+                        >
+                          {b.status}
+                        </span>
+                      </td>
+                      <td className="py-3 px-2 text-sm font-bold text-gray-800 text-right">
+                        ${b.amount}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

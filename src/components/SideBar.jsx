@@ -28,7 +28,7 @@ export default function Sidebar() {
   const { logout } = useAuth();
 
   return (
-    <div className="w-20 sm:w-64 h-screen flex flex-col bg-[#0f172a] shadow-md">
+    <div className="w-20 sm:w-70 h-screen flex flex-col bg-[#0f172a] shadow-md">
       <div className="px-4 sm:px-8 py-6 border-b border-gray-700 text-center">
         <h1 className="text-xl sm:text-2xl font-bold">
           <span className="text-orange-500">Vectus</span>
