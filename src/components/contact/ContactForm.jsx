@@ -1,7 +1,8 @@
 import { useForm } from "react-hook-form";
 import { FaEnvelope, FaUser, FaPhone, FaWhatsapp } from "react-icons/fa";
+import { SiMinutemailer } from "react-icons/si";
 
-function InquiryForm() {
+function ContactForm() {
   const {
     register,
     handleSubmit,
@@ -114,11 +115,11 @@ function InquiryForm() {
           type="submit"
           className="w-full bg-orange-600 hover:bg-orange-700 text-white py-3 rounded-md font-semibold tracking-wide transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
         >
-          Send Message <FaWhatsapp />
+          Send Email <SiMinutemailer />
         </button>
       </form>
     </div>
   );
 }
 
-export default InquiryForm;
+export default ContactForm;

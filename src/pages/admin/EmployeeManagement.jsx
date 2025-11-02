@@ -1,14 +1,19 @@
 import { useState, useEffect } from "react";
 import { FaEdit, FaUserTie, FaTrash } from "react-icons/fa";
-import { toast, ToastContainer} from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import UserManageForm from "../../components/admin/UserManageForm";
+import AddEmployee from "../../components/admin/AddEmployee";
 import api from "../../api/api";
 
 function EmployeeManagement() {
   const [employees, setEmployees] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [employeeToEdit, setEmployeeToEdit] = useState(null);
-  const [confirmDelete, setConfirmDelete] = useState({ open: false, u_id: null });
+  const [addEmployee, setAddEmployees] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState({
+    open: false,
+    u_id: null,
+  });
 
   const getEmployees = async () => {
     try {
@@ -23,6 +28,18 @@ function EmployeeManagement() {
   useEffect(() => {
     getEmployees();
   }, []);
+
+  const handleAddEmployee = () => {
+    setAddEmployees(true);
+    setEmployeeToEdit(null);
+    setIsModalOpen(true);
+  };
+
+  const handleUpdateEmployee = (emp) => {
+    setEmployeeToEdit(emp);
+    setAddEmployees(false);
+    setIsModalOpen(true);
+  };
 
   const handleDeleteClick = (u_id) => {
     setConfirmDelete({ open: true, u_id });
@@ -41,14 +58,8 @@ function EmployeeManagement() {
     }
   };
 
-  const handleUpdateEmployee = (emp) => {
-    setEmployeeToEdit(emp);
-    setIsModalOpen(true);
-  };
-
   const handleSaveEmployee = async (updatedEmp) => {
     console.log(updatedEmp);
-    
     try {
       await api.put(`/employees/${updatedEmp.user.u_id}`, updatedEmp);
       const updatedList = employees.map((e) =>
@@ -77,11 +88,24 @@ function EmployeeManagement() {
           "relative flex p-5 min-h-10 rounded-md justify-between overflow-hidden cursor-pointer bg-[#0f172a] text-white"
         }
       />
+
       <div className="border-b pb-4 border-gray-200 mb-10">
-        <h1 className="text-2xl font-bold text-gray-800">Employee Management</h1>
-        <p className="text-gray-600">
-          Manage all employees and their details within the system.
-        </p>
+        <div className="flex justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-800">
+              Employee Management
+            </h1>
+            <p className="text-gray-600">
+              Manage all employees and their details within the system.
+            </p>
+          </div>
+          <button
+            onClick={handleAddEmployee}
+            className="flex items-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg shadow-lg transition duration-200"
+          >
+            Add Employee
+          </button>
+        </div>
       </div>
 
       <div className="bg-white shadow-lg rounded-xl overflow-hidden">
@@ -89,30 +113,14 @@ function EmployeeManagement() {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-100">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Image
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Name
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  NIC
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Email
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Address
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Telephone No.
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Username
-                </th>
-                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">
-                  Actions
-                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Image</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">NIC</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Address</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Telephone No.</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Username</th>
+                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Actions</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
@@ -120,40 +128,22 @@ function EmployeeManagement() {
                 <tr key={emp.user.u_id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
                     {emp.image ? (
-                      <img
-                        className="h-10 w-10 rounded-full object-cover"
-                        src={emp.image}
-                        alt={emp.name}
-                      />
+                      <img className="h-10 w-10 rounded-full object-cover" src={emp.image} alt={emp.name} />
                     ) : (
                       <FaUserTie className="h-10 w-10 text-gray-400" />
                     )}
                   </td>
-                  <td className="px-6 py-4 text-sm font-medium text-gray-900">
-                    {emp.name}
-                  </td>
+                  <td className="px-6 py-4 text-sm font-medium text-gray-900">{emp.name}</td>
                   <td className="px-6 py-4 text-sm text-gray-500">{emp.nic}</td>
                   <td className="px-6 py-4 text-sm text-gray-500">{emp.email}</td>
-                  <td className="px-6 py-4 text-sm text-gray-500 truncate max-w-xs">
-                    {emp.address}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-500">
-                    {emp.telephone_no}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-500">
-                    {emp.user.username}
-                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-500 truncate max-w-xs">{emp.address}</td>
+                  <td className="px-6 py-4 text-sm text-gray-500">{emp.telephone_no}</td>
+                  <td className="px-6 py-4 text-sm text-gray-500">{emp.user.username}</td>
                   <td className="px-6 py-4 text-center text-sm font-medium">
-                    <button
-                      onClick={() => handleUpdateEmployee(emp)}
-                      className="text-indigo-600 hover:text-indigo-900 mr-1"
-                    >
+                    <button onClick={() => handleUpdateEmployee(emp)} className="text-indigo-600 hover:text-indigo-900 mr-1">
                       <FaEdit className="h-5 w-5" />
                     </button>
-                    <button
-                      onClick={() => handleDeleteClick(emp.user.u_id)}
-                      className="text-red-600 hover:text-red-900"
-                    >
+                    <button onClick={() => handleDeleteClick(emp.user.u_id)} className="text-red-600 hover:text-red-900">
                       <FaTrash className="h-5 w-5" />
                     </button>
                   </td>
@@ -164,7 +154,7 @@ function EmployeeManagement() {
         </div>
       </div>
 
-      {isModalOpen && (
+      {isModalOpen && employeeToEdit && (
         <UserManageForm
           user={employeeToEdit}
           role={employeeToEdit?.user.role || "employee"}
@@ -173,12 +163,24 @@ function EmployeeManagement() {
         />
       )}
 
+      {isModalOpen && addEmployee && (
+        <AddEmployee
+          onClose={() => {
+            setIsModalOpen(false);
+            setAddEmployees(false);
+          }}
+          onSave={(newEmp) => {
+            setEmployees([...employees, newEmp]);
+            setIsModalOpen(false);
+            setAddEmployees(false);
+          }}
+        />
+      )}
+
       {confirmDelete.open && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/60 bg-opacity-40 z-50">
           <div className="bg-white rounded-xl shadow-xl p-6 w-96 text-center">
-            <h2 className="text-xl font-semibold text-gray-800 mb-3">
-              Confirm Delete
-            </h2>
+            <h2 className="text-xl font-semibold text-gray-800 mb-3">Confirm Delete</h2>
             <p className="text-gray-600 mb-6">
               Are you sure you want to delete this employee? This action cannot be undone.
             </p>
@@ -204,3 +206,4 @@ function EmployeeManagement() {
 }
 
 export default EmployeeManagement;
+ 

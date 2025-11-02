@@ -1,8 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { FaTimes } from "react-icons/fa";
+import { FaTimes, FaCloudUploadAlt } from "react-icons/fa";
+import { toast } from "react-toastify";
+import { uploadImage } from "../../api/api";
 
 const schema = yup.object().shape({
   name: yup.string().required("Full name is required"),
@@ -12,13 +14,19 @@ const schema = yup.object().shape({
     .matches(/^[0-9]{9}[vVxX]$|^[0-9]{12}$/, "Invalid NIC format"),
   email: yup.string().required("Email is required").email("Invalid email format"),
   address: yup.string().required("Address is required"),
-  telephone_no: yup.string().required("Telephone number is required").matches(/^\d{10}$/, "Must be 10 digits"),
+  telephone_no: yup
+    .string()
+    .required("Telephone number is required")
+    .matches(/^\d{10}$/, "Must be 10 digits"),
   username: yup.string().required("Username is required"),
   role: yup.string().required(),
   image: yup.string(),
 });
 
 function UserManageForm({ user, role, onClose, onSave }) {
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewImage, setPreviewImage] = useState(user?.image || "../default-user.png");
+
   const {
     register,
     handleSubmit,
@@ -28,6 +36,7 @@ function UserManageForm({ user, role, onClose, onSave }) {
     resolver: yupResolver(schema),
   });
 
+  // Reset form when user changes
   useEffect(() => {
     if (user) {
       reset({
@@ -41,10 +50,37 @@ function UserManageForm({ user, role, onClose, onSave }) {
         role: user.user?.role || role || "customer",
         image: user.image || "",
       });
+      setPreviewImage(user.image || "../default-user.png");
     }
   }, [user, reset, role]);
 
-  const onSubmit = (data) => {
+  // Handle file select
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setSelectedFile(file);
+    setPreviewImage(URL.createObjectURL(file));
+  };
+
+  // Upload image to server
+  const handleImageUpload = async () => {
+    if (!selectedFile) return user?.image || null;
+    try {
+      const formData = new FormData();
+      formData.append("image", selectedFile);
+      const res = await uploadImage(formData, user?.user?.u_id);
+      toast.success("Image uploaded successfully!");
+      return res?.image_url || res?.filename || null;
+    } catch (err) {
+      toast.error("Image upload failed!");
+      return user?.image || null;
+    }
+  };
+
+  // Save user
+  const onSubmit = async (data) => {
+    const uploadedImage = await handleImageUpload();
+
     const formattedData = {
       ...data,
       user: {
@@ -52,7 +88,7 @@ function UserManageForm({ user, role, onClose, onSave }) {
         username: data.username,
         role: data.role,
       },
-      image: data.image || user.image,
+      image: uploadedImage,
     };
 
     if (onSave) onSave(formattedData);
@@ -74,15 +110,25 @@ function UserManageForm({ user, role, onClose, onSave }) {
           {/* LEFT COLUMN */}
           <div className="flex flex-col gap-4 items-center">
             <label className="text-sm font-medium text-gray-700 mb-2">Profile Image</label>
-            <div className="w-28 h-28 rounded-full overflow-hidden border border-gray-300 shadow-sm">
+
+            <div className="relative w-28 h-28 rounded-full overflow-hidden border border-gray-300 shadow-sm">
               <img
-                src={user.image || "../default-user.png"}
+                src={previewImage}
                 alt="Profile"
                 className="object-cover w-full h-full"
               />
+              <label className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 hover:opacity-100 cursor-pointer transition">
+                <FaCloudUploadAlt className="text-white text-2xl" />
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleFileChange}
+                />
+              </label>
             </div>
 
-            <div>
+            <div className="w-full">
               <label className="text-sm font-medium text-gray-700">NIC</label>
               <input
                 type="text"
@@ -92,7 +138,7 @@ function UserManageForm({ user, role, onClose, onSave }) {
               {errors.nic && <p className="text-red-500 text-sm mt-1">{errors.nic.message}</p>}
             </div>
 
-            <div>
+            <div className="w-full">
               <label className="text-sm font-medium text-gray-700">Role</label>
               <input
                 type="text"
@@ -142,7 +188,9 @@ function UserManageForm({ user, role, onClose, onSave }) {
                 {...register("telephone_no")}
                 className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"
               />
-              {errors.telephone_no && <p className="text-red-500 text-sm mt-1">{errors.telephone_no.message}</p>}
+              {errors.telephone_no && (
+                <p className="text-red-500 text-sm mt-1">{errors.telephone_no.message}</p>
+              )}
             </div>
 
             <div>
