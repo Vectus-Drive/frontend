@@ -27,7 +27,7 @@ function EmployeeManagement() {
 
   useEffect(() => {
     getEmployees();
-  }, []);
+  }, [employeeToEdit]);
 
   const handleAddEmployee = () => {
     setAddEmployees(true);
@@ -75,6 +75,9 @@ function EmployeeManagement() {
     }
   };
 
+  console.log(employees);
+  
+
   return (
     <div className="container mx-auto p-6 bg-gray-50 min-h-screen">
       <ToastContainer
@@ -113,37 +116,73 @@ function EmployeeManagement() {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-100">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Image</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">NIC</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Address</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Telephone No.</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Username</th>
-                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Actions</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Image
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Name
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  NIC
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Email
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Address
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Telephone No.
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Username
+                </th>
+                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {employees.map((emp) => (
+              {employees.map((emp) => ( 
                 <tr key={emp.user.u_id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
                     {emp.image ? (
-                      <img className="h-10 w-10 rounded-full object-cover" src={emp.image} alt={emp.name} />
+                      <img
+                        className="h-10 w-10 rounded-full object-cover"
+                        src={emp.image}
+                        alt={emp.name}
+                      />
                     ) : (
                       <FaUserTie className="h-10 w-10 text-gray-400" />
                     )}
                   </td>
-                  <td className="px-6 py-4 text-sm font-medium text-gray-900">{emp.name}</td>
+                  <td className="px-6 py-4 text-sm font-medium text-gray-900">
+                    {emp.name}
+                  </td>
                   <td className="px-6 py-4 text-sm text-gray-500">{emp.nic}</td>
-                  <td className="px-6 py-4 text-sm text-gray-500">{emp.email}</td>
-                  <td className="px-6 py-4 text-sm text-gray-500 truncate max-w-xs">{emp.address}</td>
-                  <td className="px-6 py-4 text-sm text-gray-500">{emp.telephone_no}</td>
-                  <td className="px-6 py-4 text-sm text-gray-500">{emp.user.username}</td>
+                  <td className="px-6 py-4 text-sm text-gray-500">
+                    {emp.email}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-500 truncate max-w-xs">
+                    {emp.address}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-500">
+                    {emp.telephone_no}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-500">
+                    {emp.user.username}
+                  </td>
                   <td className="px-6 py-4 text-center text-sm font-medium">
-                    <button onClick={() => handleUpdateEmployee(emp)} className="text-indigo-600 hover:text-indigo-900 mr-1">
+                    <button
+                      onClick={() => handleUpdateEmployee(emp)}
+                      className="text-indigo-600 hover:text-indigo-900 mr-1"
+                    >
                       <FaEdit className="h-5 w-5" />
                     </button>
-                    <button onClick={() => handleDeleteClick(emp.user.u_id)} className="text-red-600 hover:text-red-900">
+                    <button
+                      onClick={() => handleDeleteClick(emp.user.u_id)}
+                      className="text-red-600 hover:text-red-900"
+                    >
                       <FaTrash className="h-5 w-5" />
                     </button>
                   </td>
@@ -170,6 +209,8 @@ function EmployeeManagement() {
             setAddEmployees(false);
           }}
           onSave={(newEmp) => {
+            console.log(newEmp);
+            
             setEmployees([...employees, newEmp]);
             setIsModalOpen(false);
             setAddEmployees(false);
@@ -180,9 +221,12 @@ function EmployeeManagement() {
       {confirmDelete.open && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/60 bg-opacity-40 z-50">
           <div className="bg-white rounded-xl shadow-xl p-6 w-96 text-center">
-            <h2 className="text-xl font-semibold text-gray-800 mb-3">Confirm Delete</h2>
+            <h2 className="text-xl font-semibold text-gray-800 mb-3">
+              Confirm Delete
+            </h2>
             <p className="text-gray-600 mb-6">
-              Are you sure you want to delete this employee? This action cannot be undone.
+              Are you sure you want to delete this employee? This action cannot
+              be undone.
             </p>
             <div className="flex justify-center space-x-4">
               <button
@@ -206,4 +250,3 @@ function EmployeeManagement() {
 }
 
 export default EmployeeManagement;
- 

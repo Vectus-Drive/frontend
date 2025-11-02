@@ -80,14 +80,19 @@ function AddEmployee({ onClose, onSave }) {
       };
 
       const res = await api.post("/auth/register", payload);
+      const userData = res.data.data;
+      
 
-      if (res?.data?.success) {
+      if (res.data.status == "success") {
         toast.success("Employee added successfully!");
         reset();
-        if (onSave) onSave(res.data.data || payload);
-        onClose(); 
-      } 
+        if (onSave) onSave({
+            ...payload,
+            user: userData
+        });
+      }
     } catch (error) {
+      console.log(error);
       toast.error("Something went wrong while adding employee!");
     }
   };
@@ -97,7 +102,10 @@ function AddEmployee({ onClose, onSave }) {
       <div className="bg-white w-full max-w-3xl rounded-xl shadow-2xl p-6 relative">
         <div className="flex justify-between items-center mb-6 border-b pb-4">
           <h2 className="text-2xl font-bold text-gray-800">Add Employee</h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-700">
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-700"
+          >
             <FaTimes className="text-2xl" />
           </button>
         </div>
@@ -112,10 +120,19 @@ function AddEmployee({ onClose, onSave }) {
               Profile Image
             </label>
             <div className="relative w-28 h-28 rounded-full overflow-hidden border border-gray-300 shadow-sm">
-              <img src={preview} alt="Profile" className="object-cover w-full h-full" />
+              <img
+                src={preview}
+                alt="Profile"
+                className="object-cover w-full h-full"
+              />
               <label className="absolute inset-0 flex items-center justify-center bg-black/40 text-white opacity-0 hover:opacity-100 cursor-pointer transition">
                 <FaCloudUploadAlt className="text-2xl" />
-                <input type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleFileChange}
+                />
               </label>
             </div>
 
@@ -126,7 +143,11 @@ function AddEmployee({ onClose, onSave }) {
                 {...register("nic")}
                 className="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 outline-none"
               />
-              {errors.nic && <p className="text-red-500 text-sm mt-1">{errors.nic.message}</p>}
+              {errors.nic && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.nic.message}
+                </p>
+              )}
             </div>
 
             <div>
@@ -142,9 +163,18 @@ function AddEmployee({ onClose, onSave }) {
 
           {/* Other Fields */}
           <div className="flex flex-col gap-4">
-            {["name", "username", "password", "email", "telephone_no", "address"].map((field) => (
+            {[
+              "name",
+              "username",
+              "password",
+              "email",
+              "telephone_no",
+              "address",
+            ].map((field) => (
               <div key={field}>
-                <label className="text-sm font-medium text-gray-700 capitalize">{field.replace("_", " ")}</label>
+                <label className="text-sm font-medium text-gray-700 capitalize">
+                  {field.replace("_", " ")}
+                </label>
                 {field === "address" ? (
                   <textarea
                     rows="2"
@@ -159,7 +189,9 @@ function AddEmployee({ onClose, onSave }) {
                   />
                 )}
                 {errors[field] && (
-                  <p className="text-red-500 text-sm mt-1">{errors[field].message}</p>
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors[field].message}
+                  </p>
                 )}
               </div>
             ))}

@@ -69,7 +69,6 @@ function UserManageForm({ user, role, onClose, onSave }) {
       const formData = new FormData();
       formData.append("image", selectedFile);
       const res = await uploadImage(formData, user?.user?.u_id);
-      toast.success("Image uploaded successfully!");
       return res?.image_url || res?.filename || null;
     } catch (err) {
       toast.error("Image upload failed!");
@@ -77,7 +76,6 @@ function UserManageForm({ user, role, onClose, onSave }) {
     }
   };
 
-  // Save user
   const onSubmit = async (data) => {
     const uploadedImage = await handleImageUpload();
 
