@@ -8,10 +8,10 @@ import {
   FaDollarSign,
   FaChartLine,
 } from "react-icons/fa";
-import StatOverviewCard from "../../components/admin/StatOverviewCard";
-import CarStatsCard from "../../components/admin/CarStatsCard";
 import api from "../../api/api";
 import { useNavigate } from "react-router-dom";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 function AdminDashboard() {
   const navigate = useNavigate();
@@ -24,6 +24,10 @@ function AdminDashboard() {
   const [recentBookings, setRecentBookings] = useState([]);
   const [bookingStatusData, setBookingStatusData] = useState([]);
 
+  // 💰 New state for transactions
+  const [totalRevenue, setTotalRevenue] = useState(0);
+  const [totalExpenses, setTotalExpenses] = useState(0);
+
   const getStatusColor = (status) => {
     const colors = {
       confirmed: "bg-gradient-to-r from-green-500 to-green-600 text-white",
@@ -32,21 +36,25 @@ function AdminDashboard() {
       completed: "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white",
       cancelled: "bg-gradient-to-r from-red-500 to-red-600 text-white",
     };
-    return colors[status] || "bg-gradient-to-r from-gray-500 to-gray-600 text-white";
+    return (
+      colors[status] || "bg-gradient-to-r from-gray-500 to-gray-600 text-white"
+    );
   };
 
   const getStatusData = async () => {
     try {
-      const [resCars, resBookings] = await Promise.all([
+      const [resCars, resBookings, resTransactions] = await Promise.all([
         api.get("/cars"),
         api.get("/bookings"),
+        api.get("/transactions"),
       ]);
 
+      // --- CARS ---
       const cars = resCars.data.data || [];
-      const bookings = resBookings.data.data || [];
-
       setCarCount(cars.length);
 
+      // --- BOOKINGS ---
+      const bookings = resBookings.data.data || [];
       let pending = 0,
         completed = 0,
         cancelled = 0;
@@ -85,8 +93,8 @@ function AdminDashboard() {
       ];
       setBookingStatusData(bookingStats);
 
+      // --- RECENT BOOKINGS ---
       const latestBookings = bookings.slice(-5).reverse();
-
       const bookingDetails = await Promise.all(
         latestBookings.map(async (b) => {
           try {
@@ -94,10 +102,10 @@ function AdminDashboard() {
               api.get(`/customers/${b.customer_id}`),
               api.get(`/cars/${b.car_id}`),
             ]);
-
-            const customerName = customerRes.data.data?.name || "Unknown Customer";
-            const carLicense = carRes.data.data?.license_no || "Unknown License";
-
+            const customerName =
+              customerRes.data.data?.name || "Unknown Customer";
+            const carLicense =
+              carRes.data.data?.license_no || "Unknown License";
             return {
               id: b.booking_id,
               customer: customerName,
@@ -117,8 +125,21 @@ function AdminDashboard() {
           }
         })
       );
-
       setRecentBookings(bookingDetails);
+
+      // --- TRANSACTIONS ---
+      const transactions = resTransactions.data.data || [];
+      let revenue = 0;
+      let expenses = 0;
+
+      transactions.forEach((t) => {
+        if (t.transaction_type === "credit") revenue += t.transaction_amount;
+        else if (t.transaction_type === "debit")
+          expenses += t.transaction_amount;
+      });
+
+      setTotalRevenue(revenue);
+      setTotalExpenses(expenses);
     } catch (error) {
       console.error("Error fetching dashboard data:", error);
     }
@@ -128,26 +149,81 @@ function AdminDashboard() {
     getStatusData();
   }, []);
 
+  const generateXLSXReport = () => {
+    try {
+      // Create workbook
+      const wb = XLSX.utils.book_new();
+
+      // Sheet 1 - Dashboard Summary
+      const summaryData = [
+        ["Metric", "Value"],
+        ["Total Cars", carCount],
+        ["Total Bookings", bookingCount],
+        ["Pending Bookings", pendingBookingCount],
+        ["Completed Bookings", completedBookingCount],
+        ["Cancelled Bookings", cancelledBookingCount],
+        ["Total Revenue ($)", totalRevenue],
+        ["Total Expenses ($)", totalExpenses],
+      ];
+      const summarySheet = XLSX.utils.aoa_to_sheet(summaryData);
+      XLSX.utils.book_append_sheet(wb, summarySheet, "Dashboard Summary");
+
+      // Sheet 2 - Booking Status Distribution
+      const statusData = [
+        ["Status", "Bookings", "Percentage"],
+        ...bookingStatusData.map((s) => [s.name, s.value, `${s.percent}%`]),
+      ];
+      const statusSheet = XLSX.utils.aoa_to_sheet(statusData);
+      XLSX.utils.book_append_sheet(wb, statusSheet, "Booking Status");
+
+      // Sheet 3 - Recent Bookings
+      const bookingData = [
+        ["Booking ID", "Customer", "Car License", "Status", "Amount ($)"],
+        ...recentBookings.map((b) => [
+          b.id,
+          b.customer,
+          b.car,
+          b.status,
+          b.amount,
+        ]),
+      ];
+      const bookingSheet = XLSX.utils.aoa_to_sheet(bookingData);
+      XLSX.utils.book_append_sheet(wb, bookingSheet, "Recent Bookings");
+
+      // Save File
+      const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+      const fileData = new Blob([excelBuffer], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+      saveAs(
+        fileData,
+        `Admin_Dashboard_Report_${new Date().toISOString().slice(0, 10)}.xlsx`
+      );
+    } catch (error) {
+      console.error("Error generating report:", error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 p-6">
-      {/* Ambient Background Effects */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-orange-500/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl"></div>
-      </div>
-
       <div className="relative z-10">
         {/* Header Section */}
         <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
             <h1 className="text-3xl md:text-4xl font-extrabold text-gray-800">
-              Dashboard <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Overview</span>
+              Dashboard{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">
+                Overview
+              </span>
             </h1>
             <p className="text-sm text-gray-600 mt-2">
               Welcome back! Here's what's happening today.
             </p>
           </div>
-          <button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-3 rounded-lg font-semibold transition-all flex items-center gap-2 shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50 hover:scale-105 duration-300">
+          <button
+            onClick={generateXLSXReport}
+            className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-3 rounded-lg font-semibold transition-all flex items-center gap-2 shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50 hover:scale-105 duration-300"
+          >
             <FaCalendarAlt className="text-sm" />
             Generate Report
           </button>
@@ -160,9 +236,13 @@ function AdminDashboard() {
               <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-3 rounded-lg shadow-lg shadow-blue-500/30">
                 <FaCar className="text-white text-2xl" />
               </div>
-              <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded">+12%</span>
+              <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded">
+                +12%
+              </span>
             </div>
-            <h3 className="text-gray-600 text-sm font-medium mb-1">Total Cars</h3>
+            <h3 className="text-gray-600 text-sm font-medium mb-1">
+              Total Cars
+            </h3>
             <p className="text-3xl font-bold text-gray-800">{carCount}</p>
           </div>
 
@@ -171,9 +251,13 @@ function AdminDashboard() {
               <div className="bg-gradient-to-r from-orange-500 to-orange-600 p-3 rounded-lg shadow-lg shadow-orange-500/30">
                 <FaClipboardList className="text-white text-2xl" />
               </div>
-              <span className="text-xs font-semibold text-orange-600 bg-orange-50 px-2 py-1 rounded">+8%</span>
+              <span className="text-xs font-semibold text-orange-600 bg-orange-50 px-2 py-1 rounded">
+                +8%
+              </span>
             </div>
-            <h3 className="text-gray-600 text-sm font-medium mb-1">Total Bookings</h3>
+            <h3 className="text-gray-600 text-sm font-medium mb-1">
+              Total Bookings
+            </h3>
             <p className="text-3xl font-bold text-gray-800">{bookingCount}</p>
           </div>
 
@@ -182,10 +266,16 @@ function AdminDashboard() {
               <div className="bg-gradient-to-r from-yellow-500 to-yellow-600 p-3 rounded-lg shadow-lg shadow-yellow-500/30">
                 <FaClock className="text-white text-2xl" />
               </div>
-              <span className="text-xs font-semibold text-yellow-600 bg-yellow-50 px-2 py-1 rounded">{pendingBookingCount}</span>
+              <span className="text-xs font-semibold text-yellow-600 bg-yellow-50 px-2 py-1 rounded">
+                {pendingBookingCount}
+              </span>
             </div>
-            <h3 className="text-gray-600 text-sm font-medium mb-1">Pending Bookings</h3>
-            <p className="text-3xl font-bold text-gray-800">{pendingBookingCount}</p>
+            <h3 className="text-gray-600 text-sm font-medium mb-1">
+              Pending Bookings
+            </h3>
+            <p className="text-3xl font-bold text-gray-800">
+              {pendingBookingCount}
+            </p>
           </div>
 
           <div className="bg-white border border-gray-200 rounded-xl p-6 hover:scale-105 hover:shadow-xl transition-all duration-300 shadow-md">
@@ -193,14 +283,20 @@ function AdminDashboard() {
               <div className="bg-gradient-to-r from-green-500 to-green-600 p-3 rounded-lg shadow-lg shadow-green-500/30">
                 <FaCheckCircle className="text-white text-2xl" />
               </div>
-              <span className="text-xs font-semibold text-green-600 bg-green-50 px-2 py-1 rounded">+15%</span>
+              <span className="text-xs font-semibold text-green-600 bg-green-50 px-2 py-1 rounded">
+                +15%
+              </span>
             </div>
-            <h3 className="text-gray-600 text-sm font-medium mb-1">Completed Bookings</h3>
-            <p className="text-3xl font-bold text-gray-800">{completedBookingCount}</p>
+            <h3 className="text-gray-600 text-sm font-medium mb-1">
+              Completed Bookings
+            </h3>
+            <p className="text-3xl font-bold text-gray-800">
+              {completedBookingCount}
+            </p>
           </div>
         </div>
 
-        {/* Revenue & Expenses Cards */}
+        {/* 💰 Revenue & Expenses Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow duration-300">
             <div className="flex items-center justify-between mb-4">
@@ -209,19 +305,33 @@ function AdminDashboard() {
                   <FaDollarSign className="text-white text-xl" />
                 </div>
                 <div>
-                  <h3 className="text-gray-600 text-sm font-medium">Total Revenue</h3>
-                  <p className="text-2xl font-bold text-gray-800">$9,450</p>
+                  <h3 className="text-gray-600 text-sm font-medium">
+                    Total Revenue
+                  </h3>
+                  <p className="text-2xl font-bold text-gray-800">
+                    ${totalRevenue.toLocaleString()}
+                  </p>
                 </div>
               </div>
               <div className="text-right">
                 <span className="text-green-600 font-semibold flex items-center gap-1 text-sm">
                   <FaChartLine /> +3.8%
                 </span>
-                <p className="text-xs text-gray-500 mt-1">vs $8,920</p>
+                <p className="text-xs text-gray-500 mt-1">
+                  Updated from Transactions
+                </p>
               </div>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2">
-              <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 h-2 rounded-full shadow-sm" style={{ width: '75%' }}></div>
+              <div
+                className="bg-gradient-to-r from-emerald-500 to-emerald-600 h-2 rounded-full shadow-sm"
+                style={{
+                  width: `${Math.min(
+                    (totalRevenue / (totalRevenue + totalExpenses)) * 100 || 0,
+                    100
+                  )}%`,
+                }}
+              ></div>
             </div>
           </div>
 
@@ -232,19 +342,33 @@ function AdminDashboard() {
                   <FaDollarSign className="text-white text-xl" />
                 </div>
                 <div>
-                  <h3 className="text-gray-600 text-sm font-medium">Total Expenses</h3>
-                  <p className="text-2xl font-bold text-gray-800">$5,620</p>
+                  <h3 className="text-gray-600 text-sm font-medium">
+                    Total Expenses
+                  </h3>
+                  <p className="text-2xl font-bold text-gray-800">
+                    ${totalExpenses.toLocaleString()}
+                  </p>
                 </div>
               </div>
               <div className="text-right">
-                <span className="text-green-600 font-semibold flex items-center gap-1 text-sm">
+                <span className="text-red-600 font-semibold flex items-center gap-1 text-sm">
                   <FaChartLine className="rotate-180" /> -1.2%
                 </span>
-                <p className="text-xs text-gray-500 mt-1">vs $5,690</p>
+                <p className="text-xs text-gray-500 mt-1">
+                  Updated from Transactions
+                </p>
               </div>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2">
-              <div className="bg-gradient-to-r from-red-500 to-red-600 h-2 rounded-full shadow-sm" style={{ width: '60%' }}></div>
+              <div
+                className="bg-gradient-to-r from-red-500 to-red-600 h-2 rounded-full shadow-sm"
+                style={{
+                  width: `${Math.min(
+                    (totalExpenses / (totalRevenue + totalExpenses)) * 100 || 0,
+                    100
+                  )}%`,
+                }}
+              ></div>
             </div>
           </div>
         </div>
@@ -262,12 +386,20 @@ function AdminDashboard() {
                 <div key={idx} className="space-y-2">
                   <div className="flex items-center justify-between text-sm">
                     <div className="flex items-center gap-3">
-                      <div className={`w-3 h-3 rounded-full bg-gradient-to-r ${status.color} shadow-md`}></div>
-                      <span className="font-medium text-gray-700">{status.name}</span>
+                      <div
+                        className={`w-3 h-3 rounded-full bg-gradient-to-r ${status.color} shadow-md`}
+                      ></div>
+                      <span className="font-medium text-gray-700">
+                        {status.name}
+                      </span>
                     </div>
                     <div className="flex items-center gap-4">
-                      <span className="text-gray-600">{status.value} bookings</span>
-                      <span className="font-bold text-gray-800 min-w-[3rem] text-right">{status.percent}%</span>
+                      <span className="text-gray-600">
+                        {status.value} bookings
+                      </span>
+                      <span className="font-bold text-gray-800 min-w-[3rem] text-right">
+                        {status.percent}%
+                      </span>
                     </div>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
@@ -289,7 +421,7 @@ function AdminDashboard() {
                 Recent Bookings
               </h2>
               <button
-                onClick={() => navigate("/booking")}
+                onClick={() => navigate("/dashboard/bookings")}
                 className="text-sm text-orange-600 hover:text-orange-700 font-semibold transition-colors"
               >
                 View All →
@@ -299,17 +431,32 @@ function AdminDashboard() {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-gray-200">
-                    <th className="text-left text-xs font-semibold text-gray-600 pb-3 px-2">Customer</th>
-                    <th className="text-left text-xs font-semibold text-gray-600 pb-3 px-2">Car License</th>
-                    <th className="text-left text-xs font-semibold text-gray-600 pb-3 px-2">Status</th>
-                    <th className="text-right text-xs font-semibold text-gray-600 pb-3 px-2">Amount</th>
+                    <th className="text-left text-xs font-semibold text-gray-600 pb-3 px-2">
+                      Customer
+                    </th>
+                    <th className="text-left text-xs font-semibold text-gray-600 pb-3 px-2">
+                      Car License
+                    </th>
+                    <th className="text-left text-xs font-semibold text-gray-600 pb-3 px-2">
+                      Status
+                    </th>
+                    <th className="text-right text-xs font-semibold text-gray-600 pb-3 px-2">
+                      Amount
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   {recentBookings.map((b) => (
-                    <tr key={b.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                      <td className="py-3 px-2 text-sm text-gray-700">{b.customer}</td>
-                      <td className="py-3 px-2 text-sm text-gray-700">{b.car}</td>
+                    <tr
+                      key={b.id}
+                      className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
+                    >
+                      <td className="py-3 px-2 text-sm text-gray-700">
+                        {b.customer}
+                      </td>
+                      <td className="py-3 px-2 text-sm text-gray-700">
+                        {b.car}
+                      </td>
                       <td className="py-3 px-2">
                         <span
                           className={`text-xs font-semibold px-3 py-1 rounded-full ${getStatusColor(

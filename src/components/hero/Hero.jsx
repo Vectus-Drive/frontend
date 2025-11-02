@@ -1,6 +1,9 @@
 import heroImg from "../../assets/Image/hero.png";
+import { useNavigate } from "react-router-dom";
 
 function Hero() {
+  const navigate = useNavigate();
+
   return (
     <div className="hero-container relative min-h-screen overflow-hidden">
       <div className="hero-bg absolute inset-0 opacity-10">
@@ -44,10 +47,16 @@ function Hero() {
             </div>
 
             <div className="flex flex-wrap gap-4 pt-4 animate-fade-in-delayed">
-              <button className="btn-primary animate-pulse-button">
+              <a
+                href="#quality-showcase"
+                className="btn-primary animate-pulse-button"
+              >
                 <span className="relative z-10">Explore Now</span>
-              </button>
-              <button className="btn-outline">Book Now</button>
+              </a>
+
+              <button 
+                onClick={() => navigate('./cars')}
+                className="btn-outline">Book Now</button>
             </div>
           </div>
 
@@ -56,7 +65,7 @@ function Hero() {
             <div className="relative transform hover:scale-105 transition-transform duration-500 animate-car-entrance">
               <div className="hero-outline"></div>
               <img
-                src= {heroImg}
+                src={heroImg}
                 alt="Hero Car"
                 className="relative w-full h-auto drop-shadow-2xl"
               />

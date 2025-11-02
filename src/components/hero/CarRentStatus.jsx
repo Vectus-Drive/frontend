@@ -3,10 +3,10 @@ import { FaCar, FaUserFriends, FaRegThumbsUp, FaTruck } from "react-icons/fa";
 
 const CarRentStatus = () => {
   const stats = [
-    { value: 120, label: "Cars Available Daily", icon: FaCar },
-    { value: 3200, label: "Satisfied Customers", icon: FaUserFriends },
-    { value: 2800, label: "5-Star Reviews", icon: FaRegThumbsUp },
-    { value: 150, label: "Professional Drivers", icon: FaTruck },
+    { value: 150, label: "Totals Cars", icon: FaCar },
+    { value: 460, label: "Our Customers", icon: FaUserFriends },
+    { value: 1500, label: "5-Star Reviews", icon: FaRegThumbsUp },
+    { value: 40, label: "Total Booking", icon: FaTruck },
   ];
 
   const [counts, setCounts] = useState(stats.map(() => 0));
