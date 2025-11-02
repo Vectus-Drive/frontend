@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaDownload, FaArrowUp, FaArrowDown } from "react-icons/fa";
+import * as XLSX from "xlsx";
 import api from "../../api/api";
 
 export default function TransactionManagement() {
@@ -61,16 +62,59 @@ export default function TransactionManagement() {
     fetchTransactions();
   }, []);
 
+  const handleDownloadReport = () => {
+    if (transactions.length === 0) {
+      alert("No transactions available to export!");
+      return;
+    }
+
+    const reportData = transactions.map((tx) => ({
+      "Transaction ID": tx.transaction_id || tx._id,
+      "Transaction Type": tx.transaction_type,
+      Amount: tx.transaction_amount,
+      Date: new Date(tx.date).toLocaleString(),
+      "Customer/Employee": tx.userName,
+      "Car License": tx.licenseNo,
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(reportData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Transactions");
+
+    const colWidths = [
+      { wch: 25 },
+      { wch: 15 },
+      { wch: 10 },
+      { wch: 20 },
+      { wch: 25 },
+      { wch: 15 },
+    ];
+    worksheet["!cols"] = colWidths;
+
+    const fileName = `Transaction_Report_${new Date()
+      .toISOString()
+      .slice(0, 19)
+      .replace(/[:T]/g, "-")}.xlsx`;
+
+    XLSX.writeFile(workbook, fileName);
+  };
+
   return (
     <div className="px-6 py-10 bg-gray-50 min-h-screen">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 border-b pb-4 border-gray-200">
         <div className="mb-4 md:mb-0">
-          <h1 className="text-2xl font-bold text-gray-800">Transaction Management</h1>
+          <h1 className="text-2xl font-bold text-gray-800">
+            Transaction Management
+          </h1>
           <p className="text-gray-600">
-            Monitor all financial transactions (credits and debits) related to customer bookings and payments.
+            Monitor all financial transactions (credits and debits) related to
+            customer bookings and payments.
           </p>
         </div>
-        <button className="flex items-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg shadow-lg transition duration-200">
+        <button
+          onClick={handleDownloadReport}
+          className="flex items-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg shadow-lg transition duration-200"
+        >
           <FaDownload /> Download Report
         </button>
       </div>
