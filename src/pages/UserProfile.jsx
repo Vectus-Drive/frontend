@@ -45,7 +45,7 @@ function UserProfile() {
 
     getAllReviewsFromCustomerId(user.id)
       .then(res => setReviews(res?.data || []));
-  }, [showEditProfileModal, showImageModal, showPasswordModal]);
+  }, [showEditProfileModal, showImageModal, showPasswordModal, showEditUserName, showPasswordModal]);
 
   const handleNotifClick = () => {
     setShowNotifDropdown(!showNotifDropdown);
