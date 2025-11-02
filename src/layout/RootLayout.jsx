@@ -3,6 +3,7 @@ import Footer from "../components/Footer";
 import ScrollToTop from "../components/ScrollToTop";
 import { Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../hooks/AuthContext";
+import ChatBot from "../components/ChatBot";
 
 function RootLayout() {
   const location = useLocation();
@@ -29,6 +30,7 @@ function RootLayout() {
         {!shouldHide && <Header />}
         <main className="flex-grow min-h-screen bg-gradient-to-b from-[#0f172a] via-[#141c2e] to-[#121c32]">
           <Outlet />
+          <ChatBot />
         </main>
         {!shouldHide && <Footer />}
       </div>
