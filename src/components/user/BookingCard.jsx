@@ -2,18 +2,22 @@ import { FaCalendar, FaClock, FaCreditCard } from "react-icons/fa";
 import { updateBooking } from "../../api/api";
 import { toast } from "react-toastify";
 
-export default function BookingCard({ booking, car, setSelectedBooking }) {
+export default function BookingCard({ booking, car, setSelectedBooking, bookings, setBookings }) {
 
   const cancelBooking = async (id) => {
     booking = {
       status: "canceled"
     }
     updateBooking(booking, id)
-    .then(res => {
-      toast.success("successfully canceled")
-    })
+      .then(res => {
+        toast.success("successfully canceled")
+      })
+
+    setBookings(bookings.map(b =>
+      b.booking_id === id ? { ...b, status: "canceled" } : b
+    ));
   }
-  
+
   return (
     <div
       className="bg-slate-900/50 rounded-xl border border-slate-700/50 overflow-hidden hover:border-orange-400/50 transition-all cursor-pointer"
@@ -36,13 +40,12 @@ export default function BookingCard({ booking, car, setSelectedBooking }) {
             </div>
 
             <span
-              className={`px-3 py-1 rounded-full text-sm font-medium ${
-                booking.status === "pending"
+              className={`px-3 py-1 rounded-full text-sm font-medium ${booking.status === "pending"
                   ? "bg-blue-500/20 text-blue-400"
                   : booking.status === "booked"
-                  ? "bg-green-500/20 text-green-400"
-                  : "bg-red-500/20 text-red-400"
-              }`}
+                    ? "bg-green-500/20 text-green-400"
+                    : "bg-red-500/20 text-red-400"
+                }`}
             >
               {booking.status}
             </span>
@@ -93,18 +96,18 @@ export default function BookingCard({ booking, car, setSelectedBooking }) {
             </span>
           </div>
 
-        
-            <button onClick={() => cancelBooking(booking.booking_id)}
-              className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm rounded-lg transition-colors"
-            >
-              Cancel Booking
-            </button>
-            <button
-              onClick={() => setSelectedBooking(booking)}
-              className="px-4 ml-3 py-2 bg-red-600 hover:bg-red-700 text-white text-sm rounded-lg transition-colors"
-            >
-              View details
-            </button>
+
+          <button onClick={() => cancelBooking(booking.booking_id)}
+            className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm rounded-lg transition-colors"
+          >
+            Cancel Booking
+          </button>
+          <button
+            onClick={() => setSelectedBooking(booking)}
+            className="px-4 ml-3 py-2 bg-red-600 hover:bg-red-700 text-white text-sm rounded-lg transition-colors"
+          >
+            View details
+          </button>
         </div>
       </div>
     </div>
