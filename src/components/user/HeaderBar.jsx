@@ -46,7 +46,7 @@ export default function HeaderBar({
                   </button>
                 </div>
                 <div className="max-h-80 overflow-y-auto">
-                  {notifications.map((n) => (
+                  {notifications.length > 0 && notifications.map((n) => (
                     <div
                       key={n.notification_id}
                       className={`p-4 border-b border-slate-700 hover:bg-slate-700/50 ${

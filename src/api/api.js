@@ -65,7 +65,7 @@ export const getNotifications = async (id) => {
     const response = await api.get(`/notifications?user_id=${id}`);
     return response.data;
   } catch (error) {
-    console.log(error);
+    return error.response?.data;
   }
 };
 
@@ -122,5 +122,32 @@ export const updateUser = async (userData, id) => {
     return error.response?.data
   }
 }
+
+export const getAllReviewsFromCustomerId = async (id) => {
+  try {
+    const response = await api.get(`/reviews?customer_id=${id}`);
+    return response.data;
+  } catch (error) {
+    return error.response?.data
+  }
+}
+export const updateReview = async (reviewData, id) => {
+  try {
+    const response = await api.put(`/reviews/${id}`, reviewData);
+    return response.data;
+  } catch (error) {
+    return error.response?.data
+  }
+}
+
+export const deleteReview = async (id) => {
+  try {
+    const response = await api.delete(`/reviews/${id}`);
+    return response.data;
+  } catch (error) {
+    return error.response?.data
+  }
+}
+
 
 export default api;
