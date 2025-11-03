@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { FaCloudUploadAlt, FaTimes } from "react-icons/fa";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import api , {uploadImage} from "../../api/api";
 
 const carSchema = yup.object().shape({
@@ -34,7 +34,7 @@ const carSchema = yup.object().shape({
 });
 
 export default function CarManageForm({ car, onClose, onSaved }) {
-  const isEdit = !!car;
+  const isEdit = car;
 
   const [previewImage, setPreviewImage] = useState(car?.image || "");
   const [selectedFile, setSelectedFile] = useState(null);
@@ -44,7 +44,6 @@ export default function CarManageForm({ car, onClose, onSaved }) {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
     reset,
   } = useForm({
     resolver: yupResolver(carSchema),
@@ -83,20 +82,47 @@ export default function CarManageForm({ car, onClose, onSaved }) {
       const formData = new FormData();
       formData.append("image", selectedFile);
 
-      const res = await uploadImage(formData, isEdit ? car.car_id : null);
+      const res = await uploadImage(formData,  car.car_id);
       return res.image_url || res.filename || null; // adjust according to backend
     } catch (err) {
       console.error("Image upload failed:", err);
-      toast.error("Image upload failed!");
       return null;
     }
   };
 
+  // Check if a car already exists by license number (frontend filter)
+// const checkCarExists = async (license_no) => {
+//   try {
+//     const res = await api.get("/cars"); // get all cars
+//     const cars = res.data.data; // adapt depending on backend response
+//     console.log(license_no, cars.license_no);
+    
+//     const match = cars.find(
+//       (c) => c.license_no.toLowerCase() === license_no.toLowerCase()
+//     );
+//     console.log(match);
+    
+//     return match; // true if found
+//   } catch (err) {
+//     console.error("Error checking existing car:", err);
+//     return false;
+//   }
+// };
+
+
   // Submit form
   const onSubmit = async (data) => {
     try {
-      const uploadedImage = await handleImageUpload();
 
+    // const carExists = checkCarExists(data.license_no);
+
+    // if (!isEdit && carExists) {
+    //   toast.error("A car with this license number already exists!");
+    //   return; 
+    // }
+
+      const uploadedImage = await handleImageUpload();
+      
       const payload = {
         license_no: data.license_no,
         make: data.make,
@@ -136,18 +162,6 @@ export default function CarManageForm({ car, onClose, onSaved }) {
 
   return (
     <>
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        closeOnClick
-        pauseOnHover
-        draggable
-        toastClassName={() =>
-          "relative flex p-5 min-h-10 rounded-md justify-between overflow-hidden cursor-pointer bg-[#0f172a] text-white"
-        }
-      />
-
       <div className="fixed inset-0 flex justify-center items-center bg-black/50 z-50 p-4">
         <div className="bg-white w-full max-w-[900px] rounded-2xl shadow-2xl overflow-y-auto max-h-[95vh] p-6 relative">
           <div className="flex justify-between items-center mb-6 border-b pb-4">

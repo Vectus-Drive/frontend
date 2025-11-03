@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FaDownload, FaArrowUp, FaArrowDown } from "react-icons/fa";
+import { FaDownload, FaArrowUp, FaArrowDown, FaTrash } from "react-icons/fa";
 import * as XLSX from "xlsx";
 import api from "../../api/api";
 
@@ -7,60 +7,77 @@ export default function TransactionManagement() {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const fetchTransactions = async () => {
+    try {
+      const res = await api.get("transactions");
+      const data = Array.isArray(res.data.data)
+        ? res.data.data
+        : [res.data.data];
+
+      const enrichedData = await Promise.all(
+        data.map(async (tx) => {
+          let userName = "Unknown";
+          let licenseNo = "N/A";
+
+          try {
+            const custRes = await api.get(`customers/${tx.customer_id}`);
+            if (custRes.data?.data?.name) {
+              userName = custRes.data.data.name;
+            }
+          } catch {
+            try {
+              const empRes = await api.get(`employee/${tx.customer_id}`);
+              if (empRes.data?.data?.name) {
+                userName = empRes.data.data.name;
+              }
+            } catch {
+              userName = "Unknown";
+            }
+          }
+
+          try {
+            const carRes = await api.get(`cars/${tx.car_id}`);
+            licenseNo = carRes.data?.data?.license_no || "N/A";
+          } catch {
+            licenseNo = "N/A";
+          }
+
+          return {
+            ...tx,
+            userName,
+            licenseNo,
+          };
+        })
+      );
+
+      setTransactions(enrichedData);
+    } catch (err) {
+      console.error("Error fetching transactions:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchTransactions = async () => {
-      try {
-        const res = await api.get("transactions");
-        const data = Array.isArray(res.data.data)
-          ? res.data.data
-          : [res.data.data];
-
-        const enrichedData = await Promise.all(
-          data.map(async (tx) => {
-            let userName = "Unknown";
-            let licenseNo = "N/A";
-
-            try {
-              const custRes = await api.get(`customers/${tx.customer_id}`);
-              if (custRes.data?.data?.name) {
-                userName = custRes.data.data.name;
-              }
-            } catch {
-              try {
-                const empRes = await api.get(`employee/${tx.customer_id}`);
-                if (empRes.data?.data?.name) {
-                  userName = empRes.data.data.name;
-                }
-              } catch {
-                userName = "Unknown";
-              }
-            }
-
-            try {
-              const carRes = await api.get(`cars/${tx.car_id}`);
-              licenseNo = carRes.data?.data?.license_no || "N/A";
-            } catch {
-              licenseNo = "N/A";
-            }
-
-            return {
-              ...tx,
-              userName,
-              licenseNo,
-            };
-          })
-        );
-
-        setTransactions(enrichedData);
-      } catch (err) {
-        console.error("Error fetching transactions:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchTransactions();
   }, []);
+
+  const handleDeleteTransaction = async (transactionId) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this transaction?"
+    );
+    if (!confirmDelete) return;
+
+    try {
+      await api.delete(`/transactions/${transactionId}`);
+      console.log(`Transaction ${transactionId} deleted successfully.`);
+      setTransactions((prev) =>
+        prev.filter((tx) => tx.transaction_id !== transactionId)
+      );
+    } catch (error) {
+      console.error("Error deleting transaction:", error);
+    }
+  };
 
   const handleDownloadReport = () => {
     if (transactions.length === 0) {
@@ -127,10 +144,13 @@ export default function TransactionManagement() {
         <>
           <div className="grid grid-cols-1 md:grid-cols-12 gap-4 font-semibold text-xs uppercase text-gray-500 bg-gray-100 p-3 rounded-lg">
             <span className="col-span-2 md:col-span-2">Type</span>
-            <span className="col-span-2 md:col-span-3 text-right">Amount</span>
-            <span className="col-span-2 md:col-span-3">Date</span>
+            <span className="col-span-2 md:col-span-2 text-right">Amount</span>
+            <span className="col-span-2 md:col-span-2">Date</span>
             <span className="col-span-2 md:col-span-2">Customer/Employee</span>
             <span className="col-span-2 md:col-span-2">Car License</span>
+            <span className="col-span-2 md:col-span-2 text-center">
+              Actions
+            </span>
           </div>
 
           <div className="flex flex-col gap-2 mt-2">
@@ -156,7 +176,7 @@ export default function TransactionManagement() {
                 </div>
 
                 <div
-                  className={`col-span-2 md:col-span-3 flex items-center justify-end font-bold text-base ${
+                  className={`col-span-2 md:col-span-2 flex items-center justify-end font-bold text-base ${
                     tx.transaction_type?.toLowerCase() === "credit"
                       ? "text-green-600"
                       : "text-red-600"
@@ -165,7 +185,7 @@ export default function TransactionManagement() {
                   ${tx.transaction_amount?.toFixed(2)}
                 </div>
 
-                <div className="col-span-2 md:col-span-3 flex items-center text-gray-600">
+                <div className="col-span-2 md:col-span-2 flex items-center text-gray-600">
                   {new Date(tx.date).toLocaleDateString()}
                 </div>
 
@@ -175,6 +195,17 @@ export default function TransactionManagement() {
 
                 <div className="col-span-2 md:col-span-2 flex items-center text-gray-700 font-mono">
                   {tx.licenseNo}
+                </div>
+
+                <div className="col-span-2 md:col-span-2 flex items-center justify-center">
+                  <button
+                    onClick={() =>
+                      handleDeleteTransaction(tx.transaction_id || tx._id)
+                    }
+                    className="flex items-center gap-1 text-red-600 hover:text-red-800 font-semibold border border-red-500 hover:border-red-700 px-3 py-1.5 rounded-lg transition"
+                  >
+                    <FaTrash /> Delete
+                  </button>
                 </div>
               </div>
             ))}

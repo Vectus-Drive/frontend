@@ -43,18 +43,18 @@ function AdminDashboard() {
 
   const getStatusData = async () => {
     try {
-      const [resCars, resBookings, resTransactions] = await Promise.all([
+      // Fetch cars and bookings first (they are essential)
+      const [resCars, resBookings] = await Promise.all([
         api.get("/cars"),
         api.get("/bookings"),
-        api.get("/transactions"),
       ]);
 
       // --- CARS ---
-      const cars = resCars.data.data || [];
+      const cars = resCars.data?.data || [];
       setCarCount(cars.length);
 
       // --- BOOKINGS ---
-      const bookings = resBookings.data.data || [];
+      const bookings = resBookings.data?.data || [];
       let pending = 0,
         completed = 0,
         cancelled = 0;
@@ -103,9 +103,9 @@ function AdminDashboard() {
               api.get(`/cars/${b.car_id}`),
             ]);
             const customerName =
-              customerRes.data.data?.name || "Unknown Customer";
+              customerRes.data?.data?.name || "Unknown Customer";
             const carLicense =
-              carRes.data.data?.license_no || "Unknown License";
+              carRes.data?.data?.license_no || "Unknown License";
             return {
               id: b.booking_id,
               customer: customerName,
@@ -113,8 +113,7 @@ function AdminDashboard() {
               status: b.status,
               amount: b.fine || 0,
             };
-          } catch (error) {
-            console.error("Error fetching booking details:", error);
+          } catch {
             return {
               id: b.booking_id,
               customer: b.customer_id,
@@ -128,18 +127,28 @@ function AdminDashboard() {
       setRecentBookings(bookingDetails);
 
       // --- TRANSACTIONS ---
-      const transactions = resTransactions.data.data || [];
-      let revenue = 0;
-      let expenses = 0;
+      try {
+        const resTransactions = await api.get("/transactions");
+        const transactions = resTransactions.data?.data || [];
 
-      transactions.forEach((t) => {
-        if (t.transaction_type === "credit") revenue += t.transaction_amount;
-        else if (t.transaction_type === "debit")
-          expenses += t.transaction_amount;
-      });
+        let revenue = 0;
+        let expenses = 0;
+        transactions.forEach((t) => {
+          if (t.transaction_type === "credit") revenue += t.transaction_amount;
+          else if (t.transaction_type === "debit")
+            expenses += t.transaction_amount;
+        });
 
-      setTotalRevenue(revenue);
-      setTotalExpenses(expenses);
+        setTotalRevenue(revenue);
+        setTotalExpenses(expenses);
+      } catch (transactionError) {
+        console.warn(
+          "⚠️ No transactions found or failed to fetch:",
+          transactionError
+        );
+        setTotalRevenue(0);
+        setTotalExpenses(0);
+      }
     } catch (error) {
       console.error("Error fetching dashboard data:", error);
     }

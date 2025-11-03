@@ -16,11 +16,7 @@ function PaymentForm({ bookingData }) {
   // Format card number as XXXX XXXX XXXX XXXX
   const formatCardNumber = (value) => {
     const v = value.replace(/\s+/g, "").replace(/[^0-9]/gi, "");
-    const parts = [];
-    for (let i = 0; i < v.length; i += 4) {
-      parts.push(v.substring(i, i + 4));
-    }
-    return parts.join(" ");
+    return v.match(/.{1,4}/g)?.join(" ") || "";
   };
 
   // Format expiry as MM/YY
@@ -50,32 +46,44 @@ function PaymentForm({ bookingData }) {
       expiryDate: formatExpiryDate(e.target.value),
     }));
 
-  // Submit handler for both Cash and Card
+  // Submit handler
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
+      // --- CASH PAYMENT ---
       if (formData.paymentMethod === "Cash") {
-        console.log(bookingData);
-        
-        // ✅ For cash payment — create booking record
         const res = await api.post("/bookings", bookingData);
         toast.success("Booking successfully created with Cash Payment!");
-        console.log("Booking response:", res.data);
-      } else if (formData.paymentMethod === "Card") {
-        // 💳 For card payment — just simulate success (no API call)
-        if (
-          !formData.email ||
-          !formData.cardNumber ||
-          !formData.cardName ||
-          !formData.expiryDate ||
-          !formData.cvv
-        ) {
+        console.log("Booking (Cash):", res.data);
+      }
+
+      // --- CARD PAYMENT ---
+      else if (formData.paymentMethod === "Card") {
+        const { email, cardNumber, cardName, expiryDate, cvv } = formData;
+
+        // Validate required fields
+        if (!email || !cardNumber || !cardName || !expiryDate || !cvv) {
           toast.error("Please fill in all card details!");
           return;
         }
-        toast.success("Payment completed successfully via Card!");
-        console.log("Card payment details:", formData);
+
+        // Clone and ensure booking status is "booked"
+        const cardBookingData = {
+          ...bookingData,
+          status: "booked",
+        };
+
+        const res = await api.post("/bookings", cardBookingData);
+        toast.success("Booking created successfully via Card!");
+        // console.log("Card payment info:", formData);
+        // console.log("Booking (Card):", res.data.data.car_id);
+        // const resC = await api.put(`/cars/${res.data.car_id}`, {
+        //   availability_status: false,
+        // });
+        // if (resC) {
+        //   console.log("Done");
+        // }
       }
     } catch (error) {
       console.error("Payment/Booking error:", error);
@@ -85,34 +93,28 @@ function PaymentForm({ bookingData }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {/* ---- Payment Method Selector ---- */}
+      {/* ---- Payment Method ---- */}
       <div>
         <label className="block text-sm font-semibold text-gray-300 mb-2">
           Payment Method
         </label>
         <div className="flex gap-6">
-          <label className="flex items-center gap-2 text-gray-300 cursor-pointer">
-            <input
-              type="radio"
-              name="paymentMethod"
-              value="Card"
-              checked={formData.paymentMethod === "Card"}
-              onChange={handleChange}
-              className="accent-orange-500 w-5 h-5"
-            />
-            Card
-          </label>
-          <label className="flex items-center gap-2 text-gray-300 cursor-pointer">
-            <input
-              type="radio"
-              name="paymentMethod"
-              value="Cash"
-              checked={formData.paymentMethod === "Cash"}
-              onChange={handleChange}
-              className="accent-orange-500 w-5 h-5"
-            />
-            Cash
-          </label>
+          {["Card", "Cash"].map((method) => (
+            <label
+              key={method}
+              className="flex items-center gap-2 text-gray-300 cursor-pointer"
+            >
+              <input
+                type="radio"
+                name="paymentMethod"
+                value={method}
+                checked={formData.paymentMethod === method}
+                onChange={handleChange}
+                className="accent-orange-500 w-5 h-5"
+              />
+              {method}
+            </label>
+          ))}
         </div>
       </div>
 
