@@ -148,7 +148,6 @@ function RentForm({ car }) {
         {/* Submit Button */}
         <button
           type="submit"
-          // disabled={loading || totalDays === 0}
           disabled={loading || totalDays === 0 } // or any condition like loading || totalDays === 0
           className="w-full mt-6 
              bg-gradient-to-r from-orange-500 to-orange-600 

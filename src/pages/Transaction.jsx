@@ -59,7 +59,7 @@ function Transaction() {
 
           {/* Right side — Payment Summary */}
           <div className="lg:col-span-1">
-            <PaymentSummary bookingData={bookingData} />
+            <PaymentSummary bookingDatac={bookingData} />
           </div>
         </div>
       </div>

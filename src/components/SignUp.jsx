@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { FaUpload, FaEye, FaEyeSlash } from "react-icons/fa";
 import { uploadImage, signUpUser } from "../api/api.js"
+import { toast } from "react-toastify";
 
 // ✅ Validation schema using Yup
 const schema = yup.object().shape({
@@ -45,7 +46,7 @@ function SignUp() {
   const [previewImage, setPreviewImage] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
+  const navigate = useNavigate();
   // ✅ Hook form setup
   const {
     register,
@@ -89,7 +90,6 @@ function SignUp() {
       ? await handleImageUpload(data.profileImage)
       : null;
 
-
     const finalData = {
       ...data,
       image: img_url,
@@ -99,6 +99,8 @@ function SignUp() {
     delete finalData.confirmPassword;
 
     await signUpUser(finalData);
+    toast.success("Resgistration successfull.");
+    navigate('/login');
   } catch (err) {
     console.error(err);
   }
@@ -115,7 +117,7 @@ function SignUp() {
         </Link>
       </div>
 
-      <div className="bg-gray-800 bg-opacity-90 backdrop-blur-md p-6 md:p-8 rounded-2xl shadow-2xl w-[90%] md:w-[65%] lg:w-[50%] xl:w-[45%] text-center">
+      <div className="bg-gray-800 bg-opacity-90 backdrop-blur-md p-6 md:p-8 rounded-2xl shadow-2xl  w-[90%] md:w-[65%] lg:w-[50%] xl:w-[45%] text-center">
         <h1 className="text-2xl font-semibold tracking-wide mb-1">
           <span className="text-orange-500 font-bold">VECTUS</span>
           <span className="text-white">DRIVE</span>

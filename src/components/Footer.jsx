@@ -12,7 +12,7 @@ import {
 export default function Footer() {
   const quickLinks = [
     { name: "Home", path: "/" },
-    { name: "Car List", path: "/car" },
+    { name: "Car List", path: "/cars" },
     { name: "About", path: "/about" },
     { name: "Contact Us", path: "/contact-us" },
   ];
@@ -113,7 +113,7 @@ export default function Footer() {
               <div className="flex items-center gap-3 text-sm group">
                 <FaEnvelope className="text-orange-400 flex-shrink-0 group-hover:scale-110 transition-transform" />
                 <a href="mailto:info@example.com" className="text-gray-400 hover:text-orange-400 transition-colors">
-                  info@example.com
+                  vectusdrive@gmail.com
                 </a>
               </div>
               <div className="flex items-center gap-3 text-sm group">
