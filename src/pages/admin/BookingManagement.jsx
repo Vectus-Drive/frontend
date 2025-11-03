@@ -84,19 +84,28 @@ function BookingManagement() {
   };
 
   // 🧮 Update return date and calculate fine
-  const updateReturnDate = async (bookingId, newDate, bookedAt, timePeriod) => {
+  const updateReturnDateAndFine = async (booking, returnedDate) => {
     try {
-      const booked = new Date(bookedAt);
-      const returned = new Date(newDate);
+      const booked = new Date(booking.booked_at);
+      const returned = new Date(returnedDate);
       const diffDays = Math.ceil((returned - booked) / (1000 * 60 * 60 * 24));
-      const extraDays = Math.max(0, diffDays - timePeriod);
+      const extraDays = Math.max(0, diffDays - booking.time_period);
       const fine = extraDays * 10;
-
-      await api.put(`/bookings/${bookingId}`, {
-        returned_at: newDate,
+      
+      booking = {
+        ...booking,
+        returned_at: returnedDate,
         fine: fine,
-      });
+        total: booking.total + fine
+      }
 
+    delete booking["car_info"]
+    delete booking["customer_id"]
+    delete booking["customer_name"]
+    delete booking["license_no"]
+
+
+    await api.put(`/bookings/${booking.booking_id}`, booking);
       toast.success(`✅ Return date & fine updated successfully!`);
     } catch (error) {
       console.error("❌ Error updating return date:", error);
@@ -121,29 +130,6 @@ function BookingManagement() {
       selectedBooking?.license_no,
       selectedBooking?.customer_id
     );
-  };
-
-  const handleReturnDateChange = (id, newDate) => {
-    setBookings((prev) =>
-      prev.map((b) => {
-        if (b.booking_id === id) {
-          const booked = new Date(b.booked_at);
-          const returned = new Date(newDate);
-          const diffDays = Math.ceil(
-            (returned - booked) / (1000 * 60 * 60 * 24)
-          );
-          const extraDays = Math.max(0, diffDays - b.time_period);
-          const fine = extraDays * 10;
-          return { ...b, returned_at: newDate, fine: `$${fine}` };
-        }
-        return b;
-      })
-    );
-
-    const selected = bookings.find((b) => b.booking_id === id);
-    if (selected) {
-      updateReturnDate(id, newDate, selected.booked_at, selected.time_period);
-    }
   };
 
   const getStatusColor = (status) => {
@@ -205,7 +191,7 @@ function BookingManagement() {
                       type="date"
                       value={booking.returned_at || ""}
                       onChange={(e) =>
-                        handleReturnDateChange(booking.booking_id, e.target.value)
+                        updateReturnDateAndFine(booking, e.target.value)
                       }
                       className="border border-gray-300 rounded px-2 py-1 text-sm focus:ring-2 focus:ring-orange-400 focus:outline-none"
                     />

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import AuthContext from "../hooks/AuthContext.js";
 import api from "../api/api.js";
 
@@ -7,19 +7,17 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     let refreshPromise = null;
-    const controller = new AbortController();
-    const signal = controller.signal;
 
+    // Interceptor for 401 -> refresh token
     const responseInterceptor = api.interceptors.response.use(
       (response) => response,
       async (error) => {
         const originalRequest = error.config;
         if (!originalRequest) return Promise.reject(error);
 
-        // Don't try to refresh if the failing request was the refresh endpoint itself
-        if (originalRequest.url && originalRequest.url.includes('/auth/token/refresh')) {
+        if (originalRequest.url?.includes("/auth/token/refresh")) {
           return Promise.reject(error);
         }
 
@@ -29,14 +27,7 @@ export const AuthProvider = ({ children }) => {
             if (!refreshPromise) {
               refreshPromise = api
                 .post("/auth/token/refresh", {}, { withCredentials: true })
-                .then((res) => {
-                  refreshPromise = null;
-                  return res;
-                })
-                .catch((err) => {
-                  refreshPromise = null;
-                  throw err;
-                });
+                .finally(() => (refreshPromise = null));
             }
 
             await refreshPromise;
@@ -52,52 +43,48 @@ export const AuthProvider = ({ children }) => {
       }
     );
 
+    // Initial auth check
     const verifyAuth = async () => {
       try {
-        const response = await api.get("/auth/me", { signal });
+        const response = await api.get("/auth/me", { withCredentials: true });
         setIsAuthenticated(true);
         setUser(response.data.data);
       } catch {
-        if (!signal.aborted) {
-          setIsAuthenticated(false);
-          setUser(null);
-        }
+        setIsAuthenticated(false);
+        setUser(null);
       } finally {
-        if (!signal.aborted) setLoading(false);
+        setLoading(false);
       }
     };
 
     verifyAuth();
 
     return () => {
-      controller.abort();
       api.interceptors.response.eject(responseInterceptor);
     };
   }, []);
 
+  // Login
   const login = async (credentials) => {
-    await api.post("/auth/login", credentials, { withCredentials: true });
+    const res = await api.post("/auth/login", credentials, { withCredentials: true });
+    // Optional: return user info from login response directly
+    const userRes = await api.get("/auth/me", { withCredentials: true });
+    setUser(userRes.data.data);
     setIsAuthenticated(true);
-    const response = await api.get("/auth/me", { withCredentials: true });
-    setUser(response.data.data);
+    return userRes.data.data;
   };
 
+  // Logout
   const logout = async () => {
     await api.post("/auth/logout", {}, { withCredentials: true });
-    setIsAuthenticated(false);
     setUser(null);
+    setIsAuthenticated(false);
   };
 
+  if (loading) return null; // Block rendering until auth is verified
+
   return (
-    <AuthContext.Provider
-      value={{
-        isAuthenticated,
-        user,
-        login,
-        logout,
-        loading,
-      }}
-    >
+    <AuthContext.Provider value={{ isAuthenticated, user, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
