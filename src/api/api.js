@@ -38,7 +38,7 @@ export const signUpUser = async (userData) => {
     const response = await api.post("/auth/register", userData);
     return response.data;
   } catch (error) {
-    console.log(error);
+    return error;
   }
 };
 
@@ -110,7 +110,7 @@ export const validateOTP = async (otp) => {
     const response = await api.get(`/auth/validate-otp?otp=${otp}`);
     return response.data;
   } catch (error) {
-    return error.response?.data
+    console.log(error);
   }
 }
 
