@@ -43,6 +43,7 @@ function App() {
     createRoutesFromElements(
       <>
         {/* 🌍 Public Layout */}
+        
         <Route path="/" element={<RootLayout />}>
           {/* --- Public Pages --- */}
           <Route index element={<Home />} />

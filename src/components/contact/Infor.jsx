@@ -25,7 +25,7 @@ function Infor() {
           <FaEnvelope className="text-orange-400 text-xl" />
           <div>
             <p className="font-medium text-white">Email</p>
-            <p className="text-sm text-gray-400">contact@hexagonservices.com</p>
+            <p className="text-sm text-gray-400">vectusdrive@gmail.com</p>
           </div>
         </div>
 

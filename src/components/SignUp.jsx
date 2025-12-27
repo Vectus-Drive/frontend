@@ -1,17 +1,21 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { FaUpload, FaEye, FaEyeSlash } from "react-icons/fa";
-import { uploadImage, signUpUser } from "../api/api.js"
+import { uploadImage, signUpUser } from "../api/api.js";
+import { toast } from "react-toastify";
 
 // ✅ Validation schema using Yup
 const schema = yup.object().shape({
   name: yup.string().required("Full name is required"),
   username: yup
     .string()
-    .matches(/^[a-zA-Z0-9_]+$/, "Username can only contain letters, numbers, and underscores")
+    .matches(
+      /^[a-zA-Z0-9_]+$/,
+      "Username can only contain letters, numbers, and underscores"
+    )
     .min(3, "Username must be at least 3 characters long")
     .required("Username is required"),
   nic: yup
@@ -45,7 +49,7 @@ function SignUp() {
   const [previewImage, setPreviewImage] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
+  const navigate = useNavigate();
   // ✅ Hook form setup
   const {
     register,
@@ -81,28 +85,37 @@ function SignUp() {
       console.error(err);
       return null;
     }
-  }
+  };
 
   const onSubmit = async (data) => {
-  try {
-    const img_url = data.profileImage && data.profileImage.length > 0
-      ? await handleImageUpload(data.profileImage)
-      : null;
+    try {
+      const img_url =
+        data.profileImage && data.profileImage.length > 0
+          ? await handleImageUpload(data.profileImage)
+          : null;
 
+      const finalData = {
+        ...data,
+        image: img_url,
+      };
 
-    const finalData = {
-      ...data,
-      image: img_url,
-    };
+      delete finalData.profileImage;
+      delete finalData.confirmPassword;
 
-    delete finalData.profileImage;
-    delete finalData.confirmPassword;
+      const res = await signUpUser(finalData);
+      console.log(res.message);
 
-    await signUpUser(finalData);
-  } catch (err) {
-    console.error(err);
-  }
-};
+      if (res?.status == "success") {
+        navigate("/login");
+        toast.success(res.message);
+      }else{
+        toast.error(res.response.data.message);
+      }
+
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative">
@@ -115,7 +128,7 @@ function SignUp() {
         </Link>
       </div>
 
-      <div className="bg-gray-800 bg-opacity-90 backdrop-blur-md p-6 md:p-8 rounded-2xl shadow-2xl w-[90%] md:w-[65%] lg:w-[50%] xl:w-[45%] text-center">
+      <div className="bg-gray-800 bg-opacity-90 backdrop-blur-md p-6 md:p-8 rounded-2xl shadow-2xl  w-[90%] md:w-[65%] lg:w-[50%] xl:w-[45%] text-center">
         <h1 className="text-2xl font-semibold tracking-wide mb-1">
           <span className="text-orange-500 font-bold">VECTUS</span>
           <span className="text-white">DRIVE</span>
@@ -175,7 +188,9 @@ function SignUp() {
                   className="w-full p-2.5 md:p-3 bg-gray-700 text-white rounded-md outline-none focus:ring-2 focus:ring-orange-500 placeholder-gray-400 transition-all"
                 />
                 {errors.fullName && (
-                  <p className="text-red-500 text-xs">{errors.fullName.message}</p>
+                  <p className="text-red-500 text-xs">
+                    {errors.fullName.message}
+                  </p>
                 )}
               </div>
 
@@ -192,7 +207,9 @@ function SignUp() {
                   className="w-full p-2.5 md:p-3 bg-gray-700 text-white rounded-md outline-none focus:ring-2 focus:ring-orange-500 placeholder-gray-400 transition-all"
                 />
                 {errors.username && (
-                  <p className="text-red-500 text-xs">{errors.username.message}</p>
+                  <p className="text-red-500 text-xs">
+                    {errors.username.message}
+                  </p>
                 )}
               </div>
 
@@ -262,7 +279,9 @@ function SignUp() {
                   rows="2"
                 ></textarea>
                 {errors.address && (
-                  <p className="text-red-500 text-xs">{errors.address.message}</p>
+                  <p className="text-red-500 text-xs">
+                    {errors.address.message}
+                  </p>
                 )}
               </div>
 
@@ -285,13 +304,18 @@ function SignUp() {
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </span>
                 {errors.password && (
-                  <p className="text-red-500 text-xs">{errors.password.message}</p>
+                  <p className="text-red-500 text-xs">
+                    {errors.password.message}
+                  </p>
                 )}
               </div>
 
               {/* Confirm Password */}
               <div className="relative">
-                <label htmlFor="confirmPassword" className="text-gray-300 text-sm">
+                <label
+                  htmlFor="confirmPassword"
+                  className="text-gray-300 text-sm"
+                >
                   Confirm Password
                 </label>
                 <input
@@ -302,7 +326,9 @@ function SignUp() {
                   className="w-full p-2.5 md:p-3 pr-10 bg-gray-700 text-white rounded-md outline-none focus:ring-2 focus:ring-orange-500 placeholder-gray-400 transition-all"
                 />
                 <span
-                  onClick={() => togglePasswordVisibility(setShowConfirmPassword)}
+                  onClick={() =>
+                    togglePasswordVisibility(setShowConfirmPassword)
+                  }
                   className="absolute right-3 top-[37px] md:top-[41px] text-gray-400 cursor-pointer"
                 >
                   {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}

@@ -10,12 +10,19 @@ function CarDetails() {
 
   const car = cars.find((cars) => cars.car_id === id);
 
+    if (!car) {
+    return (
+      <div className="bg-gray-900 min-h-screen text-white flex items-center justify-center">
+        <p className="text-gray-400 text-lg">Loading car details...</p>
+      </div>
+    );
+  }
   return (
     <div className="bg-gray-900 min-h-screen text-white px-6 md:px-20 py-10 mt-20 relative">
 
       <div className="top-6 left-6 mb-6">
         <Link
-          to="/car"
+          to="/cars"
           className="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-full text-sm transition-all"
         >
           ← Back to Cars
@@ -25,9 +32,9 @@ function CarDetails() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
         {/* LEFT: Car Details */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="rounded-2xl overflow-hidden shadow-lg border border-gray-700 bg-gray-800">
+          <div className="rounded-2xl overflow-hidden shadow-lg object-cover border border-gray-700 bg-gray-800">
             <img
-              src={car.image || "car.jpg"}
+              src={car.image || "./car.jpg"}
               alt={car.make}
               className="w-full h-96 object-cover hover:scale-105 transition-transform duration-300"
             />
